@@ -1,893 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Research Engine - {{ project.topic }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic AI - Research Engine for {{ project.topic }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* =========================================================
+           COSMIC AI - EMBEDDED PROFESSIONAL THEME (DARK GLASS)
+           ========================================================= */
+        :root {
+            --bg-main: #05070f;
+            --sidebar-bg: rgba(8, 10, 21, 0.88);
+            --card-bg: rgba(10, 12, 28, 0.85);
+            --border-cosmic: rgba(0, 240, 255, 0.4);
+            --primary-glow: #7b61ff;
+            --cyan-glow: #00f0ff;
+            --pink-glow: #ff007f;
+            --text-main: #f0f3ff;
+            --text-muted: #94a3b8;
+            --radius-cosmic: 16px;
+        }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 40px 20px;
-            background: #0f1117;
-            color: #e8eaf0;
-            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--bg-main);
+            background-image: 
+                linear-gradient(rgba(5, 7, 15, 0.4), rgba(5, 7, 15, 0.5)),
+                url('https://i.postimg.cc/Hx5hQ7VG/cosmic-bg-jpg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            margin-bottom: 8px;
-        }
-
-        h2 {
-            margin-top: 0;
-        }
-
-        h3 {
-            margin-top: 0;
-        }
-
-        .subtitle {
-            color: #9da3b4;
-            margin-bottom: 30px;
-        }
-
-        .panel {
-            background: #181b24;
-            border: 1px solid #292e3a;
-            border-radius: 14px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-
-        .research-options {
+        .page {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin: 20px 0;
+            min-height: 100vh;
         }
 
-        .research-option {
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-cosmic);
+            padding: 30px 20px;
             display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
         }
 
-        button,
-        .button {
-            display: inline-block;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 18px;
-            background: #ffffff;
-            color: #111111;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, var(--cyan-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
         }
 
-        button:hover,
-        .button:hover {
-            opacity: 0.9;
+        .logo-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            font-weight: 500;
         }
 
-        .secondary-button {
-            background: #292e3a;
-            color: #ffffff;
-        }
-
-        .error {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            background: #3a1d22;
-            border: 1px solid #71313b;
-            color: #ffb7bf;
-        }
-
-        .result-section {
-            margin-top: 28px;
-        }
-
-        .result-section h3 {
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1.2px;
             margin-bottom: 12px;
+            font-weight: 700;
         }
 
-        .answer {
+        .nav-item {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(123, 97, 255, 0.2);
+            color: #ffffff;
+            border-color: var(--border-cosmic);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-cosmic);
+            padding: 25px 30px;
+            border-radius: var(--radius-cosmic);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .page-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .content-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-cosmic);
+            border-radius: var(--radius-cosmic);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .panel-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        select {
+            width: 100%;
+            background: rgba(4, 6, 14, 0.9);
+            border: 1px solid var(--border-cosmic);
+            border-radius: 12px;
+            padding: 15px;
+            color: #f1f5f9;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .research-box {
+            background: rgba(4, 6, 14, 0.9);
+            border: 1px solid var(--border-cosmic);
+            border-radius: 12px;
+            padding: 25px;
+            color: #f1f5f9;
+            font-family: inherit;
             line-height: 1.7;
+            max-height: 600px;
+            overflow-y: auto;
             white-space: pre-wrap;
         }
 
-        ul {
-            padding-left: 22px;
-        }
-
-        li {
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-
-        .fact-card,
-        .number-card,
-        .timeline-card,
-        .misconception-card,
-        .story-card {
-            background: #11141b;
-            border: 1px solid #292e3a;
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-
-        .label {
-            color: #8f96a8;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
-        }
-
-        .value {
-            line-height: 1.6;
-        }
-
-        .confidence {
-            margin-top: 8px;
-            color: #aeb5c5;
-            font-size: 13px;
-        }
-
-        .sources a {
-            color: #dce2ef;
-            text-decoration: none;
-        }
-
-        .sources a:hover {
-            text-decoration: underline;
-        }
-
-        .actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 25px;
-        }
-
-        .topic {
+        .new-video-button, .regenerate-button {
+            background: linear-gradient(135deg, var(--primary-glow), var(--pink-glow));
             color: #ffffff;
-            font-size: 18px;
-            font-weight: 600;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+            display: inline-block;
         }
 
+        .new-video-button:hover, .regenerate-button:hover {
+            box-shadow: 0 0 25px var(--cyan-glow);
+            transform: translateY(-2px);
+        }
     </style>
-
 </head>
-
 <body>
 
-<div class="container">
+<div class="page">
+    <aside class="sidebar">
+        <div class="logo">Cosmic AI</div>
+        <div class="logo-subtitle">YouTube Content Studio</div>
+        <div class="nav-title">Workspace</div>
+        <a href="/" class="nav-item">Generator</a>
+        <a href="/projects" class="nav-item active">Projects</a>
+        <a href="/settings" class="nav-item">Settings</a>
+    </aside>
 
-    <h1>Research Engine</h1>
-
-    <div class="subtitle">
-        Turn your project topic into a structured research dossier.
-    </div>
-
-
-    <!-- =====================================================
-         PROJECT
-         ===================================================== -->
-
-    <div class="panel">
-
-        <div class="label">
-            Project Topic
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <h1 class="page-title">Research Engine</h1>
+                <p class="page-description">Topic research for: {{ project.topic }}</p>
+            </div>
+            <a href="/projects/{{ project.id }}" class="new-video-button">Back to Project</a>
         </div>
 
-        <div class="topic">
-            {{ project.topic }}
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         RESEARCH CONTROL
-         ===================================================== -->
-
-    <div class="panel">
-
-        <h2>Run Research</h2>
-
-        <form
-            method="POST"
-            action="{{ url_for('research_run', project_id=project.id) }}"
-        >
-
-            <div class="research-options">
-
-                <label class="research-option">
-
-                    <input
-                        type="radio"
-                        name="research_mode"
-                        value="knowledge"
-                        {% if not research or research.get("research_mode") != "web" %}
-                        checked
-                        {% endif %}
-                    >
-
-                    AI Knowledge Research
-
-                </label>
-
-
-                <label class="research-option">
-
-                    <input
-                        type="radio"
-                        name="research_mode"
-                        value="web"
-                        {% if research and research.get("research_mode") == "web" %}
-                        checked
-                        {% endif %}
-                    >
-
-                    Web Research
-
-                </label>
-
+        <!-- RUN RESEARCH PANEL -->
+        <div class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Generate Research</h2>
+                    <p>Gather deep insights and data before producing your script.</p>
+                </div>
             </div>
 
-
-            <button type="submit">
-                Run Research
-            </button>
-
-        </form>
-
-    </div>
-
-
-    <!-- =====================================================
-         ERROR
-         ===================================================== -->
-
-    {% if error %}
-
-    <div class="error">
-        {{ error }}
-    </div>
-
-    {% endif %}
-
-
-    <!-- =====================================================
-         RESEARCH RESULT
-         ===================================================== -->
-
-    {% if research %}
-
-    <div class="panel">
-
-        <h2>Research Result</h2>
-
-
-        <!-- RESEARCH MODE -->
-
-        {% if research.get("research_mode") %}
-
-        <div class="result-section">
-
-            <div class="label">
-                Research Mode
-            </div>
-
-            <div class="value">
-                {{ research.get("research_mode") }}
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- TOPIC -->
-
-        {% if research.get("topic") %}
-
-        <div class="result-section">
-
-            <div class="label">
-                Topic
-            </div>
-
-            <div class="value">
-                {{ research.get("topic") }}
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- MAIN QUESTION -->
-
-        {% if research.get("main_question") %}
-
-        <div class="result-section">
-
-            <h3>Main Question</h3>
-
-            <div class="answer">
-                {{ research.get("main_question") }}
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- SHORT ANSWER -->
-
-        {% if research.get("short_answer") %}
-
-        <div class="result-section">
-
-            <h3>Short Answer</h3>
-
-            <div class="answer">
-                {{ research.get("short_answer") }}
-            </div>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- EXECUTIVE SUMMARY -->
-
-        {% if research.get("executive_summary") %}
-
-        <div class="result-section">
-
-            <h3>Executive Summary</h3>
-
-            <ul>
-
-                {% for item in research.get("executive_summary", []) %}
-
-                <li>
-                    {{ item }}
-                </li>
-
-                {% endfor %}
-
-            </ul>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- KEY FACTS -->
-
-        {% if research.get("key_facts") %}
-
-        <div class="result-section">
-
-            <h3>Key Facts</h3>
-
-            {% for fact in research.get("key_facts", []) %}
-
-            <div class="fact-card">
-
-                <div class="label">
-                    Fact
+            <form method="POST" action="/projects/{{ project.id }}/research/run">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--cyan-glow); font-weight: 600;">Research Mode</label>
+                    <select name="research_mode">
+                        <option value="knowledge">AI Knowledge Base (Fast & Reliable)</option>
+                        <option value="web">Web Search Engine (Deep Insights)</option>
+                    </select>
                 </div>
 
-                <div class="value">
-                    {{ fact.get("fact", "") }}
-                </div>
-
-
-                {% if fact.get("explanation") %}
-
-                <div class="result-section">
-
-                    <div class="label">
-                        Explanation
-                    </div>
-
-                    <div class="value">
-                        {{ fact.get("explanation", "") }}
-                    </div>
-
-                </div>
-
-                {% endif %}
-
-
-                {% if fact.get("importance") %}
-
-                <div class="result-section">
-
-                    <div class="label">
-                        Importance
-                    </div>
-
-                    <div class="value">
-                        {{ fact.get("importance", "") }}
-                    </div>
-
-                </div>
-
-                {% endif %}
-
-
-                {% if fact.get("confidence") %}
-
-                <div class="confidence">
-                    Confidence:
-                    {{ fact.get("confidence", "") }}
-                </div>
-
-                {% endif %}
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- IMPORTANT NUMBERS -->
-
-        {% if research.get("important_numbers") %}
-
-        <div class="result-section">
-
-            <h3>Important Numbers</h3>
-
-            {% for number in research.get("important_numbers", []) %}
-
-            <div class="number-card">
-
-                <div class="label">
-                    Value
-                </div>
-
-                <div class="value">
-                    {{ number.get("value", "") }}
-                </div>
-
-
-                {% if number.get("context") %}
-
-                <div class="result-section">
-
-                    <div class="label">
-                        Context
-                    </div>
-
-                    <div class="value">
-                        {{ number.get("context", "") }}
-                    </div>
-
-                </div>
-
-                {% endif %}
-
-
-                {% if number.get("importance") %}
-
-                <div class="result-section">
-
-                    <div class="label">
-                        Importance
-                    </div>
-
-                    <div class="value">
-                        {{ number.get("importance", "") }}
-                    </div>
-
-                </div>
-
-                {% endif %}
-
-
-                {% if number.get("confidence") %}
-
-                <div class="confidence">
-                    Confidence:
-                    {{ number.get("confidence", "") }}
-                </div>
-
-                {% endif %}
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- TIMELINE -->
-
-        {% if research.get("timeline") %}
-
-        <div class="result-section">
-
-            <h3>Timeline</h3>
-
-            {% for item in research.get("timeline", []) %}
-
-            <div class="timeline-card">
-
-                <div class="label">
-                    {{ item.get("date_or_period", "") }}
-                </div>
-
-                <div class="value">
-                    {{ item.get("event", "") }}
-                </div>
-
-
-                {% if item.get("importance") %}
-
-                <div class="confidence">
-                    {{ item.get("importance", "") }}
-                </div>
-
-                {% endif %}
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- SCIENTIFIC / HISTORICAL CONTEXT -->
-
-        {% if research.get("scientific_or_historical_context") %}
-
-        <div class="result-section">
-
-            <h3>
-                Scientific / Historical Context
-            </h3>
-
-            <ul>
-
-                {% for item in research.get("scientific_or_historical_context", []) %}
-
-                <li>
-                    {{ item }}
-                </li>
-
-                {% endfor %}
-
-            </ul>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- SURPRISING FACTS -->
-
-        {% if research.get("surprising_facts") %}
-
-        <div class="result-section">
-
-            <h3>Surprising Facts</h3>
-
-            <ul>
-
-                {% for item in research.get("surprising_facts", []) %}
-
-                <li>
-                    {{ item }}
-                </li>
-
-                {% endfor %}
-
-            </ul>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- MISCONCEPTIONS -->
-
-        {% if research.get("common_misconceptions") %}
-
-        <div class="result-section">
-
-            <h3>Common Misconceptions</h3>
-
-            {% for item in research.get("common_misconceptions", []) %}
-
-            <div class="misconception-card">
-
-                <div class="label">
-                    Claim
-                </div>
-
-                <div class="value">
-                    {{ item.get("claim", "") }}
-                </div>
-
-
-                <div class="result-section">
-
-                    <div class="label">
-                        Reality
-                    </div>
-
-                    <div class="value">
-                        {{ item.get("reality", "") }}
-                    </div>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- UNCERTAINTIES -->
-
-        {% if research.get("uncertainties") %}
-
-        <div class="result-section">
-
-            <h3>Uncertainties</h3>
-
-            <ul>
-
-                {% for item in research.get("uncertainties", []) %}
-
-                <li>
-                    {{ item }}
-                </li>
-
-                {% endfor %}
-
-            </ul>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- STORY OPPORTUNITIES -->
-
-        {% if research.get("story_opportunities") %}
-
-        <div class="result-section">
-
-            <h3>Story Opportunities</h3>
-
-            {% for item in research.get("story_opportunities", []) %}
-
-            <div class="story-card">
-
-                <div class="label">
-                    Idea
-                </div>
-
-                <div class="value">
-                    {{ item.get("idea", "") }}
-                </div>
-
-
-                {% if item.get("why_interesting") %}
-
-                <div class="result-section">
-
-                    <div class="label">
-                        Why Interesting
-                    </div>
-
-                    <div class="value">
-                        {{ item.get("why_interesting", "") }}
-                    </div>
-
-                </div>
-
-                {% endif %}
-
-
-                {% if item.get("potential_section") %}
-
-                <div class="result-section">
-
-                    <div class="label">
-                        Potential Section
-                    </div>
-
-                    <div class="value">
-                        {{ item.get("potential_section", "") }}
-                    </div>
-
-                </div>
-
-                {% endif %}
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- RESEARCH GAPS -->
-
-        {% if research.get("research_gaps") %}
-
-        <div class="result-section">
-
-            <h3>Research Gaps</h3>
-
-            <ul>
-
-                {% for item in research.get("research_gaps", []) %}
-
-                <li>
-                    {{ item }}
-                </li>
-
-                {% endfor %}
-
-            </ul>
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- SOURCES -->
-
-        {% if research.get("sources") %}
-
-        <div class="result-section sources">
-
-            <h3>Sources</h3>
-
-            {% for source in research.get("sources", []) %}
-
-            <div class="fact-card">
-
-                <div class="value">
-
-                    {% if source.get("url") %}
-
-                    <a
-                        href="{{ source.get('url') }}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {{ source.get("title") or source.get("url") }}
-                    </a>
-
-                    {% else %}
-
-                    {{ source.get("title", "Source") }}
-
-                    {% endif %}
-
-                </div>
-
-
-                {% if source.get("publisher") %}
-
-                <div class="confidence">
-                    {{ source.get("publisher") }}
-                </div>
-
-                {% endif %}
-
-
-                {% if source.get("relevance") %}
-
-                <div class="confidence">
-                    {{ source.get("relevance") }}
-                </div>
-
-                {% endif %}
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- =================================================
-             PIPELINE ACTION
-             ================================================= -->
-
-        <div class="actions">
-
-            <form
-                method="POST"
-                action="{{ url_for(
-                    'generate_outline_from_research_route',
-                    project_id=project.id
-                ) }}"
-            >
-
-                <button type="submit">
-                    Generate Outline from Research
-                </button>
-
+                <button type="submit" class="new-video-button">Run Research Now</button>
             </form>
 
-
-            <a
-                href="{{ url_for(
-                    'project_detail',
-                    project_id=project.id
-                ) }}"
-                class="button secondary-button"
-            >
-                Back to Project
-            </a>
-
+            {% if error %}
+            <div style="color: #ff007f; margin-top: 15px; font-weight: 600;">{{ error }}</div>
+            {% endif %}
         </div>
 
-    </div>
+        <!-- RESEARCH RESULTS -->
+        {% if research %}
+        <div class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Research Findings</h2>
+                    <p>Analyzed facts, angles, and content pillars.</p>
+                </div>
+            </div>
 
-    {% else %}
+            <div class="research-box">{{ research }}</div>
 
-    <div class="panel">
+            <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
+                <form method="POST" action="/projects/{{ project.id }}/research/generate-outline" style="margin: 0;">
+                    <button type="submit" class="new-video-button">Generate Outline from Research</button>
+                </form>
 
-        <h3>No Research Yet</h3>
-
-        <div class="answer">
-            Run AI Knowledge Research or Web Research
-            to create the research dossier for this project.
+                <form method="POST" action="/projects/{{ project.id }}/research/generate-script" style="margin: 0;">
+                    <button type="submit" class="regenerate-button">Generate Script from Outline</button>
+                </form>
+            </div>
         </div>
-
-    </div>
-
-    {% endif %}
-
+        {% endif %}
+    </main>
 </div>
 
 </body>
