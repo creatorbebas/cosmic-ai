@@ -9,9 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ==========================================
-           COSMIC AI - HIGH CONTRAST & READABLE THEME
-           ========================================== */
         :root {
             --bg-card: rgba(10, 12, 28, 0.85);
             --border-cosmic: rgba(0, 240, 255, 0.45);
@@ -45,7 +42,6 @@
             position: relative;
         }
 
-        /* NAVBAR HEADER */
         header {
             display: flex;
             justify-content: space-between;
@@ -100,7 +96,6 @@
             transform: translateY(-2px);
         }
 
-        /* HERO SECTION STYLING (READABILITY IMPROVEMENTS) */
         .hero-section {
             text-align: center;
             margin-top: 30px;
@@ -136,7 +131,6 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         }
 
-        /* CONTAINER & GLASS CARDS */
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -162,7 +156,6 @@
             background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
-        /* FORM & INPUTS */
         label {
             font-weight: 600;
             font-size: 0.95rem;
@@ -213,47 +206,33 @@
 </head>
 <body>
 
-    <!-- NAVBAR HEADER -->
     <header>
-        <a href="/" class="nav-brand">
-            ✨ COSMIC AI
-        </a>
+        <a href="/" class="nav-brand">✨ COSMIC AI</a>
         <nav class="nav-links">
             <a href="/" class="btn-nav">🏠 Home</a>
             <a href="/projects" class="btn-nav">🚀 Projects</a>
         </nav>
     </header>
 
-    <!-- KONTEN UTAMA -->
     <main class="container">
         
-        <!-- HERO SECTION -->
         <section class="hero-section">
-            <h1 class="hero-title">
-                Buat Script Konten Lebih Cepat dengan AI
-            </h1>
+            <h1 class="hero-title">Buat Script Konten Lebih Cepat dengan AI</h1>
             <p class="hero-subtitle">
                 Rancang outline, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
             </p>
         </section>
 
-        <!-- FORM GENERATOR -->
-        <div class="card" style="max-width: 650px; margin: 0 auto;">
+        <!-- DITAMBAHKAN ID generator-form DI SINI -->
+        <div class="card" id="generator-form" style="max-width: 650px; margin: 0 auto;">
             <h2 style="font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; font-weight: 700; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);">
                 💫 Buat Project Baru
             </h2>
 
             <form action="/generate" method="POST">
-                
                 <div>
                     <label for="topic">Topik / Judul Konten</label>
-                    <input 
-                        type="text" 
-                        id="topic" 
-                        name="topic" 
-                        placeholder="Contoh: 5 Tips Produktivitas untuk Mahasiswa" 
-                        required
-                    >
+                    <input type="text" id="topic" name="topic" placeholder="Contoh: 5 Tips Produktivitas untuk Mahasiswa" required>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -278,23 +257,13 @@
 
                 <div>
                     <label for="audience">Target Audience</label>
-                    <input 
-                        type="text" 
-                        id="audience" 
-                        name="audience" 
-                        placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula" 
-                        required
-                    >
+                    <input type="text" id="audience" name="audience" placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula" required>
                 </div>
 
-                <button type="submit" class="btn-submit">
-                    ✨ Generate Script Sekarang
-                </button>
-
+                <button type="submit" class="btn-submit">✨ Generate Script Sekarang</button>
             </form>
         </div>
 
     </main>
-
 </body>
 </html>
