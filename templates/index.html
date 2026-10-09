@@ -9,9 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* ==========================================
+           COSMIC AI - GUARANTEED COSMIC BACKGROUND
+           ========================================== */
         :root {
-            --bg-card: rgba(10, 12, 28, 0.75);
-            --border-cosmic: rgba(0, 240, 255, 0.45);
+            --bg-card: rgba(10, 12, 28, 0.78);
+            --border-cosmic: rgba(0, 240, 255, 0.5);
             --primary-glow: #7b61ff;
             --cyan-glow: #00f0ff;
             --pink-glow: #ff007f;
@@ -28,9 +31,10 @@
 
         body {
             background-color: #05070f;
+            /* Latar belakang galaksi kosmik resolusi tinggi via CDN stabil & fallback gradient */
             background-image: 
-                linear-gradient(rgba(5, 7, 15, 0.2), rgba(5, 7, 15, 0.3)),
-                url('/static/cosmic-bg.jpg');
+                linear-gradient(rgba(5, 7, 15, 0.25), rgba(5, 7, 15, 0.35)),
+                url('https://img.freepik.com/free-vector/gradient-galaxy-background_23-2148984252.jpg?w=1600');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -48,10 +52,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(8, 10, 21, 0.75);
+            background: rgba(8, 10, 21, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.35);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -95,6 +99,7 @@
             transform: translateY(-2px);
         }
 
+        /* CONTAINER & GLASS CARDS */
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -120,6 +125,7 @@
             background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
+        /* FORM & INPUTS */
         label {
             font-weight: 600;
             font-size: 0.95rem;
@@ -169,6 +175,7 @@
 </head>
 <body>
 
+    <!-- NAVBAR HEADER -->
     <header>
         <a href="/" class="nav-brand">
             ✨ COSMIC AI
@@ -179,7 +186,10 @@
         </nav>
     </header>
 
+    <!-- KONTEN UTAMA -->
     <main class="container">
+        
+        <!-- HERO SECTION -->
         <section style="text-align: center; margin-top: 20px; margin-bottom: 45px;">
             <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #ffffff 20%, #00f0ff 60%, #ff007f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
                 Buat Script Konten Lebih Cepat dengan AI
@@ -189,15 +199,23 @@
             </p>
         </section>
 
+        <!-- FORM GENERATOR -->
         <div class="card" style="max-width: 650px; margin: 0 auto;">
             <h2 style="font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; font-weight: 700;">
                 💫 Buat Project Baru
             </h2>
 
             <form action="/generate" method="POST">
+                
                 <div>
                     <label for="topic">Topik / Judul Konten</label>
-                    <input type="text" id="topic" name="topic" placeholder="Contoh: 5 Tips Produktivitas untuk Mahasiswa" required>
+                    <input 
+                        type="text" 
+                        id="topic" 
+                        name="topic" 
+                        placeholder="Contoh: 5 Tips Produktivitas untuk Mahasiswa" 
+                        required
+                    >
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -221,14 +239,22 @@
 
                 <div>
                     <label for="audience">Target Audience</label>
-                    <input type="text" id="audience" name="audience" placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula" required>
+                    <input 
+                        type="text" 
+                        id="audience" 
+                        name="audience" 
+                        placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula" 
+                        required
+                    >
                 </div>
 
                 <button type="submit" class="btn-submit">
                     ✨ Generate Script Sekarang
                 </button>
+
             </form>
         </div>
+
     </main>
 
 </body>
