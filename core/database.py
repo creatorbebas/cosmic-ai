@@ -1,20 +1,22 @@
 import os
 import sqlite3
 
-# ============================================================
-# DATABASE CONFIGURATION
-# ============================================================
-# Vercel Serverless hanya mengizinkan penulisan file di direktori /tmp
-if os.environ.get("VERCEL"):
-    DB_PATH = "/tmp/database.db"
-else:
-    DB_PATH = "database.db"
-
+# Deteksi variabel lingkungan Turso
+TURSO_URL = os.environ.get("TURSO_DATABASE_URL")
+TURSO_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
 
 def get_connection():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+    if TURSO_URL and TURSO_TOKEN:
+        # Menggunakan Turso Cloud Database
+        import libsql_experimental as libsql
+        conn = libsql.connect(database=TURSO_URL, auth_token=TURSO_TOKEN)
+        return conn
+    else:
+        # Menggunakan SQLite lokal saat pengembangan lokal
+        DB_PATH = "/tmp/database.db" if os.environ.get("VERCEL") else "database.db"
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        return conn
 
 
 # ============================================================
@@ -86,7 +88,16 @@ def get_projects():
         
         projects = []
         for row in rows:
-            projects.append(dict(row))
+            if hasattr(row, 'keys'):
+                projects.append(dict(row))
+            else:
+                # Penanganan hasil tuple dari libsql
+                projects.append({
+                    "id": row[0], "topic": row[1], "duration": row[2],
+                    "audience": row[3], "language": row[4], "outline": row[5],
+                    "script": row[6], "metadata": row[7], "research": row[8],
+                    "analysis": row[9], "created_at": row[10]
+                })
         return projects
     except Exception as e:
         print("Error getting projects:", e)
@@ -105,7 +116,15 @@ def search_projects(query):
         
         projects = []
         for row in rows:
-            projects.append(dict(row))
+            if hasattr(row, 'keys'):
+                projects.append(dict(row))
+            else:
+                projects.append({
+                    "id": row[0], "topic": row[1], "duration": row[2],
+                    "audience": row[3], "language": row[4], "outline": row[5],
+                    "script": row[6], "metadata": row[7], "research": row[8],
+                    "analysis": row[9], "created_at": row[10]
+                })
         return projects
     except Exception as e:
         print("Error searching projects:", e)
@@ -124,9 +143,16 @@ def get_project(project_id):
         
         if row:
             import json
-            project = dict(row)
+            if hasattr(row, 'keys'):
+                project = dict(row)
+            else:
+                project = {
+                    "id": row[0], "topic": row[1], "duration": row[2],
+                    "audience": row[3], "language": row[4], "outline": row[5],
+                    "script": row[6], "metadata": row[7], "research": row[8],
+                    "analysis": row[9], "created_at": row[10]
+                }
             
-            # Parse JSON fields safely
             for field in ["outline", "metadata", "research", "analysis"]:
                 if project.get(field):
                     try:
