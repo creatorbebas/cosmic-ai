@@ -10,7 +10,7 @@
 
     <style>
         /* ==========================================
-           COSMIC AI - EXACT LOCAL IMAGE BG
+           COSMIC AI - DIRECT POSTIMAGES BACKGROUND
            ========================================== */
         :root {
             --bg-card: rgba(10, 12, 28, 0.78);
@@ -31,10 +31,10 @@
 
         body {
             background-color: #05070f;
-            /* Memanggil file cosmic-bg.jpg milikmu lewat tag Flask url_for */
+            /* Gambar kosmik asli milikmu langsung dipanggil dari Postimages */
             background-image: 
-                linear-gradient(rgba(5, 7, 15, 0.2), rgba(5, 7, 15, 0.3)),
-                url("{{ url_for('static', filename='cosmic-bg.jpg') }}");
+                linear-gradient(rgba(5, 7, 15, 0.25), rgba(5, 7, 15, 0.35)),
+                url('https://i.postimg.cc/Hx5hQ7VG/cosmic-bg-jpg.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
