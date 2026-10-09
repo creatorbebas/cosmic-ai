@@ -9,6 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* ==========================================
+           COSMIC AI - HIGH CONTRAST & READABLE THEME
+           ========================================== */
         :root {
             --bg-card: rgba(10, 12, 28, 0.85);
             --border-cosmic: rgba(0, 240, 255, 0.45);
@@ -38,10 +41,12 @@
             color: var(--text-main);
             font-family: 'Inter', -apple-system, sans-serif;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
+        /* NAVBAR HEADER */
         header {
             display: flex;
             justify-content: space-between;
@@ -96,10 +101,11 @@
             transform: translateY(-2px);
         }
 
+        /* HERO SECTION STYLING */
         .hero-section {
             text-align: center;
-            margin-top: 30px;
-            margin-bottom: 40px;
+            margin-top: 20px;
+            margin-bottom: 30px;
             padding: 0 10px;
         }
 
@@ -131,10 +137,12 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         }
 
+        /* CONTAINER & GLASS CARDS */
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px 20px 50px;
+            padding: 20px 20px 40px;
+            width: 100%;
         }
 
         .card {
@@ -156,6 +164,7 @@
             background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
+        /* FORM & INPUTS */
         label {
             font-weight: 600;
             font-size: 0.95rem;
@@ -202,45 +211,82 @@
             box-shadow: 0 0 35px rgba(0, 240, 255, 0.8);
             transform: scale(1.02);
         }
+
+        /* PRICING BOX STYLING */
+        .pricing-box {
+            background: rgba(10, 12, 28, 0.95);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 520px;
+            margin: 0 auto;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        }
+
+        .badge-promo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #7b61ff, #ff007f);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: rgba(8, 10, 21, 0.9);
+            border-top: 1px solid rgba(0, 240, 255, 0.2);
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR HEADER -->
     <header>
-        <a href="/" class="nav-brand">✨ COSMIC AI</a>
+        <a href="/" class="nav-brand">
+            ✨ COSMIC AI
+        </a>
         <nav class="nav-links">
             <a href="/" class="btn-nav">🏠 Home</a>
+            {% if is_unlocked %}
             <a href="/projects" class="btn-nav">🚀 Projects</a>
+            <a href="/logout-access" class="btn-nav" style="border-color: rgba(255,0,0,0.4); color: #ff7f7f;">🔒 Kunci Sesi</a>
+            {% endif %}
         </nav>
     </header>
 
+    <!-- KONTEN UTAMA -->
     <main class="container">
         
-        <section class="hero-section">
-            <h1 class="hero-title">Buat Script Konten Lebih Cepat dengan AI</h1>
-            <p class="hero-subtitle">
-                Rancang outline, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
-            </p>
-        </section>
-
-        <!-- DITAMBAHKAN ID generator-form DI SINI -->
-        <div class="card" id="generator-form" style="max-width: 650px; margin: 0 auto;">
-            <h2 style="font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; font-weight: 700; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);">
-                💫 Buat Project Baru
-            </h2>
+        {% if is_unlocked %}
+        <!-- ================= KONDISI 1: SUDAH PUNYA KEY (AKSES PENUH) ================= -->
+        <div class="card" style="max-width: 750px; margin: 0 auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="font-size: 1.5rem; font-weight: 700;">💫 Dashboard AI Generator</h2>
+                <span style="background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Akses Penuh Aktif</span>
+            </div>
 
             <form action="/generate" method="POST">
                 <div>
                     <label for="topic">Topik / Judul Konten</label>
-                    <input type="text" id="topic" name="topic" placeholder="Contoh: 5 Tips Produktivitas untuk Mahasiswa" required>
+                    <input type="text" id="topic" name="topic" placeholder="Contoh: 5 Tips AI untuk Produktivitas" required>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
                         <label for="duration">Durasi Konten</label>
                         <select id="duration" name="duration" required>
-                            <option value="Ultra-Short (30s)">Ultra-Short (30 detik / Reels / TikTok)</option>
-                            <option value="Short (60s)">Short (60 detik / Standard)</option>
+                            <option value="Short (60s)">Short (60 detik / Reels / TikTok)</option>
                             <option value="Medium (3-5 min)">Medium (3-5 menit)</option>
                             <option value="Long (8-10 min)">Long (8-10 menit / YouTube)</option>
                         </select>
@@ -260,10 +306,56 @@
                     <input type="text" id="audience" name="audience" placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula" required>
                 </div>
 
-                <button type="submit" class="btn-submit">✨ Generate Script Sekarang</button>
+                <button type="submit" class="btn-submit">
+                    ✨ Generate Script Sekarang
+                </button>
             </form>
         </div>
 
+        {% else %}
+        <!-- ================= KONDISI 2: PUBLIK (LANDING PAGE & PRICING EKSKLUSIF) ================= -->
+        <section class="hero-section">
+            <h1 class="hero-title">
+                Buat Script Konten Lebih Cepat dengan AI
+            </h1>
+            <p class="hero-subtitle">
+                Rancang outline, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
+            </p>
+        </section>
+
+        <!-- PRICING / PROMO BOX -->
+        <div class="pricing-box">
+            <div class="badge-promo">DISKON 50%</div>
+            <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 5px;">Paket Langganan Full Studio</h3>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 22px;">Akses penuh tanpa batas seluruh fitur generator AI.</p>
+
+            <!-- HARGA CORET & PROMO -->
+            <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 22px;">
+                <span style="font-size: 2.3rem; font-weight: 800; color: #fff;">Rp75.000</span>
+                <span style="font-size: 1.2rem; color: #ef4444; text-decoration: line-through; font-weight: 600;">Rp150.000</span>
+                <span style="font-size: 0.8rem; background: rgba(16,185,129,0.2); color: #34d399; padding: 3px 8px; border-radius: 6px; font-weight: 600;">Hemat 50%</span>
+            </div>
+
+            <ul style="list-style: none; font-size: 0.9rem; color: #cbd5e1; margin-bottom: 25px; line-height: 2.2;">
+                <li>✅ Full Akses Generator & Editor AI</li>
+                <li>✅ Durasi Aktif Penuh 30 Hari (1 Bulan)</li>
+                <li>✅ Update & Dukungan Bantuan Langsung</li>
+            </ul>
+
+            <a href="https://wa.me/6288210627434?text=Halo%20Admin,%20saya%20ingin%20berlangganan%20Cosmic%20AI%20Studio%20Promo%2050%%%20(Rp75rb/bulan)." target="_blank" 
+               style="display: block; text-align: center; background: #10b981; color: white; font-weight: 700; padding: 15px; border-radius: 12px; text-decoration: none; box-shadow: 0 4px 20px rgba(16,185,129,0.4); transition: 0.3s;">
+               💬 Langganan via WhatsApp (+62-882-1062-7434)
+            </a>
+        </div>
+        {% endif %}
+
     </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Cosmic AI Studio. All rights reserved.</p>
+        <p style="margin-top: 5px;">WhatsApp: <strong>+62-882-1062-7434</strong> | Email: <strong>creatorbebas81@gmail.com</strong></p>
+    </footer>
+
 </body>
 </html>

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect
+import os
+from flask import Flask, render_template, request, redirect, url_for, session
 import json
 
 from core.content import (
@@ -62,6 +63,12 @@ app = Flask(
     static_url_path="/static"
 )
 
+# Kunci rahasia session Flask
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dullah-studio-secure-session-key')
+
+# Kunci rahasia akses utama (diambil dari Vercel Environment Variables)
+ACCESS_KEY = os.environ.get('ACCESS_KEY', 'dullahstudio777')
+
 
 # ============================================================
 # DATABASE
@@ -94,21 +101,28 @@ def save_json(filename, data):
 
 
 # ============================================================
-# HOME
+# HOME & ACCESS CONTROL (DIPROTEKSI DENGAN KEY)
 # ============================================================
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    # Cek apakah pengguna membawa parameter ?key=... di URL
+    url_key = request.args.get('key')
+    
+    if url_key == ACCESS_KEY:
+        # Jika key benar, buka akses penuh di sesi browser mereka
+        session['unlocked'] = True
+    
+    # Status apakah akses penuh sudah terbuka
+    is_unlocked = session.get('unlocked', False)
+    
+    return render_template("index.html", is_unlocked=is_unlocked)
 
 
-# ============================================================
-# SETTINGS
-# ============================================================
-
-@app.route("/settings")
-def settings():
-    return render_template("settings.html")
+@app.route("/logout-access")
+def logout_access():
+    session.pop('unlocked', None)
+    return redirect(url_for('home'))
 
 
 # ============================================================
