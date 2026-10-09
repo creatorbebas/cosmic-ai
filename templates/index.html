@@ -120,9 +120,9 @@
             background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow));
         }
 
-        /* DEKORASI PLANET */
+        /* DEKORASI PLANET REALISTIS */
         .planet-container {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: -1;
@@ -131,28 +131,32 @@
 
         .planet {
             position: absolute;
+            background-size: cover;
+            background-position: center;
             border-radius: 50%;
-            animation: float 10s ease-in-out infinite;
+            animation: float 12s ease-in-out infinite;
         }
 
         .planet-1 {
-            width: 160px; height: 160px;
-            top: 15%; right: -30px;
-            background: radial-gradient(circle at 30% 30%, #7b61ff, #1e0b50);
-            box-shadow: 0 0 50px rgba(123, 97, 255, 0.4);
+            width: 220px; height: 220px;
+            top: 10%; right: 3%;
+            background-image: url('https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=400&q=80');
+            box-shadow: 0 0 50px rgba(123, 97, 255, 0.6), inset 0 0 20px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .planet-2 {
-            width: 110px; height: 110px;
-            bottom: 15%; left: -30px;
-            background: radial-gradient(circle at 30% 30%, #00f0ff, #004d61);
-            box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
-            animation-delay: 3s;
+            width: 150px; height: 150px;
+            bottom: 8%; left: 2%;
+            background-image: url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=400&q=80');
+            box-shadow: 0 0 45px rgba(0, 240, 255, 0.5), inset 0 0 20px rgba(0,0,0,0.8);
+            animation-delay: 4s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(8deg); }
+            50% { transform: translateY(-25px) rotate(12deg); }
         }
 
         /* FORM & INPUTS */
@@ -205,7 +209,7 @@
 </head>
 <body>
 
-    <!-- DEKORASI PLANET MELAYANG -->
+    <!-- DEKORASI PLANET REALISTIS MELAYANG -->
     <div class="planet-container">
         <div class="planet planet-1"></div>
         <div class="planet planet-2"></div>
