@@ -1,812 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic AI - Script Editor for {{ project.topic }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <title>Script Editor - Cosmic AI</title>
+    <style>
+        /* =========================================================
+           COSMIC AI - EMBEDDED PROFESSIONAL THEME (DARK GLASS)
+           ========================================================= */
+        :root {
+            --bg-main: #05070f;
+            --sidebar-bg: rgba(8, 10, 21, 0.88);
+            --card-bg: rgba(10, 12, 28, 0.85);
+            --border-cosmic: rgba(0, 240, 255, 0.4);
+            --primary-glow: #7b61ff;
+            --cyan-glow: #00f0ff;
+            --pink-glow: #ff007f;
+            --text-main: #f0f3ff;
+            --text-muted: #94a3b8;
+            --radius-cosmic: 16px;
+        }
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: 
+                linear-gradient(rgba(5, 7, 15, 0.4), rgba(5, 7, 15, 0.5)),
+                url('https://i.postimg.cc/Hx5hQ7VG/cosmic-bg-jpg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+
+        .page {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-cosmic);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, var(--cyan-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .logo-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1.2px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(123, 97, 255, 0.2);
+            color: #ffffff;
+            border-color: var(--border-cosmic);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-cosmic);
+            padding: 25px 30px;
+            border-radius: var(--radius-cosmic);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .page-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .content-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-cosmic);
+            border-radius: var(--radius-cosmic);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .panel-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        form textarea, input[type="text"], select {
+            width: 100%;
+            background: rgba(4, 6, 14, 0.9);
+            border: 1px solid var(--border-cosmic);
+            border-radius: 12px;
+            padding: 15px;
+            color: #f1f5f9;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+
+        form textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .section-card {
+            background: rgba(5, 7, 18, 0.6);
+            border: 1px solid rgba(123, 97, 255, 0.25);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cyan-glow);
+            margin-bottom: 10px;
+        }
+
+        .new-video-button, .small-copy-button, .regenerate-button {
+            background: linear-gradient(135deg, var(--primary-glow), var(--pink-glow));
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+            display: inline-block;
+        }
+
+        .new-video-button:hover, .small-copy-button:hover, .regenerate-button:hover {
+            box-shadow: 0 0 25px var(--cyan-glow);
+            transform: translateY(-2px);
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+    </style>
 </head>
-
-
 <body>
 
 <div class="page">
-
-
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
-
     <aside class="sidebar">
-
-        <div class="sidebar-brand">
-
-            <div class="brand-title">
-                Cosmic AI
-            </div>
-
-            <div class="brand-subtitle">
-                AI Content Studio
-            </div>
-
-        </div>
-
-
-        <nav class="sidebar-nav">
-
-            <a
-                href="/"
-                class="sidebar-link"
-            >
-                <span>✦</span>
-                Generator
-            </a>
-
-
-            <a
-                href="/projects"
-                class="sidebar-link"
-            >
-                <span>▣</span>
-                Projects
-            </a>
-
-
-            <a
-                href="#"
-                class="sidebar-link"
-            >
-                <span>⚙</span>
-                Settings
-            </a>
-
-        </nav>
-
+        <div class="logo">Cosmic AI</div>
+        <div class="logo-subtitle">YouTube Content Studio</div>
+        <div class="nav-title">Workspace</div>
+        <a href="/" class="nav-item">Generator</a>
+        <a href="/projects" class="nav-item active">Projects</a>
+        <a href="/settings" class="nav-item">Settings</a>
     </aside>
 
-
-
-    <!-- =========================
-         MAIN CONTENT
-    ========================== -->
-
     <main class="main">
-
-
-        <!-- =========================
-             TOPBAR
-        ========================== -->
-
         <div class="topbar">
-
             <div>
-
-                <h1 class="page-title">
-                    Script Editor
-                </h1>
-
-                <p class="page-description">
-                    Edit, rewrite, and analyze your YouTube script.
-                </p>
-
+                <h1 class="page-title">Script Editor</h1>
+                <p class="page-description">Editing project: {{ project.topic }}</p>
             </div>
-
-
-            <a
-                href="{{ url_for(
-                    'project_detail',
-                    project_id=project.id
-                ) }}"
-                class="secondary-button"
-            >
-                ← Back to Project
-            </a>
-
+            <a href="/projects/{{ project.id }}" class="new-video-button">Back to Project</a>
         </div>
 
-
-
-        <!-- =========================
-             PROJECT INFO
-        ========================== -->
-
-        <div class="result-info-card">
-
-            <div class="result-topic">
-                {{ project.topic }}
-            </div>
-
-
-            <div class="result-details">
-
-
-                <div class="result-detail">
-
-                    <span class="result-label">
-                        Duration
-                    </span>
-
-                    <span>
-                        {{ project.duration }}
-                    </span>
-
-                </div>
-
-
-                <div class="result-detail">
-
-                    <span class="result-label">
-                        Audience
-                    </span>
-
-                    <span>
-                        {{ project.audience }}
-                    </span>
-
-                </div>
-
-
-                <div class="result-detail">
-
-                    <span class="result-label">
-                        Language
-                    </span>
-
-                    <span>
-                        {{ project.language }}
-                    </span>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =========================
-             EDITOR PANEL
-        ========================== -->
-
-        <div class="content-panel active-panel">
-
-
+        <!-- ANALYZE & TOOLS SECTION -->
+        <div class="content-panel">
             <div class="panel-header">
-
                 <div>
-
-                    <h2 class="card-title">
-                        Script Editor
-                    </h2>
-
-                    <p class="card-description">
-                        Edit individual sections of your script.
-                    </p>
-
+                    <h2>AI Script Tools</h2>
+                    <p>Analyze overall script quality or rewrite sections.</p>
                 </div>
-
-            </div>
-
-
-
-            <!-- =========================
-                 SCRIPT ANALYZER
-            ========================== -->
-
-            <div class="card">
-
-                <div class="card-title">
-                    Script Analyzer
-                </div>
-
-
-                <div class="card-description">
-                    Analyze hook strength, retention,
-                    clarity, story flow, and curiosity.
-                </div>
-
-
-                <form
-                    method="POST"
-                    action="{{ url_for(
-                        'analyze_script_route',
-                        project_id=project.id
-                    ) }}"
-                    style="margin-top: 20px;"
-                >
-
-                    <button
-                        type="submit"
-                        class="generate-button"
-                    >
-                        Analyze Script
-                    </button>
-
+                <form method="POST" action="/projects/{{ project.id }}/editor/analyze" style="margin: 0;">
+                    <button type="submit" class="new-video-button">Analyze Script</button>
                 </form>
-
             </div>
-
-
-
-            <!-- =========================
-                 ANALYSIS ERROR
-            ========================== -->
-
-            {% if analysis_error %}
-
-            <div class="card">
-
-                <div class="card-title">
-                    Analysis Error
-                </div>
-
-                <div
-                    style="
-                        margin-top: 15px;
-                    "
-                >
-                    {{ analysis_error }}
-                </div>
-
-            </div>
-
-            {% endif %}
-
-
-
-            <!-- =========================
-                 ANALYSIS RESULT
-            ========================== -->
 
             {% if analysis %}
-
-            <div class="card">
-
-                <div class="card-title">
-                    Analysis Result
-                </div>
-
-
-
-                {% if analysis.scores %}
-
-                <div class="hook-grid">
-
-
-                    <div class="hook-card">
-
-                        <div class="hook-type">
-                            Hook Strength
-                        </div>
-
-                        <p>
-                            {{ analysis.scores.hook_strength }}/100
-                        </p>
-
-                    </div>
-
-
-                    <div class="hook-card">
-
-                        <div class="hook-type">
-                            Retention
-                        </div>
-
-                        <p>
-                            {{ analysis.scores.retention_potential }}/100
-                        </p>
-
-                    </div>
-
-
-                    <div class="hook-card">
-
-                        <div class="hook-type">
-                            Clarity
-                        </div>
-
-                        <p>
-                            {{ analysis.scores.clarity }}/100
-                        </p>
-
-                    </div>
-
-
-                    <div class="hook-card">
-
-                        <div class="hook-type">
-                            Story Flow
-                        </div>
-
-                        <p>
-                            {{ analysis.scores.story_flow }}/100
-                        </p>
-
-                    </div>
-
-
-                    <div class="hook-card">
-
-                        <div class="hook-type">
-                            Curiosity
-                        </div>
-
-                        <p>
-                            {{ analysis.scores.curiosity }}/100
-                        </p>
-
-                    </div>
-
-
-                    <div class="hook-card">
-
-                        <div class="hook-type">
-                            Overall
-                        </div>
-
-                        <p>
-                            {{ analysis.scores.overall }}/100
-                        </p>
-
-                    </div>
-
-
-                </div>
-
-                {% endif %}
-
-
-
-                {% if analysis.status %}
-
-                <div style="margin-top: 25px;">
-
-                    <strong>
-                        Overall Status:
-                    </strong>
-
-                    {{ analysis.status }}
-
-                </div>
-
-                {% endif %}
-
-
-
-                {% if analysis.strengths %}
-
-                <div style="margin-top: 25px;">
-
-                    <h3>
-                        Strengths
-                    </h3>
-
-
-                    <ul>
-
-                        {% for item in analysis.strengths %}
-
-                        <li>
-                            {{ item }}
-                        </li>
-
-                        {% endfor %}
-
-                    </ul>
-
-                </div>
-
-                {% endif %}
-
-
-
-                {% if analysis.weaknesses %}
-
-                <div style="margin-top: 25px;">
-
-                    <h3>
-                        Weaknesses
-                    </h3>
-
-
-                    <ul>
-
-                        {% for item in analysis.weaknesses %}
-
-                        <li>
-                            {{ item }}
-                        </li>
-
-                        {% endfor %}
-
-                    </ul>
-
-                </div>
-
-                {% endif %}
-
-
-
-                {% if analysis.recommendations %}
-
-                <div style="margin-top: 25px;">
-
-                    <h3>
-                        Recommendations
-                    </h3>
-
-
-                    <ul>
-
-                        {% for item in analysis.recommendations %}
-
-                        <li>
-                            {{ item }}
-                        </li>
-
-                        {% endfor %}
-
-                    </ul>
-
-                </div>
-
-                {% endif %}
-
-
-
-                {% if analysis.section_analysis %}
-
-                <div style="margin-top: 30px;">
-
-                    <h3>
-                        Section Analysis
-                    </h3>
-
-
-                    {% for item in analysis.section_analysis %}
-
-                    <div
-                        class="card"
-                        style="margin-top: 15px;"
-                    >
-
-                        <div class="card-title">
-                            {{ item.section }}
-                        </div>
-
-
-                        <div>
-                            <strong>
-                                Score:
-                            </strong>
-
-                            {{ item.score }}/100
-                        </div>
-
-
-                        <div style="margin-top: 8px;">
-
-                            <strong>
-                                Status:
-                            </strong>
-
-                            {{ item.status }}
-
-                        </div>
-
-
-                        <div style="margin-top: 15px;">
-
-                            <strong>
-                                Diagnosis
-                            </strong>
-
-                            <p>
-                                {{ item.diagnosis }}
-                            </p>
-
-                        </div>
-
-
-                        <div style="margin-top: 15px;">
-
-                            <strong>
-                                Improvement
-                            </strong>
-
-                            <p>
-                                {{ item.improvement }}
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    {% endfor %}
-
-                </div>
-
-                {% endif %}
-
-
+            <div style="background: rgba(4, 6, 14, 0.9); border: 1px solid var(--cyan-glow); padding: 20px; border-radius: 12px; margin-top: 15px;">
+                <h3 style="color: var(--cyan-glow); margin-bottom: 10px;">Script Analysis Result</h3>
+                <pre style="white-space: pre-wrap; font-family: inherit; color: #cbd5e1;">{{ analysis | tojson(indent=2) }}</pre>
             </div>
-
             {% endif %}
 
-
-
-            <!-- =========================
-                 REWRITE PREVIEW
-            ========================== -->
-
-            {% if rewrite_preview %}
-
-            <div class="card">
-
-                <div class="card-title">
-                    Rewrite Result
-                </div>
-
-
-                <div class="card-description">
-
-                    Review the generated rewrite
-                    before applying it.
-
-                </div>
-
-
-                <div
-                    class="script-box"
-                    style="margin-top: 20px;"
-                >
-                    {{ rewrite_preview }}
-                </div>
-
-
-                <form
-                    method="POST"
-                    action="{{ url_for(
-                        'accept_rewrite',
-                        project_id=project.id
-                    ) }}"
-                    style="margin-top: 20px;"
-                >
-
-                    <input
-                        type="hidden"
-                        name="section_name"
-                        value="{{ rewrite_section_name }}"
-                    >
-
-
-                    <input
-                        type="hidden"
-                        name="new_content"
-                        value="{{ rewrite_preview }}"
-                    >
-
-
-                    <button
-                        type="submit"
-                        class="generate-button"
-                    >
-                        Apply Rewrite
-                    </button>
-
-                </form>
-
-            </div>
-
+            {% if analysis_error %}
+            <div style="color: #ff007f; margin-top: 10px;">{{ analysis_error }}</div>
             {% endif %}
-
-
-
-            <!-- =========================
-                 SCRIPT SECTIONS
-            ========================== -->
-
-            <form
-                method="POST"
-                action="{{ url_for(
-                    'save_script_editor',
-                    project_id=project.id
-                ) }}"
-            >
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Script Sections
-                    </div>
-
-
-                    <div class="card-description">
-                        Edit each section directly.
-                    </div>
-
-
-
-                    {% for section in sections %}
-
-                    <div
-                        class="card"
-                        style="margin-top: 20px;"
-                    >
-
-
-                        <div class="card-title">
-                            {{ section.name }}
-                        </div>
-
-
-                        <!-- SECTION NAME -->
-
-                        <input
-                            type="hidden"
-                            name="section_name"
-                            value="{{ section.name }}"
-                        >
-
-
-                        <!-- SECTION CONTENT -->
-
-                        <textarea
-                            name="section_content"
-                            rows="10"
-                            style="
-                                width: 100%;
-                                box-sizing: border-box;
-                                margin-top: 12px;
-                                resize: vertical;
-                            "
-                        >{{ section.content }}</textarea>
-
-
-
-                        <!-- =========================
-                             REWRITE
-                        ========================== -->
-
-                        <div
-                            style="
-                                margin-top: 15px;
-                                display: flex;
-                                gap: 10px;
-                                flex-wrap: wrap;
-                            "
-                        >
-
-
-                            <input
-                                type="text"
-                                name="style"
-                                placeholder="Rewrite style, e.g. cinematic, suspenseful..."
-                                style="
-                                    flex: 1;
-                                    min-width: 240px;
-                                "
-                            >
-
-
-                            <button
-                                type="submit"
-                                formaction="{{ url_for(
-                                    'rewrite_script_section',
-                                    project_id=project.id
-                                ) }}"
-                                name="section_name"
-                                value="{{ section.name }}"
-                                class="regenerate-button"
-                            >
-                                Generate Rewrite
-                            </button>
-
-
-                        </div>
-
-
-                    </div>
-
-                    {% endfor %}
-
-
-
-                    <!-- =========================
-                         SAVE BUTTON
-                    ========================== -->
-
-                    <div
-                        style="
-                            margin-top: 25px;
-                            display: flex;
-                            gap: 12px;
-                            flex-wrap: wrap;
-                        "
-                    >
-
-
-                        <button
-                            type="submit"
-                            class="generate-button"
-                        >
-                            Save Script
-                        </button>
-
-
-                        <a
-                            href="{{ url_for(
-                                'project_detail',
-                                project_id=project.id
-                            ) }}"
-                            class="secondary-button"
-                        >
-                            Cancel
-                        </a>
-
-
-                    </div>
-
-
-                </div>
-
-            </form>
-
-
-
-            <!-- =========================
-                 FOOTER ACTIONS
-            ========================== -->
-
-            <div
-                style="
-                    margin-top: 30px;
-                    display: flex;
-                    gap: 12px;
-                    flex-wrap: wrap;
-                "
-            >
-
-
-                <a
-                    href="{{ url_for(
-                        'project_detail',
-                        project_id=project.id
-                    ) }}"
-                    class="secondary-button"
-                >
-                    Back to Project
-                </a>
-
-
-                <a
-                    href="/"
-                    class="new-video-button"
-                >
-                    New Video
-                </a>
-
-
-            </div>
-
-
         </div>
 
-    </main>
+        <!-- SECTION EDITOR FORM -->
+        <div class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Sections Editor</h2>
+                    <p>Modify sections individually or use AI rewrite.</p>
+                </div>
+            </div>
 
+            <form method="POST" action="/projects/{{ project.id }}/editor/save">
+                {% for sec in sections %}
+                <div class="section-card">
+                    <div class="section-title">
+                        Section {{ loop.index }}: {{ sec.name }}
+                    </div>
+                    <input type="hidden" name="section_name" value="{{ sec.name }}">
+                    <textarea name="section_content" rows="4">{{ sec.content }}</textarea>
+
+                    <div class="action-bar">
+                        <!-- Tombol khusus untuk memicu rewrite section via POST terpisah -->
+                        <button type="submit" formaction="/projects/{{ project.id }}/editor/rewrite" name="section_name" value="{{ sec.name }}" formmethod="POST" class="regenerate-button" style="padding: 6px 14px; font-size: 0.85rem;">
+                            ✨ Rewrite with AI
+                        </button>
+                        <select name="style" style="width: auto; padding: 6px 10px; margin-bottom: 0;">
+                            <option value="More engaging">More engaging</option>
+                            <option value="More punchy">More punchy</option>
+                            <option value="More casual">More casual</option>
+                            <option value="Professional">Professional</option>
+                        </select>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div style="margin-top: 25px;">
+                    <button type="submit" class="new-video-button" style="font-size: 1rem; padding: 12px 30px;">Save All Changes</button>
+                </div>
+            </form>
+
+            {% if rewrite_preview %}
+            <div style="background: rgba(123, 97, 255, 0.15); border: 1px solid var(--primary-glow); padding: 20px; border-radius: 12px; margin-top: 25px;">
+                <h3 style="color: #ffffff; margin-bottom: 8px;">Rewrite Preview for "{{ rewrite_section_name }}"</h3>
+                <p style="color: #cbd5e1; margin-bottom: 15px; white-space: pre-wrap;">{{ rewrite_preview }}</p>
+                
+                <form method="POST" action="/projects/{{ project.id }}/editor/accept-rewrite">
+                    <input type="hidden" name="section_name" value="{{ rewrite_section_name }}">
+                    <input type="hidden" name="new_content" value="{{ rewrite_preview }}">
+                    <button type="submit" class="new-video-button">Accept Rewrite</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </main>
 </div>
 
 </body>
-
 </html>
