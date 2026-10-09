@@ -10,12 +10,11 @@
 
     <style>
         /* ==========================================
-           COSMIC AI - PURE CSS NEON GALAXY & PLANETS
+           COSMIC AI - EXACT IMAGE BACKGROUND
            ========================================== */
         :root {
-            --bg-space: #03040a;
-            --bg-card: rgba(10, 13, 28, 0.85);
-            --border-cosmic: rgba(0, 240, 255, 0.4);
+            --bg-card: rgba(10, 12, 28, 0.75);
+            --border-cosmic: rgba(0, 240, 255, 0.45);
             --primary-glow: #7b61ff;
             --cyan-glow: #00f0ff;
             --pink-glow: #ff007f;
@@ -31,87 +30,20 @@
         }
 
         body {
-            background-color: var(--bg-space);
-            /* Nebula Galaksi Berwarna Warni Menggunakan Gradasi Murni */
+            background-color: #05070f;
+            /* Memanggil file gambar asli cosmic-bg.jpg dari folder static */
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(255, 0, 127, 0.28) 0%, transparent 45%),
-                radial-gradient(circle at 85% 80%, rgba(0, 240, 255, 0.25) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(123, 97, 255, 0.2) 0%, transparent 60%),
-                radial-gradient(circle at 80% 20%, rgba(255, 230, 0, 0.08) 0%, transparent 30%);
+                linear-gradient(rgba(5, 7, 15, 0.25), rgba(5, 7, 15, 0.35)),
+                url('/static/cosmic-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
             color: var(--text-main);
             font-family: 'Inter', -apple-system, sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-        }
-
-        /* ORNAMENT KOSMIK (PLANET, CINCIN, DAN SATELIT NEON) */
-        .space-backstage {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        /* Planet Ungu Raksasa + Cincin di Atas Kanan */
-        .large-cosmos {
-            position: absolute;
-            top: 10%; right: 4%;
-            width: 140px; height: 140px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #7b61ff, #ff007f, #0e021a);
-            box-shadow: 0 0 50px rgba(123, 97, 255, 0.5), inset -15px -15px 30px rgba(0,0,0,0.8);
-            animation: floatLarge 12s ease-in-out infinite;
-        }
-
-        .large-cosmos::before {
-            content: "";
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 230px; height: 50px;
-            border: 3px solid rgba(0, 240, 255, 0.7);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-            box-shadow: 0 0 15px var(--cyan-glow), inset 0 0 10px rgba(0, 240, 255, 0.5);
-        }
-
-        /* Planet Biru Es di Bawah Kiri */
-        .icy-cosmos {
-            position: absolute;
-            bottom: 12%; left: 4%;
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #00f0ff, #0a4060, #010c14);
-            box-shadow: 0 0 45px rgba(0, 240, 255, 0.45), inset -10px -10px 20px rgba(0,0,0,0.9);
-            animation: floatIce 16s ease-in-out infinite;
-        }
-
-        /* Planet Api Menyala */
-        .fire-cosmos {
-            position: absolute;
-            top: 60%; right: 7%;
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ff5500, #ffaa00, #1a0000);
-            box-shadow: 0 0 40px rgba(255, 85, 0, 0.5), inset -8px -8px 15px rgba(0,0,0,0.9);
-            animation: floatFire 14s ease-in-out infinite;
-        }
-
-        /* Animasi Melayang Lambat */
-        @keyframes floatLarge {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(3deg); }
-        }
-
-        @keyframes floatIce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(12px); }
-        }
-
-        @keyframes floatFire {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
 
         /* NAVBAR HEADER */
@@ -120,10 +52,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(8, 10, 21, 0.8);
+            background: rgba(8, 10, 21, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 240, 255, 0.35);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -242,13 +174,6 @@
     </style>
 </head>
 <body>
-
-    <!-- DEKORASI PLANET NEON & GALAXY -->
-    <div class="space-backstage">
-        <div class="large-cosmos"></div>
-        <div class="icy-cosmos"></div>
-        <div class="fire-cosmos"></div>
-    </div>
 
     <!-- NAVBAR HEADER -->
     <header>
