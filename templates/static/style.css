@@ -1,50 +1,143 @@
 /* ==========================================
-   COSMIC AI - DEEP SPACE THEME
+   COSMIC AI - DEEP SPACE & PLANET THEME
    ========================================== */
 
 :root {
-  --bg-space: #0b0d17;
-  --bg-card: rgba(22, 27, 46, 0.7);
-  --bg-card-hover: rgba(30, 38, 66, 0.85);
-  --border-cosmic: rgba(123, 97, 255, 0.25);
+  --bg-space: #070913;
+  --bg-card: rgba(18, 22, 41, 0.75);
+  --border-cosmic: rgba(123, 97, 255, 0.3);
   --primary-glow: #7b61ff;
   --cyan-glow: #00f0ff;
   --text-main: #f0f3ff;
-  --text-muted: #8e9a8f;
-  --radius-cosmic: 14px;
+  --text-muted: #94a3b8;
+  --radius-cosmic: 16px;
 }
 
 body {
   background-color: var(--bg-space);
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(123, 97, 255, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(0, 240, 255, 0.08) 0%, transparent 40%);
+    radial-gradient(circle at 10% 20%, rgba(123, 97, 255, 0.15) 0%, transparent 35%),
+    radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.12) 0%, transparent 40%);
   color: var(--text-main);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Glassmorphism Card Base */
-.cosmic-card, .card, .project-card {
+/* NAVBAR & NAVIGATION BUTTONS */
+header, nav, .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 5%;
+  background: rgba(11, 14, 28, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-cosmic);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand, .logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 0%, var(--cyan-glow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-links, .nav-menu {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a, .nav-item, .btn-nav {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-links a:hover, .btn-nav:hover {
+  background: rgba(123, 97, 255, 0.2);
+  border-color: var(--border-cosmic);
+  color: var(--cyan-glow);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+/* DECORATIVE COSMIC PLANETS & FLOATING ELEMENTS */
+.planet-bg {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: float 8s ease-in-out infinite;
+}
+
+.planet-1 {
+  width: 180px;
+  height: 180px;
+  top: 10%;
+  right: 5%;
+  background: radial-gradient(circle at 30% 30%, #7b61ff, #1e0b50);
+  box-shadow: 0 0 40px rgba(123, 97, 255, 0.4);
+}
+
+.planet-2 {
+  width: 100px;
+  height: 100px;
+  bottom: 15%;
+  left: 4%;
+  background: radial-gradient(circle at 30% 30%, #00f0ff, #004d61);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+  animation-delay: 3s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+/* CARDS & CONTAINERS */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.card, .project-card, .cosmic-card {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-cosmic);
   border-radius: var(--radius-cosmic);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
 }
 
-.cosmic-card:hover, .card:hover, .project-card:hover {
+.card:hover, .project-card:hover {
   border-color: var(--cyan-glow);
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
-  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+  transform: translateY(-2px);
 }
 
-/* Buttons */
-.btn-cosmic, button[type="submit"], .btn-primary {
+/* BUTTONS */
+.btn, .btn-primary, button[type="submit"] {
   background: linear-gradient(135deg, var(--primary-glow) 0%, #4a00e0 100%);
   color: #ffffff;
   border: none;
@@ -54,34 +147,30 @@ body {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(123, 97, 255, 0.4);
   transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.btn-cosmic:hover, button[type="submit"]:hover, .btn-primary:hover {
+.btn:hover, .btn-primary:hover, button[type="submit"]:hover {
   box-shadow: 0 0 25px rgba(123, 97, 255, 0.7);
   transform: scale(1.02);
 }
 
-/* Inputs & Form Fields */
+/* FORM ELEMENTS */
 input, select, textarea {
+  width: 100%;
+  box-sizing: border-box;
   background: rgba(11, 13, 23, 0.8) !important;
   border: 1px solid var(--border-cosmic) !important;
   color: var(--text-main) !important;
-  border-radius: 8px !important;
-  padding: 12px !important;
+  border-radius: 10px !important;
+  padding: 12px 16px !important;
+  margin-top: 6px;
+  margin-bottom: 16px;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none !important;
   border-color: var(--cyan-glow) !important;
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3) !important;
-}
-
-/* Responsive Grid for Mobile */
-@media (max-width: 768px) {
-  .container {
-    padding: 16px;
-  }
-  .project-grid {
-    grid-template-columns: 1fr !important;
-  }
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3) !important;
 }
