@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic AI - Generator Script AI</title>
+    <title>Cosmic AI - Script Generator</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- ELEMEN DEKORASI PLANET KOSMIK -->
-    <div class="planet-bg planet-1"></div>
-    <div class="planet-bg planet-2"></div>
+    <!-- DEKORASI PLANET MELAYANG -->
+    <div class="planet-container">
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+    </div>
 
     <!-- NAVBAR HEADER -->
     <header>
@@ -21,7 +23,7 @@
             ✨ COSMIC AI
         </a>
         <nav class="nav-links">
-            <a href="/" class="btn-nav">Home</a>
+            <a href="/" class="btn-nav">🏠 Home</a>
             <a href="/projects" class="btn-nav">🚀 Projects</a>
         </nav>
     </header>
@@ -30,27 +32,25 @@
     <main class="container">
         
         <!-- HERO SECTION -->
-        <section style="text-align: center; margin-top: 20px; margin-bottom: 40px;">
-            <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 12px; background: linear-gradient(135deg, #ffffff 0%, #00f0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        <section style="text-align: center; margin-top: 30px; margin-bottom: 50px;">
+            <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #ffffff 20%, #00f0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
                 Buat Script Konten Lebih Cepat dengan AI
             </h1>
-            <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
-                Rancang outline, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya.
+            <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+                Rancang outline, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
             </p>
         </section>
 
         <!-- FORM GENERATOR -->
-        <div class="card" style="max-width: 700px; margin: 0 auto;">
-            <h2 style="font-size: 1.4rem; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
-                🚀 Buat Project Baru
+        <div class="card" style="max-width: 650px; margin: 0 auto;">
+            <h2 style="font-size: 1.5rem; margin-top: 0; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; font-weight: 700;">
+                💫 Buat Project Baru
             </h2>
 
             <form action="/generate" method="POST">
                 
-                <div style="margin-bottom: 16px;">
-                    <label for="topic" style="font-weight: 600; font-size: 0.95rem; display: block; margin-bottom: 6px;">
-                        Topik / Judul Konten
-                    </label>
+                <div>
+                    <label for="topic">Topik / Judul Konten</label>
                     <input 
                         type="text" 
                         id="topic" 
@@ -60,11 +60,9 @@
                     >
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
-                        <label for="duration" style="font-weight: 600; font-size: 0.95rem; display: block; margin-bottom: 6px;">
-                            Durasi Konten
-                        </label>
+                        <label for="duration">Durasi Konten</label>
                         <select id="duration" name="duration" required>
                             <option value="Short (60s)">Short (60 detik / Reels / TikTok)</option>
                             <option value="Medium (3-5 min)">Medium (3-5 menit)</option>
@@ -73,9 +71,7 @@
                     </div>
 
                     <div>
-                        <label for="language" style="font-weight: 600; font-size: 0.95rem; display: block; margin-bottom: 6px;">
-                            Bahasa
-                        </label>
+                        <label for="language">Bahasa</label>
                         <select id="language" name="language" required>
                             <option value="Indonesian" selected>Indonesia</option>
                             <option value="English">Inggris</option>
@@ -83,10 +79,8 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 16px; margin-bottom: 24px;">
-                    <label for="audience" style="font-weight: 600; font-size: 0.95rem; display: block; margin-bottom: 6px;">
-                        Target Audience
-                    </label>
+                <div style="margin-top: 10px;">
+                    <label for="audience">Target Audience</label>
                     <input 
                         type="text" 
                         id="audience" 
@@ -96,7 +90,7 @@
                     >
                 </div>
 
-                <button type="submit" class="btn" style="width: 100%; font-size: 1.05rem; padding: 14px;">
+                <button type="submit" class="btn-submit" style="margin-top: 15px;">
                     ✨ Generate Script Sekarang
                 </button>
 

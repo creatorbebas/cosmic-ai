@@ -58,7 +58,7 @@ from core.outline_script import (
 
 app = Flask(
     __name__,
-    static_folder="templates/static",
+    static_folder="static",
     static_url_path="/static"
 )
 
@@ -608,7 +608,6 @@ def generate():
     if metadata is None:
         return "Gagal membuat metadata.", 500
 
-    # Simpan file lokal di dalam try-except agar tidak menggagalkan proses di Vercel
     try:
         save_json("outline.json", outline)
         save_text("script.txt", script)
