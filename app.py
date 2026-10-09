@@ -608,9 +608,13 @@ def generate():
     if metadata is None:
         return "Gagal membuat metadata.", 500
 
-    save_json("outline.json", outline)
-    save_text("script.txt", script)
-    save_json("metadata.json", metadata)
+    # Simpan file lokal di dalam try-except agar tidak menggagalkan proses di Vercel
+    try:
+        save_json("outline.json", outline)
+        save_text("script.txt", script)
+        save_json("metadata.json", metadata)
+    except Exception as e:
+        print("Abaikan error penulisan file lokal di serverless:", e)
 
     project_id = create_project(
         topic=topic,
@@ -622,6 +626,9 @@ def generate():
         metadata=metadata
     )
 
+    if not project_id:
+        return "Gagal menyimpan proyek ke database.", 500
+
     return redirect(f"/projects/{project_id}")
 
 
@@ -629,7 +636,6 @@ def generate():
 # RUN SERVER
 # ============================================================
 
-# Handler eksplisit untuk Vercel Serverless
 app = app
 
 if __name__ == "__main__":
