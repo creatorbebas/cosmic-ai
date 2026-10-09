@@ -1,0 +1,68 @@
+{
+  "hooks": [
+    {
+      "type": "curiosity",
+      "text": "Picture a whole planet drifting alone in absolute darkness—no sun, no sky. How does something that big end up untethered?"
+    },
+    {
+      "type": "question",
+      "text": "What rips a planet away from its star—and could those lost worlds outnumber the stars themselves?"
+    },
+    {
+      "type": "surprising_fact",
+      "text": "Astronomers have actually spotted brief flashes of starlight that point to planets with no star at all—real evidence for wandering worlds."
+    },
+    {
+      "type": "story",
+      "text": "When a young planetary system went chaotic, one giant planet got flung out into the dark—this isn't science fiction, it's how many scientists think rogue planets form."
+    },
+    {
+      "type": "mystery",
+      "text": "Between the stars there could be countless hidden worlds. Where did they come from, and could any of them be habitable?"
+    }
+  ],
+  "titles": [
+    {
+      "title": "Why Rogue Planets Exist — The Science of Wandering Worlds",
+      "angle": "Overview explanation of origins and significance"
+    },
+    {
+      "title": "How Planets Get Kicked Out of Their Solar Systems",
+      "angle": "Focus on ejection via scattering and stellar encounters"
+    },
+    {
+      "title": "Free-Floating Planets: Born Alone or Thrown Away?",
+      "angle": "Contrast isolated collapse vs. ejection scenarios"
+    },
+    {
+      "title": "The Secret Lives of Rogue Planets",
+      "angle": "Implications, internal heat, and potential habitability"
+    },
+    {
+      "title": "Are There Planets Drifting Between the Stars?",
+      "angle": "Question-driven look at evidence and detection"
+    },
+    {
+      "title": "How Astronomers Find Planets With No Star",
+      "angle": "Explainer on microlensing, infrared surveys, and imaging"
+    },
+    {
+      "title": "Rogue Planets: Could They Host Hidden Oceans?",
+      "angle": "Explores how internal heat might sustain subsurface oceans"
+    },
+    {
+      "title": "From Ejection to Capture — How Rogue Planets Are Made",
+      "angle": "Breakdown of the three main formation pathways"
+    },
+    {
+      "title": "Microlensing and the Hunt for Wandering Worlds",
+      "angle": "Deep dive into the detection method that reveals rogues"
+    },
+    {
+      "title": "The Unexpected Importance of Rogue Planets",
+      "angle": "Why their numbers matter for galactic evolution"
+    }
+  ],
+  "description": "Rogue planets are planetary-mass objects that float through space without a host star. In this 5-minute explainer we show how astronomers detect them (microlensing, deep infrared surveys, rare direct imaging), outline the three main ways they can become unbound (ejection, isolated collapse, or capture), and explore why their uncertain numbers and internal heat make them more scientifically important than you might expect. We won't solve the mystery here, but you'll get the evidence, the simulations, and the upcoming missions that could settle the debate. Watch to learn how unseen worlds might reshape our picture of the galaxy — and subscribe for more space deep-dives.",
+  "call_to_action": "Subscribe for more space deep-dives."
+}

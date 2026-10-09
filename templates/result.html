@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic AI - Generation Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- ========================================== -->
+    <!-- SIDEBAR -->
+    <!-- ========================================== -->
+
+    <aside class="sidebar">
+        <div class="logo">
+            Cosmic AI
+        </div>
+        <div class="logo-subtitle">
+            YouTube Content Studio
+        </div>
+
+        <div class="nav-title">
+            Workspace
+        </div>
+
+        <a href="/" class="nav-item">
+            Generator
+        </a>
+
+        <a href="/projects" class="nav-item active">
+            Projects
+        </a>
+
+        <a href="/settings" class="nav-item">
+            Settings
+        </a>
+    </aside>
+
+
+    <!-- ========================================== -->
+    <!-- MAIN -->
+    <!-- ========================================== -->
+
+    <main class="main">
+
+        <!-- HEADER -->
+        <div class="topbar">
+            <div>
+                <h1 class="page-title">
+                    Generation Result
+                </h1>
+                <p class="page-description">
+                    Your AI-generated YouTube content package is ready.
+                </p>
+            </div>
+
+            <a href="/" class="new-video-button">
+                + New Video
+            </a>
+        </div>
+
+
+        <!-- ====================================== -->
+        <!-- VIDEO INFORMATION -->
+        <!-- ====================================== -->
+
+        <div class="result-info-card">
+            <div class="result-topic">
+                <span class="result-label">
+                    VIDEO TOPIC
+                </span>
+                <h2>
+                    {{ topic }}
+                </h2>
+            </div>
+
+            <div class="result-details">
+                <div class="result-detail">
+                    <span>Duration</span>
+                    <strong>{{ duration }} min</strong>
+                </div>
+
+                <div class="result-detail">
+                    <span>Audience</span>
+                    <strong>{{ audience }}</strong>
+                </div>
+
+                <div class="result-detail">
+                    <span>Language</span>
+                    <strong>{{ language }}</strong>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ====================================== -->
+        <!-- CONTENT NAVIGATION -->
+        <!-- ====================================== -->
+
+        <div class="content-tabs">
+            <button type="button" class="content-tab active" onclick="showTab('outline', this)">
+                Outline
+            </button>
+            <button type="button" class="content-tab" onclick="showTab('script', this)">
+                Script
+            </button>
+            <button type="button" class="content-tab" onclick="showTab('hooks', this)">
+                Hooks
+            </button>
+            <button type="button" class="content-tab" onclick="showTab('titles', this)">
+                Titles
+            </button>
+            <button type="button" class="content-tab" onclick="showTab('description', this)">
+                Description
+            </button>
+        </div>
+
+
+        <!-- ====================================== -->
+        <!-- OUTLINE -->
+        <!-- ====================================== -->
+
+        <section id="outline" class="content-panel active-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Video Outline</h2>
+                    <p>Structured roadmap for your video.</p>
+                </div>
+            </div>
+
+            <div class="outline-list">
+                {% if outline and outline.sections %}
+                    {% for section in outline.sections %}
+                    <div class="outline-item">
+                        <div class="outline-number">
+                            {{ loop.index }}
+                        </div>
+
+                        <div class="outline-content">
+                            <div class="outline-title">
+                                {{ section.name }}
+                            </div>
+
+                            {% if section.approximate_duration %}
+                            <div class="outline-duration">
+                                ⏱ {{ section.approximate_duration }}
+                            </div>
+                            {% endif %}
+
+                            {% if section.purpose %}
+                            <p>
+                                <strong>Purpose</strong><br>
+                                {{ section.purpose }}
+                            </p>
+                            {% endif %}
+
+                            <p>
+                                <strong>Key Information / Points</strong><br>
+                                {% if section.key_points and section.key_points is sequence and section.key_points is not string %}
+                                    <ul style="margin-top: 4px; padding-left: 18px;">
+                                        {% for pt in section.key_points %}
+                                        <li>{{ pt }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    {{ section.key_information if section.key_information else '-' }}
+                                {% endif %}
+                            </p>
+
+                            {% if section.narrative_goal %}
+                            <p>
+                                <strong>Narrative Goal</strong><br>
+                                {{ section.narrative_goal }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No outline available.</p>
+                {% endif %}
+            </div>
+        </section>
+
+
+        <!-- ====================================== -->
+        <!-- SCRIPT -->
+        <!-- ====================================== -->
+
+        <section id="script" class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Full Script</h2>
+                    <p>Complete narration generated by Cosmic AI.</p>
+                </div>
+
+                <button type="button" class="copy-button" onclick="copyText('script-text', this)">
+                    Copy Script
+                </button>
+            </div>
+
+            <div id="script-text" class="script-box">{{ script }}</div>
+        </section>
+
+
+        <!-- ====================================== -->
+        <!-- HOOKS -->
+        <!-- ====================================== -->
+
+        <section id="hooks" class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>YouTube Hooks</h2>
+                    <p>Different opening approaches for your video.</p>
+                </div>
+            </div>
+
+            <div class="hook-grid">
+                {% if metadata and metadata.hooks %}
+                    {% for hook in metadata.hooks %}
+                    <div class="hook-card">
+                        <div class="hook-type">
+                            {{ hook.type|upper }}
+                        </div>
+
+                        <p class="hook-text">
+                            "{{ hook.text }}"
+                        </p>
+
+                        <button type="button" class="small-copy-button" data-copy="{{ hook.text }}" onclick="copyDataValue(this)">
+                            Copy
+                        </button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+
+
+        <!-- ====================================== -->
+        <!-- TITLES -->
+        <!-- ====================================== -->
+
+        <section id="titles" class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>YouTube Titles</h2>
+                    <p>AI-generated title variations.</p>
+                </div>
+            </div>
+
+            <div class="title-list">
+                {% if metadata and metadata.titles %}
+                    {% for item in metadata.titles %}
+                    {% set title_text = item.title if item.title else item.text %}
+                    <div class="title-card">
+                        <div>
+                            <span class="title-number">
+                                {{ loop.index }}
+                            </span>
+
+                            <strong>
+                                {{ title_text }}
+                            </strong>
+
+                            {% if item.angle %}
+                            <p>
+                                Angle: {{ item.angle }}
+                            </p>
+                            {% endif %}
+                        </div>
+
+                        <button type="button" class="small-copy-button" data-copy="{{ title_text }}" onclick="copyDataValue(this)">
+                            Copy
+                        </button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+
+
+        <!-- ====================================== -->
+        <!-- DESCRIPTION -->
+        <!-- ====================================== -->
+
+        <section id="description" class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>YouTube Description</h2>
+                    <p>Ready-to-use video description.</p>
+                </div>
+
+                <button type="button" class="copy-button" onclick="copyText('description-text', this)">
+                    Copy Description
+                </button>
+            </div>
+
+            <div id="description-text" class="description-box">
+                {% if metadata %}
+                    {{ metadata.description }}
+
+                    {% if metadata.call_to_action %}
+                    <div class="cta-box">
+                        <span>CALL TO ACTION</span>
+                        <p>{{ metadata.call_to_action }}</p>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- ========================================== -->
+<!-- JAVASCRIPT -->
+<!-- ========================================== -->
+
+<script>
+function showTab(tabId, button) {
+    const panels = document.querySelectorAll(".content-panel");
+    panels.forEach(function(panel) {
+        panel.classList.remove("active-panel");
+    });
+
+    const buttons = document.querySelectorAll(".content-tab");
+    buttons.forEach(function(btn) {
+        btn.classList.remove("active");
+    });
+
+    const selectedPanel = document.getElementById(tabId);
+    if (selectedPanel) {
+        selectedPanel.classList.add("active-panel");
+    }
+    button.classList.add("active");
+}
+
+function copyText(elementId, button) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    const text = element.innerText;
+    navigator.clipboard.writeText(text)
+        .then(function() { showCopied(button); })
+        .catch(function() { fallbackCopy(text, button); });
+}
+
+function copyDataValue(button) {
+    const text = button.getAttribute("data-copy");
+    if (!text) return;
+
+    navigator.clipboard.writeText(text)
+        .then(function() { showCopied(button); })
+        .catch(function() { fallbackCopy(text, button); });
+}
+
+function showCopied(button) {
+    const originalText = button.innerText;
+    button.innerText = "Copied!";
+    setTimeout(function() { button.innerText = originalText; }, 1500);
+}
+
+function fallbackCopy(text, button) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+        document.execCommand("copy");
+        showCopied(button);
+    } catch (error) {
+        console.error("Copy failed:", error);
+    }
+    document.body.removeChild(textarea);
+}
+</script>
+
+</body>
+
+</html>

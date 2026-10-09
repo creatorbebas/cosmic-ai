@@ -1,0 +1,74 @@
+{
+  "sections": [
+    {
+      "name": "HOOK",
+      "purpose": "Grab attention with a startling claim and immediate mystery.",
+      "key_points": [
+        "Once, a high-profile paper claimed there might be more Jupiter‑mass 'rogue' planets than stars — a dramatic idea that captured headlines.",
+        "But that claim didn’t last unchallenged. Why did scientists disagree, and what does the truth look like?",
+        "Set the central tease: are these lonely worlds born alone, or are they cast out from homes — and how many are there?"
+      ]
+    },
+    {
+      "name": "INTRO",
+      "purpose": "State the investigation and frame the central scientific question.",
+      "key_points": [
+        "Explain what we mean by 'rogue' or 'free‑floating' planets: planetary‑mass objects not obviously bound to a star (classification itself can be ambiguous).",
+        "Present the central question: what mechanisms produce rogue planets, how common are they, and what observations will decide between competing ideas?",
+        "Preview the arc: how past claims provoked debate, what the evidence says today, the theoretical tension, and the decisive future surveys (Roman, ground networks)."
+      ]
+    },
+    {
+      "name": "SEGMENT 1",
+      "purpose": "Build the scientific and historical foundation so the audience understands the tools and basic hypotheses.",
+      "key_points": [
+        "Two origin stories — 'Born alone' (cloud or disc fragmentation making planetary‑mass objects from the start) versus 'Cast out' (planets formed in discs and later ejected by dynamics).",
+        "Detection methods set the stage: microlensing (sensitive to lenses anywhere in the Galaxy; event timescales scale with mass — hours to days for low masses) versus direct infrared imaging (finds warm young objects in nearby associations).",
+        "Historical touchstones: Stevenson’s 1999 'Steppenwolf' idea as the first widely‑cited note on habitability of isolated worlds; 2000s–2010s maturation of microlensing and imaging surveys.",
+        "Explain the practical classification wrinkle: the ~13 MJ deuterium‑burning threshold is often used but formation history is a better discriminator and remains hard to observe."
+      ]
+    },
+    {
+      "name": "SEGMENT 2",
+      "purpose": "Present the main evidence: observational results, theoretical work, and what each implies.",
+      "key_points": [
+        "Microlensing discoveries: highlight early dramatic result (Sumi et al. 2011) that inferred ~1.8 Jupiter‑mass rogues per star, and why it excited the field — short, isolated lensing events interpreted as unbound Jupiters.",
+        "Larger, higher‑statistic microlensing follow‑up (Mróz et al. 2017) that set a strong 95% upper limit of ≲0.25 Jupiter‑mass unbound/wide planets per star, dramatically lowering the earlier estimate.",
+        "Low‑mass sensitivity emerging: very-short timescale microlensing events (e.g., Mróz et al. 2020) suggest possible terrestrial‑mass candidates — microlensing probes a wide mass range but with degeneracies.",
+        "Direct imaging in young clusters (Miret‑Roig et al. 2021) reveals many isolated planetary‑mass objects in associations like Upper Scorpius, evidence that in‑situ formation or disc fragmentation produces planetary‑mass bodies.",
+        "Theoretical context: N‑body scattering simulations show ejection is common in unstable systems, but demographic studies (Raymond et al., Veras & Raymond) argue scattering alone probably cannot produce the very large numbers once claimed.",
+        "Observational caveats: microlensing’s mass–distance degeneracy and the difficulty of distinguishing wide bound orbits from truly unbound objects without additional parallax, finite‑source, or follow‑up imaging."
+      ]
+    },
+    {
+      "name": "SEGMENT 3",
+      "purpose": "Introduce the conflict, major uncertainties, and why the debate persists.",
+      "key_points": [
+        "Conflict of abundance estimates: contrasting numbers from Sumi (large claimed population) versus Mróz (tight upper limits) create the central scientific tension.",
+        "Mass function gap: we lack a robust, population‑level mass function across lunar→super‑Jupiter masses because methods sample different regimes and carry complementary biases.",
+        "Ambiguity in single events: most microlensing detections lack direct mass/distance measurements, so interpretations depend on statistical modeling — a single lightcurve can often be fit by multiple scenarios (bound wide orbit vs unbound).",
+        "Formation channel degeneracy: direct imaging of young clusters suggests many planetary‑mass objects were born isolated, so an observed object’s origin (born vs ejected) is not obvious from mass alone.",
+        "Open theoretical gaps: how initial planetary system architectures map to ejection rates, survival of atmospheres and moons through ejection, and how representative young‑cluster samples are for the Galactic field remain uncertain."
+      ]
+    },
+    {
+      "name": "TWIST",
+      "purpose": "Deliver the strongest unexpected insight supported by the dossier, reframing earlier assumptions.",
+      "key_points": [
+        "The strongest revelation: rogue planets are not a single population with a single origin — they are a mixed bag. Both in‑situ formation and dynamical ejection contribute, and their relative importance depends on mass and environment.",
+        "Practically, that means the sensational headline 'more Jupiter‑mass rogues than stars' was likely an overreach from small‑sample interpretation, not the final truth — later data forced a major course correction.",
+        "Yet another surprise: while giant unbound planets appear rare (Mróz limits), both microlensing and imaging increasingly point to abundant lower‑mass free‑floaters or isolated planetary‑mass objects — the picture is mass‑dependent and subtle."
+      ]
+    },
+    {
+      "name": "CLOSING",
+      "purpose": "Resolve and reframe the central question; point to how the field will settle remaining uncertainties and leave the viewer with wonder.",
+      "key_points": [
+        "Answer succinctly: rogue planets exist and arise by multiple routes; we know the broad mechanisms but not the exact mix or full mass distribution yet.",
+        "How the stalemate will end: upcoming surveys—especially the Roman Space Telescope plus expanded ground networks—should find hundreds of FFPs, measure masses/distances for many, and break key degeneracies.",
+        "Final, memorable thought (clearly marked speculative): some of these lonely worlds, in theory, could retain thick atmospheres or subsurface oceans and, in rare cases, be clement — a scientific possibility that transforms 'lonely' into 'strange potential homes.'",
+        "Leave the viewer with a call to watch the next decade: the galaxy’s wandering worlds are finally about to go from rumor to census."
+      ]
+    }
+  ]
+}

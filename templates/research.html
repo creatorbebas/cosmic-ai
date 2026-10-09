@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Research Engine - {{ project.topic }}</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: #0f1117;
+            color: #e8eaf0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        .subtitle {
+            color: #9da3b4;
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            background: #181b24;
+            border: 1px solid #292e3a;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .research-options {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .research-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        button,
+        .button {
+            display: inline-block;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            background: #ffffff;
+            color: #111111;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        button:hover,
+        .button:hover {
+            opacity: 0.9;
+        }
+
+        .secondary-button {
+            background: #292e3a;
+            color: #ffffff;
+        }
+
+        .error {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #3a1d22;
+            border: 1px solid #71313b;
+            color: #ffb7bf;
+        }
+
+        .result-section {
+            margin-top: 28px;
+        }
+
+        .result-section h3 {
+            margin-bottom: 12px;
+        }
+
+        .answer {
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        ul {
+            padding-left: 22px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .fact-card,
+        .number-card,
+        .timeline-card,
+        .misconception-card,
+        .story-card {
+            background: #11141b;
+            border: 1px solid #292e3a;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .label {
+            color: #8f96a8;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            line-height: 1.6;
+        }
+
+        .confidence {
+            margin-top: 8px;
+            color: #aeb5c5;
+            font-size: 13px;
+        }
+
+        .sources a {
+            color: #dce2ef;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .topic {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Research Engine</h1>
+
+    <div class="subtitle">
+        Turn your project topic into a structured research dossier.
+    </div>
+
+
+    <!-- =====================================================
+         PROJECT
+         ===================================================== -->
+
+    <div class="panel">
+
+        <div class="label">
+            Project Topic
+        </div>
+
+        <div class="topic">
+            {{ project.topic }}
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESEARCH CONTROL
+         ===================================================== -->
+
+    <div class="panel">
+
+        <h2>Run Research</h2>
+
+        <form
+            method="POST"
+            action="{{ url_for('research_run', project_id=project.id) }}"
+        >
+
+            <div class="research-options">
+
+                <label class="research-option">
+
+                    <input
+                        type="radio"
+                        name="research_mode"
+                        value="knowledge"
+                        {% if not research or research.get("research_mode") != "web" %}
+                        checked
+                        {% endif %}
+                    >
+
+                    AI Knowledge Research
+
+                </label>
+
+
+                <label class="research-option">
+
+                    <input
+                        type="radio"
+                        name="research_mode"
+                        value="web"
+                        {% if research and research.get("research_mode") == "web" %}
+                        checked
+                        {% endif %}
+                    >
+
+                    Web Research
+
+                </label>
+
+            </div>
+
+
+            <button type="submit">
+                Run Research
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         ERROR
+         ===================================================== -->
+
+    {% if error %}
+
+    <div class="error">
+        {{ error }}
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         RESEARCH RESULT
+         ===================================================== -->
+
+    {% if research %}
+
+    <div class="panel">
+
+        <h2>Research Result</h2>
+
+
+        <!-- RESEARCH MODE -->
+
+        {% if research.get("research_mode") %}
+
+        <div class="result-section">
+
+            <div class="label">
+                Research Mode
+            </div>
+
+            <div class="value">
+                {{ research.get("research_mode") }}
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- TOPIC -->
+
+        {% if research.get("topic") %}
+
+        <div class="result-section">
+
+            <div class="label">
+                Topic
+            </div>
+
+            <div class="value">
+                {{ research.get("topic") }}
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- MAIN QUESTION -->
+
+        {% if research.get("main_question") %}
+
+        <div class="result-section">
+
+            <h3>Main Question</h3>
+
+            <div class="answer">
+                {{ research.get("main_question") }}
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- SHORT ANSWER -->
+
+        {% if research.get("short_answer") %}
+
+        <div class="result-section">
+
+            <h3>Short Answer</h3>
+
+            <div class="answer">
+                {{ research.get("short_answer") }}
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- EXECUTIVE SUMMARY -->
+
+        {% if research.get("executive_summary") %}
+
+        <div class="result-section">
+
+            <h3>Executive Summary</h3>
+
+            <ul>
+
+                {% for item in research.get("executive_summary", []) %}
+
+                <li>
+                    {{ item }}
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- KEY FACTS -->
+
+        {% if research.get("key_facts") %}
+
+        <div class="result-section">
+
+            <h3>Key Facts</h3>
+
+            {% for fact in research.get("key_facts", []) %}
+
+            <div class="fact-card">
+
+                <div class="label">
+                    Fact
+                </div>
+
+                <div class="value">
+                    {{ fact.get("fact", "") }}
+                </div>
+
+
+                {% if fact.get("explanation") %}
+
+                <div class="result-section">
+
+                    <div class="label">
+                        Explanation
+                    </div>
+
+                    <div class="value">
+                        {{ fact.get("explanation", "") }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if fact.get("importance") %}
+
+                <div class="result-section">
+
+                    <div class="label">
+                        Importance
+                    </div>
+
+                    <div class="value">
+                        {{ fact.get("importance", "") }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if fact.get("confidence") %}
+
+                <div class="confidence">
+                    Confidence:
+                    {{ fact.get("confidence", "") }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- IMPORTANT NUMBERS -->
+
+        {% if research.get("important_numbers") %}
+
+        <div class="result-section">
+
+            <h3>Important Numbers</h3>
+
+            {% for number in research.get("important_numbers", []) %}
+
+            <div class="number-card">
+
+                <div class="label">
+                    Value
+                </div>
+
+                <div class="value">
+                    {{ number.get("value", "") }}
+                </div>
+
+
+                {% if number.get("context") %}
+
+                <div class="result-section">
+
+                    <div class="label">
+                        Context
+                    </div>
+
+                    <div class="value">
+                        {{ number.get("context", "") }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if number.get("importance") %}
+
+                <div class="result-section">
+
+                    <div class="label">
+                        Importance
+                    </div>
+
+                    <div class="value">
+                        {{ number.get("importance", "") }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if number.get("confidence") %}
+
+                <div class="confidence">
+                    Confidence:
+                    {{ number.get("confidence", "") }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- TIMELINE -->
+
+        {% if research.get("timeline") %}
+
+        <div class="result-section">
+
+            <h3>Timeline</h3>
+
+            {% for item in research.get("timeline", []) %}
+
+            <div class="timeline-card">
+
+                <div class="label">
+                    {{ item.get("date_or_period", "") }}
+                </div>
+
+                <div class="value">
+                    {{ item.get("event", "") }}
+                </div>
+
+
+                {% if item.get("importance") %}
+
+                <div class="confidence">
+                    {{ item.get("importance", "") }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- SCIENTIFIC / HISTORICAL CONTEXT -->
+
+        {% if research.get("scientific_or_historical_context") %}
+
+        <div class="result-section">
+
+            <h3>
+                Scientific / Historical Context
+            </h3>
+
+            <ul>
+
+                {% for item in research.get("scientific_or_historical_context", []) %}
+
+                <li>
+                    {{ item }}
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- SURPRISING FACTS -->
+
+        {% if research.get("surprising_facts") %}
+
+        <div class="result-section">
+
+            <h3>Surprising Facts</h3>
+
+            <ul>
+
+                {% for item in research.get("surprising_facts", []) %}
+
+                <li>
+                    {{ item }}
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- MISCONCEPTIONS -->
+
+        {% if research.get("common_misconceptions") %}
+
+        <div class="result-section">
+
+            <h3>Common Misconceptions</h3>
+
+            {% for item in research.get("common_misconceptions", []) %}
+
+            <div class="misconception-card">
+
+                <div class="label">
+                    Claim
+                </div>
+
+                <div class="value">
+                    {{ item.get("claim", "") }}
+                </div>
+
+
+                <div class="result-section">
+
+                    <div class="label">
+                        Reality
+                    </div>
+
+                    <div class="value">
+                        {{ item.get("reality", "") }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- UNCERTAINTIES -->
+
+        {% if research.get("uncertainties") %}
+
+        <div class="result-section">
+
+            <h3>Uncertainties</h3>
+
+            <ul>
+
+                {% for item in research.get("uncertainties", []) %}
+
+                <li>
+                    {{ item }}
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- STORY OPPORTUNITIES -->
+
+        {% if research.get("story_opportunities") %}
+
+        <div class="result-section">
+
+            <h3>Story Opportunities</h3>
+
+            {% for item in research.get("story_opportunities", []) %}
+
+            <div class="story-card">
+
+                <div class="label">
+                    Idea
+                </div>
+
+                <div class="value">
+                    {{ item.get("idea", "") }}
+                </div>
+
+
+                {% if item.get("why_interesting") %}
+
+                <div class="result-section">
+
+                    <div class="label">
+                        Why Interesting
+                    </div>
+
+                    <div class="value">
+                        {{ item.get("why_interesting", "") }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if item.get("potential_section") %}
+
+                <div class="result-section">
+
+                    <div class="label">
+                        Potential Section
+                    </div>
+
+                    <div class="value">
+                        {{ item.get("potential_section", "") }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- RESEARCH GAPS -->
+
+        {% if research.get("research_gaps") %}
+
+        <div class="result-section">
+
+            <h3>Research Gaps</h3>
+
+            <ul>
+
+                {% for item in research.get("research_gaps", []) %}
+
+                <li>
+                    {{ item }}
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- SOURCES -->
+
+        {% if research.get("sources") %}
+
+        <div class="result-section sources">
+
+            <h3>Sources</h3>
+
+            {% for source in research.get("sources", []) %}
+
+            <div class="fact-card">
+
+                <div class="value">
+
+                    {% if source.get("url") %}
+
+                    <a
+                        href="{{ source.get('url') }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {{ source.get("title") or source.get("url") }}
+                    </a>
+
+                    {% else %}
+
+                    {{ source.get("title", "Source") }}
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if source.get("publisher") %}
+
+                <div class="confidence">
+                    {{ source.get("publisher") }}
+                </div>
+
+                {% endif %}
+
+
+                {% if source.get("relevance") %}
+
+                <div class="confidence">
+                    {{ source.get("relevance") }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             PIPELINE ACTION
+             ================================================= -->
+
+        <div class="actions">
+
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'generate_outline_from_research_route',
+                    project_id=project.id
+                ) }}"
+            >
+
+                <button type="submit">
+                    Generate Outline from Research
+                </button>
+
+            </form>
+
+
+            <a
+                href="{{ url_for(
+                    'project_detail',
+                    project_id=project.id
+                ) }}"
+                class="button secondary-button"
+            >
+                Back to Project
+            </a>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="panel">
+
+        <h3>No Research Yet</h3>
+
+        <div class="answer">
+            Run AI Knowledge Research or Web Research
+            to create the research dossier for this project.
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

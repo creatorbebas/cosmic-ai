@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Cosmic AI - {{ project.topic }}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Cosmic AI
+        </div>
+
+        <div class="logo-subtitle">
+            YouTube Content Studio
+        </div>
+
+        <div class="nav-title">
+            Workspace
+        </div>
+
+        <a
+            href="/"
+            class="nav-item"
+        >
+            Generator
+        </a>
+
+        <a
+            href="/projects"
+            class="nav-item active"
+        >
+            Projects
+        </a>
+
+        <a
+            href="/settings"
+            class="nav-item"
+        >
+            Settings
+        </a>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="main">
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1 class="page-title">
+                    {{ project.topic }}
+                </h1>
+
+                <p class="page-description">
+                    Project #{{ project.id }} ·
+                    {{ project.duration }} ·
+                    {{ project.audience }} ·
+                    {{ project.language }}
+                </p>
+
+            </div>
+
+
+            <a
+                href="/projects"
+                class="new-video-button"
+            >
+                Back to Projects
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             PROJECT INFORMATION
+             ================================================= -->
+
+        <div class="result-info-card">
+
+            <div class="result-topic">
+
+                <span class="result-label">
+                    PROJECT
+                </span>
+
+                <h2>
+                    {{ project.topic }}
+                </h2>
+
+            </div>
+
+
+            <div class="result-details">
+
+                <div class="result-detail">
+
+                    <span>
+                        Duration
+                    </span>
+
+                    <strong>
+                        {{ project.duration }}
+                    </strong>
+
+                </div>
+
+
+                <div class="result-detail">
+
+                    <span>
+                        Audience
+                    </span>
+
+                    <strong>
+                        {{ project.audience }}
+                    </strong>
+
+                </div>
+
+
+                <div class="result-detail">
+
+                    <span>
+                        Language
+                    </span>
+
+                    <strong>
+                        {{ project.language }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             RESEARCH ENGINE
+             ================================================= -->
+
+        <div class="content-panel active-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Research Engine
+                    </h2>
+
+                    <p>
+                        Research the topic before creating
+                        or improving the content.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('research_page', project_id=project.id) }}"
+                    class="new-video-button"
+                >
+                    Open Research
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SCRIPT EDITOR ACTION
+             ================================================= -->
+
+        <div class="content-panel active-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Script Editor
+                    </h2>
+
+                    <p>
+                        Edit, rewrite, and analyze your script
+                        section by section.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="/projects/{{ project.id }}/editor"
+                    class="new-video-button"
+                >
+                    Open Script Editor
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TABS
+             ================================================= -->
+
+        <div class="content-tabs">
+
+            <button
+                type="button"
+                class="content-tab active"
+                onclick="showTab('outline', this)"
+            >
+                Outline
+            </button>
+
+
+            <button
+                type="button"
+                class="content-tab"
+                onclick="showTab('script', this)"
+            >
+                Script
+            </button>
+
+
+            <button
+                type="button"
+                class="content-tab"
+                onclick="showTab('metadata', this)"
+            >
+                Metadata
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             OUTLINE
+             ================================================= -->
+
+        <div
+            id="outline"
+            class="content-panel active-panel"
+        >
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Video Outline
+                    </h2>
+
+                    <p>
+                        Generated structure for this video.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if project.outline %}
+
+            <div class="outline-list">
+
+
+                {% if project.outline is mapping %}
+
+
+                    {% for key, value in project.outline.items() %}
+
+                    <div class="outline-item">
+
+                        <div class="outline-number">
+                            {{ "%02d"|format(loop.index) }}
+                        </div>
+
+
+                        <div class="outline-content">
+
+                            <div class="outline-title">
+                                {{ key }}
+                            </div>
+
+                            <p>
+                                {{ value }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    {% for item in project.outline %}
+
+                    <div class="outline-item">
+
+                        <div class="outline-number">
+                            {{ "%02d"|format(loop.index) }}
+                        </div>
+
+
+                        <div class="outline-content">
+
+                            <div class="outline-title">
+
+                                {% if item.title is defined %}
+
+                                    {{ item.title }}
+
+                                {% else %}
+
+                                    Section {{ loop.index }}
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <p>
+
+                                {% if item.description is defined %}
+
+                                    {{ item.description }}
+
+                                {% elif item.content is defined %}
+
+                                    {{ item.content }}
+
+                                {% else %}
+
+                                    {{ item }}
+
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                {% endif %}
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="empty-projects">
+
+                <div class="empty-icon">
+                    —
+                </div>
+
+                <h2>
+                    No Outline
+                </h2>
+
+                <p>
+                    This project does not have an outline yet.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================================
+             SCRIPT
+             ================================================= -->
+
+        <div
+            id="script"
+            class="content-panel"
+        >
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        YouTube Script
+                    </h2>
+
+                    <p>
+                        Generated long-form YouTube script.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="small-copy-button"
+                    onclick="copyScript()"
+                >
+                    Copy Script
+                </button>
+
+            </div>
+
+
+            {% if project.script %}
+
+
+            <div class="script-box">
+
+                <pre
+                    id="scriptText"
+                    style="
+                        margin: 0;
+                        font-family: inherit;
+                        white-space: pre-wrap;
+                        overflow-wrap: anywhere;
+                    "
+                >{{ project.script }}</pre>
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="empty-projects">
+
+                <div class="empty-icon">
+                    —
+                </div>
+
+                <h2>
+                    No Script
+                </h2>
+
+                <p>
+                    This project does not have a script yet.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================================
+             METADATA
+             ================================================= -->
+
+        <div
+            id="metadata"
+            class="content-panel"
+        >
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        YouTube Metadata
+                    </h2>
+
+                    <p>
+                        Generated titles, description,
+                        and supporting metadata.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if project.metadata %}
+
+
+            {% if project.metadata is mapping %}
+
+
+            <div class="outline-list">
+
+
+                {% for key, value in project.metadata.items() %}
+
+                <div class="outline-item">
+
+                    <div class="outline-number">
+                        {{ "%02d"|format(loop.index) }}
+                    </div>
+
+
+                    <div class="outline-content">
+
+                        <div class="outline-title">
+                            {{ key }}
+                        </div>
+
+
+                        <p>
+
+                            {% if value is iterable and value is not string %}
+
+
+                                {% for item in value %}
+
+                                    {{ item }}
+
+                                    {% if not loop.last %}
+                                        <br><br>
+                                    {% endif %}
+
+                                {% endfor %}
+
+
+                            {% else %}
+
+                                {{ value }}
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="description-box">
+                {{ project.metadata }}
+            </div>
+
+
+            {% endif %}
+
+
+            {% else %}
+
+
+            <div class="empty-projects">
+
+                <div class="empty-icon">
+                    —
+                </div>
+
+                <h2>
+                    No Metadata
+                </h2>
+
+                <p>
+                    This project does not have metadata yet.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================================
+             PROJECT ACTIONS
+             ================================================= -->
+
+        <div
+            class="content-panel"
+            style="margin-top: 20px;"
+        >
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Project Actions
+                    </h2>
+
+                    <p>
+                        Manage this project.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                style="
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                "
+            >
+
+                <a
+                    href="{{ url_for('research_page', project_id=project.id) }}"
+                    class="new-video-button"
+                >
+                    Research
+                </a>
+
+
+                <a
+                    href="/projects/{{ project.id }}/editor"
+                    class="new-video-button"
+                >
+                    Open Script Editor
+                </a>
+
+
+                <form
+                    method="POST"
+                    action="/projects/{{ project.id }}/rename"
+                    onsubmit="return renameProject();"
+                    style="margin: 0;"
+                >
+
+                    <input
+                        type="hidden"
+                        name="new_topic"
+                        id="newTopic"
+                    >
+
+                    <button
+                        type="submit"
+                        class="regenerate-button"
+                    >
+                        Rename Project
+                    </button>
+
+                </form>
+
+
+                <form
+                    method="POST"
+                    action="/projects/{{ project.id }}/delete"
+                    onsubmit="return confirm('Delete this project? This action cannot be undone.');"
+                    style="margin: 0;"
+                >
+
+                    <button
+                        type="submit"
+                        class="regenerate-button"
+                    >
+                        Delete Project
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+function showTab(tabId, button) {
+
+    const tabs = document.querySelectorAll(
+        ".content-tab"
+    );
+
+    const panels = document.querySelectorAll(
+        ".content-panel"
+    );
+
+
+    tabs.forEach(function(tab) {
+
+        tab.classList.remove(
+            "active"
+        );
+
+    });
+
+
+    panels.forEach(function(panel) {
+
+        if (
+            panel.id === "outline" ||
+            panel.id === "script" ||
+            panel.id === "metadata"
+        ) {
+
+            panel.classList.remove(
+                "active-panel"
+            );
+
+        }
+
+    });
+
+
+    const selectedPanel =
+        document.getElementById(tabId);
+
+
+    if (selectedPanel) {
+
+        selectedPanel.classList.add(
+            "active-panel"
+        );
+
+    }
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+function copyScript() {
+
+    const script =
+        document.getElementById(
+            "scriptText"
+        );
+
+
+    if (!script) {
+        return;
+    }
+
+
+    navigator.clipboard.writeText(
+        script.innerText
+    ).then(function() {
+
+        const button =
+            document.querySelector(
+                ".small-copy-button"
+            );
+
+
+        if (!button) {
+            return;
+        }
+
+
+        const originalText =
+            button.innerText;
+
+
+        button.innerText =
+            "Copied";
+
+
+        setTimeout(function() {
+
+            button.innerText =
+                originalText;
+
+        }, 1500);
+
+    });
+
+}
+
+
+function renameProject() {
+
+    const newName =
+        prompt(
+            "Enter the new project name:"
+        );
+
+
+    if (
+        !newName ||
+        !newName.trim()
+    ) {
+
+        return false;
+
+    }
+
+
+    document.getElementById(
+        "newTopic"
+    ).value =
+        newName.trim();
+
+
+    return true;
+
+}
+
+</script>
+
+
+</body>
+
+</html>

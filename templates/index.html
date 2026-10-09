@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cosmic AI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- ========================================== -->
+    <!-- SIDEBAR -->
+    <!-- ========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Cosmic AI
+        </div>
+
+        <div class="logo-subtitle">
+            YouTube Content Studio
+        </div>
+
+
+        <div class="nav-title">
+            Workspace
+        </div>
+
+
+        <a
+            href="/"
+            class="nav-item active"
+        >
+            Generator
+        </a>
+
+
+        <a
+            href="/projects"
+            class="nav-item"
+        >
+            Projects
+        </a>
+
+
+        <a
+            href="/settings"
+            class="nav-item"
+        >
+            Settings
+        </a>
+
+    </aside>
+
+
+
+    <!-- ========================================== -->
+    <!-- MAIN -->
+    <!-- ========================================== -->
+
+    <main class="main">
+
+
+        <div class="topbar">
+
+            <div>
+
+                <h1 class="page-title">
+                    Create New Video
+                </h1>
+
+                <p class="page-description">
+                    Generate a complete YouTube video package with AI.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ====================================== -->
+        <!-- GENERATOR CARD -->
+        <!-- ====================================== -->
+
+        <div class="card">
+
+            <h2 class="card-title">
+                Video Generator
+            </h2>
+
+            <p class="card-description">
+                Enter your video information and let Cosmic AI
+                generate the content.
+            </p>
+
+
+
+            <form
+                method="POST"
+                action="/generate"
+                id="generator-form"
+            >
+
+
+                <!-- TOPIC -->
+
+                <div class="form-group">
+
+                    <label for="topic">
+                        Topic
+                    </label>
+
+                    <input
+                        type="text"
+                        id="topic"
+                        name="topic"
+                        placeholder="Example: Why Rogue Planets Exist"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- DURATION / AUDIENCE / LANGUAGE -->
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="duration">
+                            Duration
+                        </label>
+
+                        <input
+                            type="number"
+                            id="duration"
+                            name="duration"
+                            value="10"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="audience">
+                            Target Audience
+                        </label>
+
+                        <input
+                            type="text"
+                            id="audience"
+                            name="audience"
+                            placeholder="Example: US"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="language">
+                            Script Language
+                        </label>
+
+                        <select
+                            id="language"
+                            name="language"
+                        >
+
+                            <option value="English">
+                                English
+                            </option>
+
+                            <option value="Indonesian">
+                                Indonesian
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="generate-button"
+                    id="generate-button"
+                >
+                    Generate Content
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- ========================================== -->
+<!-- GENERATION PROTECTION -->
+<!-- ========================================== -->
+
+<script>
+
+const form = document.getElementById("generator-form");
+
+const generateButton = document.getElementById("generate-button");
+
+
+form.addEventListener("submit", function() {
+
+    generateButton.disabled = true;
+
+    generateButton.innerText = "Generating...";
+
+});
+
+</script>
+
+
+</body>
+
+</html>

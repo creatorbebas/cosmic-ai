@@ -1,0 +1,104 @@
+1. HOOK
+- PURPOSE:
+  - Immediately grab attention and provoke curiosity about an astonishing astronomical phenomenon without revealing the answer to "why" rogue planets exist.
+- KEY INFORMATION:
+  - A provocative question or image: planets drifting alone through interstellar space, without any star.
+  - One vivid, curiosity-piquing fact (keep it mysterious): astronomers detect transient signals that imply compact, planet-mass objects with no parent star.
+  - A quick tease of stakes: these objects challenge how we think planets form and what environments might host life.
+- NARRATIVE GOAL:
+  - Make viewers feel astonished and intrigued; they should ask, "How does a planet end up all alone?" and be motivated to keep watching to learn the mechanisms.
+- APPROXIMATE DURATION:
+  - 0:20
+
+2. INTRODUCTION
+- PURPOSE:
+  - Define the topic, set the scope (we’ll explore why rogue planets exist), explain relevance, and outline what the video will reveal.
+- KEY INFORMATION:
+  - Short definition: what a rogue (free-floating) planet is.
+  - Why this question matters: implications for planet formation theory, galaxy demographics, and potential habitats for life.
+  - Overview of what will be covered: the main formation pathways (ejection, in-situ formation, capture), evidence we have, and a surprising twist about their abundance and potential habitability.
+  - Promise of value: by the end viewers will understand the physical processes that produce rogues and why astronomers care.
+- NARRATIVE GOAL:
+  - Establish clarity and purpose: viewers should understand what a rogue planet is and feel compelled to learn the mechanisms and evidence.
+- APPROXIMATE DURATION:
+  - 1:00
+
+3. SEGMENT 1
+- PURPOSE:
+  - Explain the dominant and intuitive mechanism: how planets are kicked out of their systems (ejection processes).
+- KEY INFORMATION:
+  - Planet-planet scattering: unstable multi-planet systems can exchange energy, slingshotting planets to escape velocity.
+  - Migration-driven instability: gas-driven or planetesimal-driven migration can destabilize orbits and trigger ejections.
+  - Stellar flybys in birth clusters: close encounters between young stellar systems in crowded clusters can gravitationally strip planets.
+  - Supernova and stellar evolution effects: companion star mass loss or supernova kicks can unbind planets from binaries.
+  - Simulation & timescale evidence: numerical models showing ejection rates, which planet masses are more likely to be lost, and when ejections mostly occur (early system life).
+  - Typical outcomes: many ejected planets are gas giants, but smaller bodies can be lost too.
+- NARRATIVE GOAL:
+  - Make viewers understand the dynamic, often violent nature of early planetary systems and accept ejection as a natural byproduct of system evolution.
+- APPROXIMATE DURATION:
+  - 2:00
+
+4. SEGMENT 2
+- PURPOSE:
+  - Present the alternative: rogue planets that form in isolation, like tiny failed stars — showing a fundamentally different origin.
+- KEY INFORMATION:
+  - Star-like formation: fragmentation of molecular clouds and collapse of small gas clumps can produce planet-mass objects directly.
+  - Opacity-limited fragmentation and core mass limits: physics that sets the smallest possible self-gravitating collapse objects.
+  - Continuum with brown dwarfs: observational evidence of isolated, very-low-mass objects in star-forming regions suggests formation without a star.
+  - Environmental factors that favor isolated formation: low turbulence, local density variations, and competitive accretion dynamics.
+  - Mass distribution differences: in-situ formed objects may occupy a different mass spectrum than ejected planets.
+- NARRATIVE GOAL:
+  - Broaden viewers’ perspective: not all rogue planets are cast-offs — some are born alone — and planetary formation is more diverse than the textbook picture.
+- APPROXIMATE DURATION:
+  - 2:00
+
+5. SEGMENT 3
+- PURPOSE:
+  - Show the observational evidence, detection methods, and survival prospects that help distinguish between origins.
+- KEY INFORMATION:
+  - Detection techniques:
+    - Gravitational microlensing (briefly explain how a star's light is briefly magnified by a passing planet).
+    - Direct infrared searches of young clusters for cold, isolated objects.
+    - Wide-field surveys and follow-up spectroscopy to measure youth and mass.
+  - Key observational results:
+    - Microlensing events consistent with free-floating planet-mass lenses.
+    - Detections of isolated planetary-mass objects in star-forming regions.
+    - Limitations and uncertainties: detection biases, mass ambiguities, and sample incompleteness.
+  - Survival and physical state:
+    - How long ejected planets can retain atmospheres and internal heat sources (radiogenic decay, residual formation heat).
+    - Possibility of retaining volatiles or hydrogen envelopes; implications for temperature and potential subsurface liquid water.
+  - How observations help infer origin:
+    - Kinematics, age, and environment clues that suggest ejection versus in-situ formation.
+- NARRATIVE GOAL:
+  - Equip viewers with concrete evidence and an understanding of how astronomers test theories, plus why it’s hard to be definitive.
+- APPROXIMATE DURATION:
+  - 2:00
+
+6. TWIST
+- PURPOSE:
+  - Deliver the most surprising, counterintuitive insight that reframes how viewers think about rogue planets.
+- KEY INFORMATION:
+  - Recent and provocative implications:
+    - Some studies (especially microlensing surveys) at times suggested there could be as many — or more — rogue planets than stars in the galaxy.
+    - Even if large-Jupiter estimates were revised, the population of smaller, hard-to-detect nomads could still be enormous.
+    - Crucially surprising consequence: many rogue planets might remain warm enough — via thick atmospheres or internal heat — to sustain subsurface oceans or even surface liquid water without any star.
+  - Why this matters:
+    - If true, the galaxy may host vast, dark habitats for chemistry or life that don’t need sunlight — massively expanding where life could exist.
+    - This flips the intuition that stars are a prerequisite for habitable environments.
+- NARRATIVE GOAL:
+  - Shock and enlarge the viewer’s imagination: not only are rogue planets common, but some could be hidden, habitable worlds — transforming the way we think about life's possible places.
+- APPROXIMATE DURATION:
+  - 1:30
+
+7. CLOSING
+- PURPOSE:
+  - Tie together the explanations, reaffirm the takeaway, and leave the viewer with a satisfying, forward-looking conclusion.
+- KEY INFORMATION:
+  - Concise summary of the three main origins: ejection, in-situ formation, and capture/exchange (capture idea invoked lightly as context for completeness).
+  - Restate why multiple pathways matter: they change planet counts, demographics, and habitability concepts.
+  - Final thought: ongoing and future surveys (microlensing campaigns, infrared telescopes) will refine how many rogues there are and whether any could host life.
+  - Call to curiosity: encourage viewers to follow developments and imagine a galaxy with dark, drifting worlds.
+- NARRATIVE GOAL:
+  - Leave the viewer with clarity on the mechanisms, a sense of wonder at the possibilities, and motivation to learn more.
+- APPROXIMATE DURATION:
+  - 1:10

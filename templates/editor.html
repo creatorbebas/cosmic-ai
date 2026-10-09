@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Script Editor - Cosmic AI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-title">
+                Cosmic AI
+            </div>
+
+            <div class="brand-subtitle">
+                AI Content Studio
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="/"
+                class="sidebar-link"
+            >
+                <span>✦</span>
+                Generator
+            </a>
+
+
+            <a
+                href="/projects"
+                class="sidebar-link"
+            >
+                <span>▣</span>
+                Projects
+            </a>
+
+
+            <a
+                href="#"
+                class="sidebar-link"
+            >
+                <span>⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- =========================
+             TOPBAR
+        ========================== -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1 class="page-title">
+                    Script Editor
+                </h1>
+
+                <p class="page-description">
+                    Edit, rewrite, and analyze your YouTube script.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ url_for(
+                    'project_detail',
+                    project_id=project.id
+                ) }}"
+                class="secondary-button"
+            >
+                ← Back to Project
+            </a>
+
+        </div>
+
+
+
+        <!-- =========================
+             PROJECT INFO
+        ========================== -->
+
+        <div class="result-info-card">
+
+            <div class="result-topic">
+                {{ project.topic }}
+            </div>
+
+
+            <div class="result-details">
+
+
+                <div class="result-detail">
+
+                    <span class="result-label">
+                        Duration
+                    </span>
+
+                    <span>
+                        {{ project.duration }}
+                    </span>
+
+                </div>
+
+
+                <div class="result-detail">
+
+                    <span class="result-label">
+                        Audience
+                    </span>
+
+                    <span>
+                        {{ project.audience }}
+                    </span>
+
+                </div>
+
+
+                <div class="result-detail">
+
+                    <span class="result-label">
+                        Language
+                    </span>
+
+                    <span>
+                        {{ project.language }}
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             EDITOR PANEL
+        ========================== -->
+
+        <div class="content-panel active-panel">
+
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2 class="card-title">
+                        Script Editor
+                    </h2>
+
+                    <p class="card-description">
+                        Edit individual sections of your script.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 SCRIPT ANALYZER
+            ========================== -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Script Analyzer
+                </div>
+
+
+                <div class="card-description">
+                    Analyze hook strength, retention,
+                    clarity, story flow, and curiosity.
+                </div>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'analyze_script_route',
+                        project_id=project.id
+                    ) }}"
+                    style="margin-top: 20px;"
+                >
+
+                    <button
+                        type="submit"
+                        class="generate-button"
+                    >
+                        Analyze Script
+                    </button>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- =========================
+                 ANALYSIS ERROR
+            ========================== -->
+
+            {% if analysis_error %}
+
+            <div class="card">
+
+                <div class="card-title">
+                    Analysis Error
+                </div>
+
+                <div
+                    style="
+                        margin-top: 15px;
+                    "
+                >
+                    {{ analysis_error }}
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- =========================
+                 ANALYSIS RESULT
+            ========================== -->
+
+            {% if analysis %}
+
+            <div class="card">
+
+                <div class="card-title">
+                    Analysis Result
+                </div>
+
+
+
+                {% if analysis.scores %}
+
+                <div class="hook-grid">
+
+
+                    <div class="hook-card">
+
+                        <div class="hook-type">
+                            Hook Strength
+                        </div>
+
+                        <p>
+                            {{ analysis.scores.hook_strength }}/100
+                        </p>
+
+                    </div>
+
+
+                    <div class="hook-card">
+
+                        <div class="hook-type">
+                            Retention
+                        </div>
+
+                        <p>
+                            {{ analysis.scores.retention_potential }}/100
+                        </p>
+
+                    </div>
+
+
+                    <div class="hook-card">
+
+                        <div class="hook-type">
+                            Clarity
+                        </div>
+
+                        <p>
+                            {{ analysis.scores.clarity }}/100
+                        </p>
+
+                    </div>
+
+
+                    <div class="hook-card">
+
+                        <div class="hook-type">
+                            Story Flow
+                        </div>
+
+                        <p>
+                            {{ analysis.scores.story_flow }}/100
+                        </p>
+
+                    </div>
+
+
+                    <div class="hook-card">
+
+                        <div class="hook-type">
+                            Curiosity
+                        </div>
+
+                        <p>
+                            {{ analysis.scores.curiosity }}/100
+                        </p>
+
+                    </div>
+
+
+                    <div class="hook-card">
+
+                        <div class="hook-type">
+                            Overall
+                        </div>
+
+                        <p>
+                            {{ analysis.scores.overall }}/100
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+                {% endif %}
+
+
+
+                {% if analysis.status %}
+
+                <div style="margin-top: 25px;">
+
+                    <strong>
+                        Overall Status:
+                    </strong>
+
+                    {{ analysis.status }}
+
+                </div>
+
+                {% endif %}
+
+
+
+                {% if analysis.strengths %}
+
+                <div style="margin-top: 25px;">
+
+                    <h3>
+                        Strengths
+                    </h3>
+
+
+                    <ul>
+
+                        {% for item in analysis.strengths %}
+
+                        <li>
+                            {{ item }}
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+                {% endif %}
+
+
+
+                {% if analysis.weaknesses %}
+
+                <div style="margin-top: 25px;">
+
+                    <h3>
+                        Weaknesses
+                    </h3>
+
+
+                    <ul>
+
+                        {% for item in analysis.weaknesses %}
+
+                        <li>
+                            {{ item }}
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+                {% endif %}
+
+
+
+                {% if analysis.recommendations %}
+
+                <div style="margin-top: 25px;">
+
+                    <h3>
+                        Recommendations
+                    </h3>
+
+
+                    <ul>
+
+                        {% for item in analysis.recommendations %}
+
+                        <li>
+                            {{ item }}
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+                {% endif %}
+
+
+
+                {% if analysis.section_analysis %}
+
+                <div style="margin-top: 30px;">
+
+                    <h3>
+                        Section Analysis
+                    </h3>
+
+
+                    {% for item in analysis.section_analysis %}
+
+                    <div
+                        class="card"
+                        style="margin-top: 15px;"
+                    >
+
+                        <div class="card-title">
+                            {{ item.section }}
+                        </div>
+
+
+                        <div>
+                            <strong>
+                                Score:
+                            </strong>
+
+                            {{ item.score }}/100
+                        </div>
+
+
+                        <div style="margin-top: 8px;">
+
+                            <strong>
+                                Status:
+                            </strong>
+
+                            {{ item.status }}
+
+                        </div>
+
+
+                        <div style="margin-top: 15px;">
+
+                            <strong>
+                                Diagnosis
+                            </strong>
+
+                            <p>
+                                {{ item.diagnosis }}
+                            </p>
+
+                        </div>
+
+
+                        <div style="margin-top: 15px;">
+
+                            <strong>
+                                Improvement
+                            </strong>
+
+                            <p>
+                                {{ item.improvement }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- =========================
+                 REWRITE PREVIEW
+            ========================== -->
+
+            {% if rewrite_preview %}
+
+            <div class="card">
+
+                <div class="card-title">
+                    Rewrite Result
+                </div>
+
+
+                <div class="card-description">
+
+                    Review the generated rewrite
+                    before applying it.
+
+                </div>
+
+
+                <div
+                    class="script-box"
+                    style="margin-top: 20px;"
+                >
+                    {{ rewrite_preview }}
+                </div>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'accept_rewrite',
+                        project_id=project.id
+                    ) }}"
+                    style="margin-top: 20px;"
+                >
+
+                    <input
+                        type="hidden"
+                        name="section_name"
+                        value="{{ rewrite_section_name }}"
+                    >
+
+
+                    <input
+                        type="hidden"
+                        name="new_content"
+                        value="{{ rewrite_preview }}"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="generate-button"
+                    >
+                        Apply Rewrite
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- =========================
+                 SCRIPT SECTIONS
+            ========================== -->
+
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'save_script_editor',
+                    project_id=project.id
+                ) }}"
+            >
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Script Sections
+                    </div>
+
+
+                    <div class="card-description">
+                        Edit each section directly.
+                    </div>
+
+
+
+                    {% for section in sections %}
+
+                    <div
+                        class="card"
+                        style="margin-top: 20px;"
+                    >
+
+
+                        <div class="card-title">
+                            {{ section.name }}
+                        </div>
+
+
+                        <!-- SECTION NAME -->
+
+                        <input
+                            type="hidden"
+                            name="section_name"
+                            value="{{ section.name }}"
+                        >
+
+
+                        <!-- SECTION CONTENT -->
+
+                        <textarea
+                            name="section_content"
+                            rows="10"
+                            style="
+                                width: 100%;
+                                box-sizing: border-box;
+                                margin-top: 12px;
+                                resize: vertical;
+                            "
+                        >{{ section.content }}</textarea>
+
+
+
+                        <!-- =========================
+                             REWRITE
+                        ========================== -->
+
+                        <div
+                            style="
+                                margin-top: 15px;
+                                display: flex;
+                                gap: 10px;
+                                flex-wrap: wrap;
+                            "
+                        >
+
+
+                            <input
+                                type="text"
+                                name="style"
+                                placeholder="Rewrite style, e.g. cinematic, suspenseful..."
+                                style="
+                                    flex: 1;
+                                    min-width: 240px;
+                                "
+                            >
+
+
+                            <button
+                                type="submit"
+                                formaction="{{ url_for(
+                                    'rewrite_script_section',
+                                    project_id=project.id
+                                ) }}"
+                                name="section_name"
+                                value="{{ section.name }}"
+                                class="regenerate-button"
+                            >
+                                Generate Rewrite
+                            </button>
+
+
+                        </div>
+
+
+                    </div>
+
+                    {% endfor %}
+
+
+
+                    <!-- =========================
+                         SAVE BUTTON
+                    ========================== -->
+
+                    <div
+                        style="
+                            margin-top: 25px;
+                            display: flex;
+                            gap: 12px;
+                            flex-wrap: wrap;
+                        "
+                    >
+
+
+                        <button
+                            type="submit"
+                            class="generate-button"
+                        >
+                            Save Script
+                        </button>
+
+
+                        <a
+                            href="{{ url_for(
+                                'project_detail',
+                                project_id=project.id
+                            ) }}"
+                            class="secondary-button"
+                        >
+                            Cancel
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+
+
+            <!-- =========================
+                 FOOTER ACTIONS
+            ========================== -->
+
+            <div
+                style="
+                    margin-top: 30px;
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                "
+            >
+
+
+                <a
+                    href="{{ url_for(
+                        'project_detail',
+                        project_id=project.id
+                    ) }}"
+                    class="secondary-button"
+                >
+                    Back to Project
+                </a>
+
+
+                <a
+                    href="/"
+                    class="new-video-button"
+                >
+                    New Video
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cosmic AI - Projects</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- ========================================== -->
+    <!-- SIDEBAR -->
+    <!-- ========================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Cosmic AI
+        </div>
+
+        <div class="logo-subtitle">
+            YouTube Content Studio
+        </div>
+
+
+        <div class="nav-title">
+            Workspace
+        </div>
+
+
+        <a
+            href="/"
+            class="nav-item"
+        >
+            Generator
+        </a>
+
+
+        <a
+            href="/projects"
+            class="nav-item active"
+        >
+            Projects
+        </a>
+
+
+        <a
+            href="/settings"
+            class="nav-item"
+        >
+            Settings
+        </a>
+
+    </aside>
+
+
+
+    <!-- ========================================== -->
+    <!-- MAIN -->
+    <!-- ========================================== -->
+
+    <main class="main">
+
+
+        <!-- ====================================== -->
+        <!-- PROJECT HEADER -->
+        <!-- ====================================== -->
+
+        <div class="projects-header">
+
+            <div class="projects-heading">
+
+                <h1 class="page-title">
+                    Projects
+                </h1>
+
+                <p class="page-description">
+                    Your generated YouTube projects.
+                </p>
+
+            </div>
+
+
+            <div class="projects-actions">
+
+
+                <!-- SEARCH -->
+
+                <form
+                    method="GET"
+                    action="/projects"
+                    class="project-search-form"
+                >
+
+                    <div class="search-input-wrapper">
+
+                        <span class="search-icon">
+                            ⌕
+                        </span>
+
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ search_query }}"
+                            placeholder="Search projects..."
+                            autocomplete="off"
+                            aria-label="Search projects"
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
+                        Search
+                    </button>
+
+
+                    {% if search_query %}
+
+                    <a
+                        href="/projects"
+                        class="clear-search-button"
+                    >
+                        Clear
+                    </a>
+
+                    {% endif %}
+
+                </form>
+
+
+                <!-- NEW VIDEO -->
+
+                <a
+                    href="/"
+                    class="new-video-button"
+                >
+                    + New Video
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ====================================== -->
+        <!-- SEARCH RESULT INFO -->
+        <!-- ====================================== -->
+
+        {% if search_query %}
+
+        <div class="search-result-info">
+
+            <span>
+                Search results for
+            </span>
+
+            <strong>
+                "{{ search_query }}"
+            </strong>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- ====================================== -->
+        <!-- PROJECT LIST -->
+        <!-- ====================================== -->
+
+        {% if projects %}
+
+        <div class="project-list">
+
+            {% for project in projects %}
+
+            <a
+                href="/projects/{{ project.id }}"
+                class="project-card"
+            >
+
+                <div class="project-card-main">
+
+                    <span class="project-label">
+                        PROJECT #{{ project.id }}
+                    </span>
+
+
+                    <h2>
+                        {{ project.topic }}
+                    </h2>
+
+
+                    <div class="project-meta">
+
+                        <span>
+                            {{ project.duration }} min
+                        </span>
+
+                        <span>
+                            {{ project.audience }}
+                        </span>
+
+                        <span>
+                            {{ project.language }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="project-card-side">
+
+                    <span class="project-date">
+                        {{ project.created_at }}
+                    </span>
+
+
+                    <span class="project-arrow">
+                        →
+                    </span>
+
+                </div>
+
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- ====================================== -->
+        <!-- EMPTY STATE -->
+        <!-- ====================================== -->
+
+        <div class="empty-projects">
+
+            <div class="empty-icon">
+                +
+            </div>
+
+
+            {% if search_query %}
+
+            <h2>
+                No Projects Found
+            </h2>
+
+
+            <p>
+                No project matches
+                "{{ search_query }}".
+            </p>
+
+
+            <a
+                href="/projects"
+                class="new-video-button"
+            >
+                View All Projects
+            </a>
+
+
+            {% else %}
+
+            <h2>
+                No Projects Yet
+            </h2>
+
+
+            <p>
+                Generate your first YouTube video
+                to create a project.
+            </p>
+
+
+            <a
+                href="/"
+                class="new-video-button"
+            >
+                Create First Video
+            </a>
+
+            {% endif %}
+
+        </div>
+
+
+        {% endif %}
+
+
+    </main>
+
+</div>
+
+
+</body>
+
+</html>
