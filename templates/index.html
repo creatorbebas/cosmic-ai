@@ -10,17 +10,16 @@
 
     <style>
         /* ==========================================
-           COSMIC AI - DEEP SPACE & PLANET THEME
+           COSMIC AI - EPIC CYBER SPACE THEME
            ========================================== */
         :root {
-            --bg-space: #05070f;
-            --bg-card: rgba(13, 17, 33, 0.85);
-            --border-cosmic: rgba(123, 97, 255, 0.35);
+            --bg-card: rgba(13, 17, 33, 0.75);
+            --border-cosmic: rgba(0, 240, 255, 0.4);
             --primary-glow: #7b61ff;
             --cyan-glow: #00f0ff;
             --text-main: #f0f3ff;
-            --text-muted: #94a3b8;
-            --radius-cosmic: 18px;
+            --text-muted: #a0aec0;
+            --radius-cosmic: 20px;
         }
 
         * {
@@ -30,10 +29,10 @@
         }
 
         body {
-            background-color: var(--bg-space);
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(123, 97, 255, 0.25) 0%, transparent 45%),
-                radial-gradient(circle at 85% 80%, rgba(0, 240, 255, 0.18) 0%, transparent 45%);
+            /* Latar belakang antariksa HD realistis dengan gradasi neon */
+            background: 
+                linear-gradient(rgba(5, 7, 15, 0.65), rgba(5, 7, 15, 0.75)),
+                url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
             color: var(--text-main);
             font-family: 'Inter', -apple-system, sans-serif;
             min-height: 100vh;
@@ -47,14 +46,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(8, 10, 21, 0.9);
+            background: rgba(8, 10, 21, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-cosmic);
+            border-bottom: 1px solid rgba(123, 97, 255, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
         }
 
         .nav-brand {
@@ -83,14 +82,14 @@
             padding: 10px 22px;
             border-radius: 12px;
             border: 1px solid var(--border-cosmic);
-            background: rgba(123, 97, 255, 0.08);
+            background: rgba(123, 97, 255, 0.12);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-nav:hover {
             background: linear-gradient(135deg, var(--primary-glow) 0%, #4a00e0 100%);
             border-color: var(--cyan-glow);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
             transform: translateY(-2px);
         }
 
@@ -103,12 +102,12 @@
 
         .card {
             background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border-cosmic);
             border-radius: var(--radius-cosmic);
             padding: 40px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(123, 97, 255, 0.2);
             position: relative;
             overflow: hidden;
         }
@@ -117,10 +116,10 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow));
+            background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), #ff007f);
         }
 
-        /* DEKORASI PLANET REALISTIS */
+        /* PLANET TRANSPARAN DENGAN ANIMASI ORBIT */
         .planet-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -131,32 +130,30 @@
 
         .planet {
             position: absolute;
-            background-size: cover;
-            background-position: center;
             border-radius: 50%;
             animation: float 12s ease-in-out infinite;
         }
 
         .planet-1 {
             width: 220px; height: 220px;
-            top: 10%; right: 3%;
-            background-image: url('https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=400&q=80');
-            box-shadow: 0 0 50px rgba(123, 97, 255, 0.6), inset 0 0 20px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            top: 12%; right: 4%;
+            background: radial-gradient(circle at 35% 35%, #ff007f, #7b61ff 50%, #0a0028 90%);
+            box-shadow: 0 0 60px rgba(255, 0, 127, 0.6), inset -15px -15px 40px rgba(0,0,0,0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .planet-2 {
-            width: 150px; height: 150px;
-            bottom: 8%; left: 2%;
-            background-image: url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=400&q=80');
-            box-shadow: 0 0 45px rgba(0, 240, 255, 0.5), inset 0 0 20px rgba(0,0,0,0.8);
+            width: 140px; height: 140px;
+            bottom: 10%; left: 3%;
+            background: radial-gradient(circle at 35% 35%, #00f0ff, #005577 60%, #001520 90%);
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.5), inset -10px -10px 30px rgba(0,0,0,0.9);
             animation-delay: 4s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-25px) rotate(12deg); }
+            50% { transform: translateY(-25px) rotate(10deg); }
         }
 
         /* FORM & INPUTS */
@@ -170,7 +167,7 @@
 
         input, select {
             width: 100%;
-            background: rgba(8, 10, 21, 0.9) !important;
+            background: rgba(8, 10, 21, 0.85) !important;
             border: 1px solid var(--border-cosmic) !important;
             color: var(--text-main) !important;
             border-radius: 12px !important;
@@ -183,11 +180,11 @@
         input:focus, select:focus {
             outline: none !important;
             border-color: var(--cyan-glow) !important;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.45) !important;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5) !important;
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, var(--primary-glow) 0%, #4a00e0 100%);
+            background: linear-gradient(135deg, var(--primary-glow) 0%, #ff007f 100%);
             color: #ffffff;
             border: none;
             border-radius: 12px;
@@ -195,21 +192,21 @@
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(123, 97, 255, 0.4);
+            box-shadow: 0 6px 25px rgba(255, 0, 127, 0.4);
             transition: all 0.3s ease;
             width: 100%;
             margin-top: 10px;
         }
 
         .btn-submit:hover {
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
-            transform: scale(1.01);
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.8);
+            transform: scale(1.02);
         }
     </style>
 </head>
 <body>
 
-    <!-- DEKORASI PLANET REALISTIS MELAYANG -->
+    <!-- PLANET MELAYANG DENGAN PRISMA GLOW NEON -->
     <div class="planet-container">
         <div class="planet planet-1"></div>
         <div class="planet planet-2"></div>
@@ -231,7 +228,7 @@
         
         <!-- HERO SECTION -->
         <section style="text-align: center; margin-top: 20px; margin-bottom: 45px;">
-            <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #ffffff 20%, #00f0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
+            <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #ffffff 20%, #00f0ff 60%, #ff007f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
                 Buat Script Konten Lebih Cepat dengan AI
             </h1>
             <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 650px; margin: 0 auto; line-height: 1.6;">
