@@ -30,10 +30,10 @@
         }
 
         body {
-            /* Menggunakan file gambar lokal yang kamu upload */
+            background-color: #05070f;
             background: 
-                linear-gradient(rgba(5, 7, 15, 0.25), rgba(5, 7, 15, 0.35)),
-                url('/static/cosmic-bg.jpg') center/cover no-repeat fixed;
+                linear-gradient(rgba(5, 7, 15, 0.3), rgba(5, 7, 15, 0.4)),
+                url("{{ url_for('static', filename='cosmic-bg.jpg') }}") center/cover no-repeat fixed;
             color: var(--text-main);
             font-family: 'Inter', -apple-system, sans-serif;
             min-height: 100vh;
@@ -47,7 +47,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(8, 10, 21, 0.75);
+            background: rgba(8, 10, 21, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0, 240, 255, 0.3);
