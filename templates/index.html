@@ -10,15 +10,16 @@
 
     <style>
         /* ==========================================
-           COSMIC AI - EPIC CYBER SPACE THEME
+           COSMIC AI - FULL COSMIC SPACE THEME
            ========================================== */
         :root {
-            --bg-card: rgba(13, 17, 33, 0.75);
+            --bg-card: rgba(10, 12, 28, 0.75);
             --border-cosmic: rgba(0, 240, 255, 0.4);
             --primary-glow: #7b61ff;
             --cyan-glow: #00f0ff;
+            --pink-glow: #ff007f;
             --text-main: #f0f3ff;
-            --text-muted: #a0aec0;
+            --text-muted: #cbd5e1;
             --radius-cosmic: 20px;
         }
 
@@ -29,10 +30,10 @@
         }
 
         body {
-            /* Latar belakang antariksa HD realistis dengan gradasi neon */
+            /* Background Gambar Kosmik Full HD */
             background: 
-                linear-gradient(rgba(5, 7, 15, 0.65), rgba(5, 7, 15, 0.75)),
-                url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+                linear-gradient(rgba(5, 7, 15, 0.45), rgba(5, 7, 15, 0.55)),
+                url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
             color: var(--text-main);
             font-family: 'Inter', -apple-system, sans-serif;
             min-height: 100vh;
@@ -46,10 +47,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(8, 10, 21, 0.85);
+            background: rgba(8, 10, 21, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(123, 97, 255, 0.3);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -82,18 +83,18 @@
             padding: 10px 22px;
             border-radius: 12px;
             border: 1px solid var(--border-cosmic);
-            background: rgba(123, 97, 255, 0.12);
+            background: rgba(123, 97, 255, 0.15);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-nav:hover {
-            background: linear-gradient(135deg, var(--primary-glow) 0%, #4a00e0 100%);
+            background: linear-gradient(135deg, var(--primary-glow) 0%, var(--pink-glow) 100%);
             border-color: var(--cyan-glow);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.7);
             transform: translateY(-2px);
         }
 
-        /* CONTAINER & CARDS */
+        /* CONTAINER & GLASS CARDS */
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -107,7 +108,7 @@
             border: 1px solid var(--border-cosmic);
             border-radius: var(--radius-cosmic);
             padding: 40px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(123, 97, 255, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.2);
             position: relative;
             overflow: hidden;
         }
@@ -116,44 +117,7 @@
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), #ff007f);
-        }
-
-        /* PLANET TRANSPARAN DENGAN ANIMASI ORBIT */
-        .planet-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .planet {
-            position: absolute;
-            border-radius: 50%;
-            animation: float 12s ease-in-out infinite;
-        }
-
-        .planet-1 {
-            width: 220px; height: 220px;
-            top: 12%; right: 4%;
-            background: radial-gradient(circle at 35% 35%, #ff007f, #7b61ff 50%, #0a0028 90%);
-            box-shadow: 0 0 60px rgba(255, 0, 127, 0.6), inset -15px -15px 40px rgba(0,0,0,0.9);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .planet-2 {
-            width: 140px; height: 140px;
-            bottom: 10%; left: 3%;
-            background: radial-gradient(circle at 35% 35%, #00f0ff, #005577 60%, #001520 90%);
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.5), inset -10px -10px 30px rgba(0,0,0,0.9);
-            animation-delay: 4s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-25px) rotate(10deg); }
+            background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
         /* FORM & INPUTS */
@@ -180,11 +144,11 @@
         input:focus, select:focus {
             outline: none !important;
             border-color: var(--cyan-glow) !important;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5) !important;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6) !important;
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, var(--primary-glow) 0%, #ff007f 100%);
+            background: linear-gradient(135deg, var(--primary-glow) 0%, var(--pink-glow) 100%);
             color: #ffffff;
             border: none;
             border-radius: 12px;
@@ -192,7 +156,7 @@
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 6px 25px rgba(255, 0, 127, 0.4);
+            box-shadow: 0 6px 25px rgba(255, 0, 127, 0.5);
             transition: all 0.3s ease;
             width: 100%;
             margin-top: 10px;
@@ -205,12 +169,6 @@
     </style>
 </head>
 <body>
-
-    <!-- PLANET MELAYANG DENGAN PRISMA GLOW NEON -->
-    <div class="planet-container">
-        <div class="planet planet-1"></div>
-        <div class="planet planet-2"></div>
-    </div>
 
     <!-- NAVBAR HEADER -->
     <header>
