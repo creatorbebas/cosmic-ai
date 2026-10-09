@@ -9,19 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ==========================================
-           COSMIC AI - EMBEDDED STYLES (ANTI-FAIL)
-           ========================================== */
         :root {
-            --bg-space: #070913;
-            --bg-card: rgba(18, 22, 41, 0.85);
-            --border-cosmic: rgba(123, 97, 255, 0.35);
+            --bg-card: rgba(10, 12, 28, 0.75);
+            --border-cosmic: rgba(0, 240, 255, 0.45);
             --primary-glow: #7b61ff;
             --cyan-glow: #00f0ff;
             --pink-glow: #ff007f;
             --text-main: #f0f3ff;
-            --text-muted: #94a3b8;
-            --radius-cosmic: 16px;
+            --text-muted: #cbd5e1;
+            --radius-cosmic: 20px;
         }
 
         * {
@@ -31,139 +27,100 @@
         }
 
         body {
-            background-color: var(--bg-space);
+            background-color: #05070f;
+            /* Memanggil gambar static secara langsung */
             background-image: 
-                linear-gradient(rgba(7, 9, 19, 0.5), rgba(7, 9, 19, 0.65)),
-                url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=2000&q=80');
+                linear-gradient(rgba(5, 7, 15, 0.2), rgba(5, 7, 15, 0.3)),
+                url('/static/cosmic-bg.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
             color: var(--text-main);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             min-height: 100vh;
-            position: relative;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* NAVBAR & NAVIGATION BUTTONS */
-        header, nav, .navbar {
+        /* NAVBAR HEADER */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 8%;
-            background: rgba(11, 14, 28, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border-cosmic);
+            padding: 20px 8%;
+            background: rgba(8, 10, 21, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
         }
 
-        .nav-brand, .logo {
-            font-size: 1.5rem;
+        .nav-brand {
+            font-size: 1.6rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, var(--cyan-glow) 100%);
+            background: linear-gradient(135deg, #ffffff 30%, var(--cyan-glow) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 10px;
+            letter-spacing: 1px;
         }
 
-        .nav-links, .nav-menu {
+        .nav-links {
             display: flex;
             gap: 15px;
             align-items: center;
-            list-style: none;
-            margin: 0;
-            padding: 0;
         }
 
-        .nav-links a, .nav-item, .btn-nav {
+        .btn-nav {
             color: var(--text-main);
             text-decoration: none;
             font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 10px 22px;
+            border-radius: 12px;
             border: 1px solid var(--border-cosmic);
-            background: rgba(123, 97, 255, 0.1);
-            transition: all 0.2s ease;
+            background: rgba(123, 97, 255, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .nav-links a:hover, .btn-nav:hover {
+        .btn-nav:hover {
             background: linear-gradient(135deg, var(--primary-glow) 0%, var(--pink-glow) 100%);
             border-color: var(--cyan-glow);
-            color: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.7);
             transform: translateY(-2px);
         }
 
-        /* DECORATIVE COSMIC PLANETS & FLOATING ELEMENTS */
-        .planet-bg {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .planet-1 {
-            width: 180px;
-            height: 180px;
-            top: 10%;
-            right: 5%;
-            background: radial-gradient(circle at 30% 30%, #7b61ff, #1e0b50);
-            box-shadow: 0 0 40px rgba(123, 97, 255, 0.4);
-        }
-
-        .planet-2 {
-            width: 100px;
-            height: 100px;
-            bottom: 15%;
-            left: 4%;
-            background: radial-gradient(circle at 30% 30%, #00f0ff, #004d61);
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
-            animation-delay: 3s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-
-        /* CARDS & CONTAINERS */
         .container {
-            max-width: 1100px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 30px 20px;
+            padding: 40px 20px;
         }
 
-        .card, .project-card, .cosmic-card {
+        .card {
             background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border-cosmic);
             border-radius: var(--radius-cosmic);
-            padding: 35px;
-            margin-bottom: 20px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s ease;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 240, 255, 0.25);
             position: relative;
+            overflow: hidden;
         }
 
         .card::before {
             content: "";
             position: absolute;
             top: 0; left: 0; width: 100%; height: 4px;
-            border-top-left-radius: var(--radius-cosmic);
-            border-top-right-radius: var(--radius-cosmic);
-            background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow));
+            background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
-        /* FORM ELEMENTS & BUTTONS */
         label {
             font-weight: 600;
             font-size: 0.95rem;
@@ -172,54 +129,47 @@
             margin-bottom: 8px;
         }
 
-        input, select, textarea {
+        input, select {
             width: 100%;
-            box-sizing: border-box;
-            background: rgba(11, 13, 23, 0.85) !important;
+            background: rgba(8, 10, 21, 0.85) !important;
             border: 1px solid var(--border-cosmic) !important;
             color: var(--text-main) !important;
-            border-radius: 10px !important;
+            border-radius: 12px !important;
             padding: 14px 18px !important;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus, select:focus {
             outline: none !important;
             border-color: var(--cyan-glow) !important;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4) !important;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6) !important;
         }
 
-        .btn, .btn-primary, button[type="submit"] {
-            background: linear-gradient(135deg, var(--primary-glow) 0%, #4a00e0 100%);
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary-glow) 0%, var(--pink-glow) 100%);
             color: #ffffff;
             border: none;
             border-radius: 12px;
-            padding: 15px 24px;
+            padding: 16px;
+            font-size: 1.1rem;
             font-weight: 700;
-            font-size: 1.05rem;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(123, 97, 255, 0.4);
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
+            box-shadow: 0 6px 25px rgba(255, 0, 127, 0.5);
+            transition: all 0.3s ease;
             width: 100%;
+            margin-top: 10px;
         }
 
-        .btn:hover, .btn-primary:hover, button[type="submit"]:hover {
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
-            transform: scale(1.01);
+        .btn-submit:hover {
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.8);
+            transform: scale(1.02);
         }
     </style>
 </head>
 <body>
 
-    <!-- DEKORASI PLANET MELAYANG -->
-    <div class="planet-bg planet-1"></div>
-    <div class="planet-bg planet-2"></div>
-
-    <!-- NAVBAR HEADER -->
     <header>
         <a href="/" class="nav-brand">
             ✨ COSMIC AI
@@ -230,12 +180,9 @@
         </nav>
     </header>
 
-    <!-- KONTEN UTAMA -->
     <main class="container">
-        
-        <!-- HERO SECTION -->
-        <section style="text-align: center; margin-top: 20px; margin-bottom: 40px;">
-            <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #ffffff 20%, #00f0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        <section style="text-align: center; margin-top: 20px; margin-bottom: 45px;">
+            <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #ffffff 20%, #00f0ff 60%, #ff007f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
                 Buat Script Konten Lebih Cepat dengan AI
             </h1>
             <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 650px; margin: 0 auto; line-height: 1.6;">
@@ -243,23 +190,15 @@
             </p>
         </section>
 
-        <!-- FORM GENERATOR -->
         <div class="card" style="max-width: 650px; margin: 0 auto;">
             <h2 style="font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; font-weight: 700;">
                 💫 Buat Project Baru
             </h2>
 
             <form action="/generate" method="POST">
-                
                 <div>
                     <label for="topic">Topik / Judul Konten</label>
-                    <input 
-                        type="text" 
-                        id="topic" 
-                        name="topic" 
-                        placeholder="Contoh: 5 Tips Produktivitas untuk Mahasiswa" 
-                        required
-                    >
+                    <input type="text" id="topic" name="topic" placeholder="Contoh: 5 Tips Produktivitas untuk Mahasiswa" required>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -283,22 +222,14 @@
 
                 <div>
                     <label for="audience">Target Audience</label>
-                    <input 
-                        type="text" 
-                        id="audience" 
-                        name="audience" 
-                        placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula" 
-                        required
-                    >
+                    <input type="text" id="audience" name="audience" placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula" required>
                 </div>
 
-                <button type="submit" class="btn" style="margin-top: 10px;">
+                <button type="submit" class="btn-submit">
                     ✨ Generate Script Sekarang
                 </button>
-
             </form>
         </div>
-
     </main>
 
 </body>
