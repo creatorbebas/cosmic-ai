@@ -1,208 +1,81 @@
 import re
 
-
-SCRIPT_SECTIONS = [
-    "HOOK",
-    "INTRO",
-    "SEGMENT 1",
-    "SEGMENT 2",
-    "SEGMENT 3",
-    "TWIST",
-    "CLOSING"
+# List nama section standar yang umum dipakai dalam skrip AI/konten
+SECTION_KEYWORDS = [
+    "HOOK", "INTRO", "INTRODUCTION", "PROBLEM", "SOLUTION", 
+    "BODY", "POINT", "SECTION", "CALL TO ACTION", "CTA", 
+    "OUTRO", "CONCLUSION", "SUMMARY"
 ]
 
 
-def normalize_section_name(name):
+def split_script(script_text):
     """
-    Menyamakan berbagai variasi nama section
-    menjadi nama standar yang digunakan editor.
+    Memecah teks skrip menjadi daftar dictionary section:
+    [{ "name": "HOOK", "content": "..." }, { "name": "INTRO", "content": "..." }]
     """
+    if not script_text or not script_text.strip():
+        return [{"name": "FULL SCRIPT", "content": ""}]
 
-    name = re.sub(
-        r"\s+",
-        " ",
-        name.strip().upper()
-    )
+    script_text = script_text.strip()
 
-    if name == "INTRODUCTION":
-        return "INTRO"
+    # Pattern 1: Deteksi header seperti [HOOK], ### HOOK, **HOOK**, HOOK:
+    pattern = r'(?i)(?:^|\n)(?:[#*\[\s]*)(HOOK|INTRO|INTRODUCTION|PROBLEM|SOLUTION|BODY(?:\s*\d+)?|POINT(?:\s*\d+)?|SECTION(?:\s*\d+)?|CALL TO ACTION|CTA|OUTRO|CONCLUSION|SUMMARY)(?:[\]*:\s]*)(?=\n|$)'
 
-    return name
-
-
-def split_script(script):
-    """
-    Memecah script menjadi section.
-
-    Mendukung format:
-
-    HOOK
-    HOOK:
-    ## HOOK
-    ### HOOK
-
-    INTRO
-    INTRO:
-    INTRODUCTION
-    INTRODUCTION:
-
-    SEGMENT 1
-    SEGMENT 1:
-    SEGMENT 1 - ...
-
-    TWIST
-    TWIST:
-
-    CLOSING
-    CLOSING:
-    """
-
-    if not script or not script.strip():
-        return []
-
-    text = script.strip()
-
-    pattern = (
-        r"(?im)^\s*"
-        r"(?:#{1,6}\s*)?"
-        r"(HOOK|INTRO|INTRODUCTION|SEGMENT\s+1|SEGMENT\s+2|SEGMENT\s+3|TWIST|CLOSING)"
-        r"(?:\s*[:\-—–].*)?"
-        r"\s*$"
-    )
-
-    matches = list(
-        re.finditer(
-            pattern,
-            text
-        )
-    )
+    matches = list(re.finditer(pattern, script_text))
 
     if not matches:
-        return [
-            {
-                "name": "SCRIPT",
-                "content": text
-            }
-        ]
+        # Jika tidak ada header standar, coba pecah berdasarkan baris kosong (paragraf)
+        paragraphs = [p.strip() for p in script_text.split("\n\n") if p.strip()]
+        if len(paragraphs) > 1:
+            sections = []
+            for i, p in enumerate(paragraphs):
+                name = "HOOK" if i == 0 else ("CTA / OUTRO" if i == len(paragraphs) - 1 else f"SECTION {i}")
+                sections.append({"name": name, "content": p})
+            return sections
+        
+        # Jika benar-benar 1 blok teks utuh
+        return [{"name": "FULL SCRIPT", "content": script_text}]
 
     sections = []
+    
+    # Tangkap teks sebelum header pertama jika ada
+    if matches[0].start() > 0:
+        preface = script_text[:matches[0].start()].strip()
+        if preface:
+            sections.append({"name": "INTRO / PREFACE", "content": preface})
 
-    for index, match in enumerate(matches):
+    for i in range(len(matches)):
+        match = matches[i]
+        sec_name = match.group(1).upper()
 
-        name = normalize_section_name(
-            match.group(1)
-        )
+        start_idx = match.end()
+        end_idx = matches[i + 1].start() if i + 1 < len(matches) else len(script_text)
 
-        start = match.end()
+        sec_content = script_text[start_idx:end_idx].strip()
+        
+        # Bersihkan sisa simbol pembatas di awal konten
+        sec_content = re.sub(r'^[\]*:\s-]+', '', sec_content).strip()
 
-        if index + 1 < len(matches):
-            end = matches[index + 1].start()
-        else:
-            end = len(text)
-
-        content = text[
-            start:end
-        ].strip()
-
-        sections.append(
-            {
-                "name": name,
-                "content": content
-            }
-        )
+        sections.append({
+            "name": sec_name,
+            "content": sec_content
+        })
 
     return sections
 
 
 def combine_sections(sections):
     """
-    Menggabungkan semua section menjadi satu script.
+    Menggabungkan kembali list of sections menjadi satu string script utuh.
     """
-
-    if not sections:
-        return ""
-
-    parts = []
-
-    for section in sections:
-
-        name = section.get(
-            "name",
-            ""
-        ).strip()
-
-        content = section.get(
-            "content",
-            ""
-        ).strip()
-
-        if not name and not content:
-            continue
-
-        if name:
-            parts.append(name)
-
-        if content:
-            parts.append(content)
-
-    return "\n\n".join(parts)
-
-
-def get_section(
-    sections,
-    section_name
-):
-    target = normalize_section_name(
-        section_name
-    )
-
-    for section in sections:
-
-        current_name = normalize_section_name(
-            section.get(
-                "name",
-                ""
-            )
-        )
-
-        if current_name == target:
-            return section
-
-    return None
-
-
-def update_section(
-    sections,
-    section_name,
-    new_content
-):
-    target = normalize_section_name(
-        section_name
-    )
-
-    updated = []
-
-    for section in sections:
-
-        current_name = normalize_section_name(
-            section.get(
-                "name",
-                ""
-            )
-        )
-
-        if current_name == target:
-
-            updated.append(
-                {
-                    "name": section["name"],
-                    "content": new_content.strip()
-                }
-            )
-
+    combined = []
+    for sec in sections:
+        name = sec.get("name", "").strip()
+        content = sec.get("content", "").strip()
+        
+        if name and name.upper() != "FULL SCRIPT":
+            combined.append(f"[{name}]\n{content}")
         else:
-            updated.append(
-                section
-            )
+            combined.append(content)
 
-    return updated
+    return "\n\n".join(combined)
