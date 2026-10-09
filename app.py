@@ -67,7 +67,10 @@ app = Flask(
 # DATABASE
 # ============================================================
 
-init_database()
+try:
+    init_database()
+except Exception as e:
+    print("Database init handled:", e)
 
 
 # ============================================================
@@ -75,13 +78,19 @@ init_database()
 # ============================================================
 
 def save_text(filename, content):
-    with open(filename, "w", encoding="utf-8") as file:
-        file.write(content)
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            file.write(content)
+    except Exception as e:
+        print(f"Skipped saving file {filename}: {e}")
 
 
 def save_json(filename, data):
-    with open(filename, "w", encoding="utf-8") as file:
-        json.dump(data, file, indent=2, ensure_ascii=False)
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"Skipped saving JSON {filename}: {e}")
 
 
 # ============================================================
@@ -99,7 +108,6 @@ def home():
 
 @app.route("/projects")
 def projects():
-    # Mendukung nama parameter 'search' maupun 'q'
     search_query = (
         request.args.get("search") or request.args.get("q") or ""
     ).strip()
@@ -620,6 +628,9 @@ def generate():
 # ============================================================
 # RUN SERVER
 # ============================================================
+
+# Handler eksplisit untuk Vercel Serverless
+app = app
 
 if __name__ == "__main__":
     app.run(debug=True)
