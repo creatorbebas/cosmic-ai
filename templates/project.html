@@ -1,870 +1,500 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic AI - {{ project.topic }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <style>
+        /* =========================================================
+           COSMIC AI - EMBEDDED PROFESSIONAL THEME (DARK GLASS)
+           ========================================================= */
+        :root {
+            --bg-main: #05070f;
+            --sidebar-bg: rgba(8, 10, 21, 0.88);
+            --card-bg: rgba(10, 12, 28, 0.85);
+            --border-cosmic: rgba(0, 240, 255, 0.4);
+            --primary-glow: #7b61ff;
+            --cyan-glow: #00f0ff;
+            --pink-glow: #ff007f;
+            --text-main: #f0f3ff;
+            --text-muted: #94a3b8;
+            --radius-cosmic: 16px;
+        }
 
-    <title>
-        Cosmic AI - {{ project.topic }}
-    </title>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+        body {
+            background-color: var(--bg-main);
+            background-image: 
+                linear-gradient(rgba(5, 7, 15, 0.4), rgba(5, 7, 15, 0.5)),
+                url('https://i.postimg.cc/Hx5hQ7VG/cosmic-bg-jpg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+        }
 
+        .page {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-cosmic);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 30%, var(--cyan-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .logo-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1.2px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(123, 97, 255, 0.2);
+            color: #ffffff;
+            border-color: var(--border-cosmic);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-cosmic);
+            padding: 25px 30px;
+            border-radius: var(--radius-cosmic);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .page-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .result-info-card, .content-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-cosmic);
+            border-radius: var(--radius-cosmic);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .result-topic h2 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-top: 5px;
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--cyan-glow);
+            font-weight: 700;
+        }
+
+        .result-details {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-detail span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .result-detail strong {
+            font-size: 1.05rem;
+            color: #ffffff;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .panel-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .content-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .content-tab {
+            background: rgba(10, 12, 28, 0.7);
+            border: 1px solid var(--border-cosmic);
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .content-tab:hover, .content-tab.active {
+            background: linear-gradient(135deg, var(--primary-glow), var(--pink-glow));
+            color: #ffffff;
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+        }
+
+        .content-panel {
+            display: none;
+        }
+
+        .content-panel.active-panel {
+            display: block;
+        }
+
+        .outline-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .outline-item {
+            display: flex;
+            gap: 20px;
+            background: rgba(5, 7, 18, 0.6);
+            border: 1px solid rgba(123, 97, 255, 0.25);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .outline-number {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--cyan-glow);
+            min-width: 35px;
+        }
+
+        .outline-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .outline-content p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .script-box, .description-box {
+            background: rgba(4, 6, 14, 0.9);
+            border: 1px solid var(--border-cosmic);
+            border-radius: 12px;
+            padding: 25px;
+            color: #f1f5f9;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.7;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .new-video-button, .small-copy-button, .regenerate-button {
+            background: linear-gradient(135deg, var(--primary-glow), var(--pink-glow));
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+            display: inline-block;
+        }
+
+        .new-video-button:hover, .small-copy-button:hover, .regenerate-button:hover {
+            box-shadow: 0 0 25px var(--cyan-glow);
+            transform: translateY(-2px);
+        }
+
+        .regenerate-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-cosmic);
+        }
+    </style>
 </head>
-
-
 <body>
 
 <div class="page">
-
-
-    <!-- =====================================================
-         SIDEBAR
-         ===================================================== -->
-
     <aside class="sidebar">
-
-        <div class="logo">
-            Cosmic AI
-        </div>
-
-        <div class="logo-subtitle">
-            YouTube Content Studio
-        </div>
-
-        <div class="nav-title">
-            Workspace
-        </div>
-
-        <a
-            href="/"
-            class="nav-item"
-        >
-            Generator
-        </a>
-
-        <a
-            href="/projects"
-            class="nav-item active"
-        >
-            Projects
-        </a>
-
-        <a
-            href="/settings"
-            class="nav-item"
-        >
-            Settings
-        </a>
-
+        <div class="logo">Cosmic AI</div>
+        <div class="logo-subtitle">YouTube Content Studio</div>
+        <div class="nav-title">Workspace</div>
+        <a href="/" class="nav-item">Generator</a>
+        <a href="/projects" class="nav-item active">Projects</a>
+        <a href="/settings" class="nav-item">Settings</a>
     </aside>
 
-
-    <!-- =====================================================
-         MAIN
-         ===================================================== -->
-
     <main class="main">
-
-
-        <!-- =================================================
-             HEADER
-             ================================================= -->
-
         <div class="topbar">
-
             <div>
-
-                <h1 class="page-title">
-                    {{ project.topic }}
-                </h1>
-
-                <p class="page-description">
-                    Project #{{ project.id }} ·
-                    {{ project.duration }} ·
-                    {{ project.audience }} ·
-                    {{ project.language }}
-                </p>
-
+                <h1 class="page-title">{{ project.topic }}</h1>
+                <p class="page-description">Project #{{ project.id }} · {{ project.duration }} · {{ project.audience }} · {{ project.language }}</p>
             </div>
-
-
-            <a
-                href="/projects"
-                class="new-video-button"
-            >
-                Back to Projects
-            </a>
-
+            <a href="/projects" class="new-video-button">Back to Projects</a>
         </div>
-
-
-        <!-- =================================================
-             PROJECT INFORMATION
-             ================================================= -->
 
         <div class="result-info-card">
-
             <div class="result-topic">
-
-                <span class="result-label">
-                    PROJECT
-                </span>
-
-                <h2>
-                    {{ project.topic }}
-                </h2>
-
+                <span class="result-label">PROJECT</span>
+                <h2>{{ project.topic }}</h2>
             </div>
-
-
             <div class="result-details">
-
                 <div class="result-detail">
-
-                    <span>
-                        Duration
-                    </span>
-
-                    <strong>
-                        {{ project.duration }}
-                    </strong>
-
+                    <span>Duration</span>
+                    <strong>{{ project.duration }}</strong>
                 </div>
-
-
                 <div class="result-detail">
-
-                    <span>
-                        Audience
-                    </span>
-
-                    <strong>
-                        {{ project.audience }}
-                    </strong>
-
+                    <span>Audience</span>
+                    <strong>{{ project.audience }}</strong>
                 </div>
-
-
                 <div class="result-detail">
-
-                    <span>
-                        Language
-                    </span>
-
-                    <strong>
-                        {{ project.language }}
-                    </strong>
-
+                    <span>Language</span>
+                    <strong>{{ project.language }}</strong>
                 </div>
-
             </div>
-
         </div>
-
-
-        <!-- =================================================
-             RESEARCH ENGINE
-             ================================================= -->
 
         <div class="content-panel active-panel">
-
             <div class="panel-header">
-
                 <div>
-
-                    <h2>
-                        Research Engine
-                    </h2>
-
-                    <p>
-                        Research the topic before creating
-                        or improving the content.
-                    </p>
-
+                    <h2>Research Engine</h2>
+                    <p>Research the topic before creating or improving the content.</p>
                 </div>
-
-
-                <a
-                    href="{{ url_for('research_page', project_id=project.id) }}"
-                    class="new-video-button"
-                >
-                    Open Research
-                </a>
-
+                <a href="{{ url_for('research_page', project_id=project.id) }}" class="new-video-button">Open Research</a>
             </div>
-
         </div>
-
-
-        <!-- =================================================
-             SCRIPT EDITOR ACTION
-             ================================================= -->
 
         <div class="content-panel active-panel">
-
             <div class="panel-header">
-
                 <div>
-
-                    <h2>
-                        Script Editor
-                    </h2>
-
-                    <p>
-                        Edit, rewrite, and analyze your script
-                        section by section.
-                    </p>
-
+                    <h2>Script Editor</h2>
+                    <p>Edit, rewrite, and analyze your script section by section.</p>
                 </div>
-
-
-                <a
-                    href="/projects/{{ project.id }}/editor"
-                    class="new-video-button"
-                >
-                    Open Script Editor
-                </a>
-
+                <a href="/projects/{{ project.id }}/editor" class="new-video-button">Open Script Editor</a>
             </div>
-
         </div>
-
-
-        <!-- =================================================
-             TABS
-             ================================================= -->
 
         <div class="content-tabs">
-
-            <button
-                type="button"
-                class="content-tab active"
-                onclick="showTab('outline', this)"
-            >
-                Outline
-            </button>
-
-
-            <button
-                type="button"
-                class="content-tab"
-                onclick="showTab('script', this)"
-            >
-                Script
-            </button>
-
-
-            <button
-                type="button"
-                class="content-tab"
-                onclick="showTab('metadata', this)"
-            >
-                Metadata
-            </button>
-
+            <button type="button" class="content-tab active" onclick="showTab('outline', this)">Outline</button>
+            <button type="button" class="content-tab" onclick="showTab('script', this)">Script</button>
+            <button type="button" class="content-tab" onclick="showTab('metadata', this)">Metadata</button>
         </div>
 
-
-        <!-- =================================================
-             OUTLINE
-             ================================================= -->
-
-        <div
-            id="outline"
-            class="content-panel active-panel"
-        >
-
+        <div id="outline" class="content-panel active-panel">
             <div class="panel-header">
-
                 <div>
-
-                    <h2>
-                        Video Outline
-                    </h2>
-
-                    <p>
-                        Generated structure for this video.
-                    </p>
-
+                    <h2>Video Outline</h2>
+                    <p>Generated structure for this video.</p>
                 </div>
-
             </div>
-
-
             {% if project.outline %}
-
             <div class="outline-list">
-
-
                 {% if project.outline is mapping %}
-
-
                     {% for key, value in project.outline.items() %}
-
                     <div class="outline-item">
-
-                        <div class="outline-number">
-                            {{ "%02d"|format(loop.index) }}
-                        </div>
-
-
+                        <div class="outline-number">{{ "%02d"|format(loop.index) }}</div>
                         <div class="outline-content">
-
-                            <div class="outline-title">
-                                {{ key }}
-                            </div>
-
-                            <p>
-                                {{ value }}
-                            </p>
-
+                            <div class="outline-title">{{ key }}</div>
+                            <p>{{ value }}</p>
                         </div>
-
                     </div>
-
                     {% endfor %}
-
-
                 {% else %}
-
-
                     {% for item in project.outline %}
-
                     <div class="outline-item">
-
-                        <div class="outline-number">
-                            {{ "%02d"|format(loop.index) }}
-                        </div>
-
-
+                        <div class="outline-number">{{ "%02d"|format(loop.index) }}</div>
                         <div class="outline-content">
-
                             <div class="outline-title">
-
-                                {% if item.title is defined %}
-
-                                    {{ item.title }}
-
-                                {% else %}
-
-                                    Section {{ loop.index }}
-
-                                {% endif %}
-
+                                {% if item.title is defined %}{{ item.title }}{% else %}Section {{ loop.index }}{% endif %}
                             </div>
-
-
                             <p>
-
-                                {% if item.description is defined %}
-
-                                    {{ item.description }}
-
-                                {% elif item.content is defined %}
-
-                                    {{ item.content }}
-
-                                {% else %}
-
-                                    {{ item }}
-
-                                {% endif %}
-
+                                {% if item.description is defined %}{{ item.description }}
+                                {% elif item.content is defined %}{{ item.content }}
+                                {% else %}{{ item }}{% endif %}
                             </p>
-
                         </div>
-
                     </div>
-
                     {% endfor %}
-
-
                 {% endif %}
-
             </div>
-
-
             {% else %}
-
-
-            <div class="empty-projects">
-
-                <div class="empty-icon">
-                    —
-                </div>
-
-                <h2>
-                    No Outline
-                </h2>
-
-                <p>
-                    This project does not have an outline yet.
-                </p>
-
-            </div>
-
-
+            <div class="empty-projects"><p>No outline available.</p></div>
             {% endif %}
-
         </div>
 
-
-        <!-- =================================================
-             SCRIPT
-             ================================================= -->
-
-        <div
-            id="script"
-            class="content-panel"
-        >
-
+        <div id="script" class="content-panel">
             <div class="panel-header">
-
                 <div>
-
-                    <h2>
-                        YouTube Script
-                    </h2>
-
-                    <p>
-                        Generated long-form YouTube script.
-                    </p>
-
+                    <h2>YouTube Script</h2>
+                    <p>Generated long-form YouTube script.</p>
                 </div>
-
-
-                <button
-                    type="button"
-                    class="small-copy-button"
-                    onclick="copyScript()"
-                >
-                    Copy Script
-                </button>
-
+                <button type="button" class="small-copy-button" onclick="copyScript()">Copy Script</button>
             </div>
-
-
             {% if project.script %}
-
-
             <div class="script-box">
-
-                <pre
-                    id="scriptText"
-                    style="
-                        margin: 0;
-                        font-family: inherit;
-                        white-space: pre-wrap;
-                        overflow-wrap: anywhere;
-                    "
-                >{{ project.script }}</pre>
-
+                <pre id="scriptText" style="margin: 0; font-family: inherit; white-space: pre-wrap; overflow-wrap: anywhere;">{{ project.script }}</pre>
             </div>
-
-
             {% else %}
-
-
-            <div class="empty-projects">
-
-                <div class="empty-icon">
-                    —
-                </div>
-
-                <h2>
-                    No Script
-                </h2>
-
-                <p>
-                    This project does not have a script yet.
-                </p>
-
-            </div>
-
-
+            <div class="empty-projects"><p>No script available.</p></div>
             {% endif %}
-
         </div>
 
-
-        <!-- =================================================
-             METADATA
-             ================================================= -->
-
-        <div
-            id="metadata"
-            class="content-panel"
-        >
-
+        <div id="metadata" class="content-panel">
             <div class="panel-header">
-
                 <div>
-
-                    <h2>
-                        YouTube Metadata
-                    </h2>
-
-                    <p>
-                        Generated titles, description,
-                        and supporting metadata.
-                    </p>
-
+                    <h2>YouTube Metadata</h2>
+                    <p>Generated titles, description, and supporting metadata.</p>
                 </div>
-
             </div>
-
-
             {% if project.metadata %}
-
-
-            {% if project.metadata is mapping %}
-
-
-            <div class="outline-list">
-
-
-                {% for key, value in project.metadata.items() %}
-
-                <div class="outline-item">
-
-                    <div class="outline-number">
-                        {{ "%02d"|format(loop.index) }}
-                    </div>
-
-
-                    <div class="outline-content">
-
-                        <div class="outline-title">
-                            {{ key }}
+                {% if project.metadata is mapping %}
+                <div class="outline-list">
+                    {% for key, value in project.metadata.items() %}
+                    <div class="outline-item">
+                        <div class="outline-number">{{ "%02d"|format(loop.index) }}</div>
+                        <div class="outline-content">
+                            <div class="outline-title">{{ key }}</div>
+                            <p>
+                                {% if value is iterable and value is not string %}
+                                    {% for item in value %}{{ item }}{% if not loop.last %}<br><br>{% endif %}{% endfor %}
+                                {% else %}{{ value }}{% endif %}
+                            </p>
                         </div>
-
-
-                        <p>
-
-                            {% if value is iterable and value is not string %}
-
-
-                                {% for item in value %}
-
-                                    {{ item }}
-
-                                    {% if not loop.last %}
-                                        <br><br>
-                                    {% endif %}
-
-                                {% endfor %}
-
-
-                            {% else %}
-
-                                {{ value }}
-
-                            {% endif %}
-
-                        </p>
-
                     </div>
-
+                    {% endfor %}
                 </div>
-
-                {% endfor %}
-
-
-            </div>
-
-
+                {% else %}
+                <div class="description-box">{{ project.metadata }}</div>
+                {% endif %}
             {% else %}
-
-
-            <div class="description-box">
-                {{ project.metadata }}
-            </div>
-
-
+            <div class="empty-projects"><p>No metadata available.</p></div>
             {% endif %}
-
-
-            {% else %}
-
-
-            <div class="empty-projects">
-
-                <div class="empty-icon">
-                    —
-                </div>
-
-                <h2>
-                    No Metadata
-                </h2>
-
-                <p>
-                    This project does not have metadata yet.
-                </p>
-
-            </div>
-
-
-            {% endif %}
-
         </div>
-
-
-        <!-- =================================================
-             PROJECT ACTIONS
-             ================================================= -->
-
-        <div
-            class="content-panel"
-            style="margin-top: 20px;"
-        >
-
-            <div class="panel-header">
-
-                <div>
-
-                    <h2>
-                        Project Actions
-                    </h2>
-
-                    <p>
-                        Manage this project.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div
-                style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    flex-wrap: wrap;
-                "
-            >
-
-                <a
-                    href="{{ url_for('research_page', project_id=project.id) }}"
-                    class="new-video-button"
-                >
-                    Research
-                </a>
-
-
-                <a
-                    href="/projects/{{ project.id }}/editor"
-                    class="new-video-button"
-                >
-                    Open Script Editor
-                </a>
-
-
-                <form
-                    method="POST"
-                    action="/projects/{{ project.id }}/rename"
-                    onsubmit="return renameProject();"
-                    style="margin: 0;"
-                >
-
-                    <input
-                        type="hidden"
-                        name="new_topic"
-                        id="newTopic"
-                    >
-
-                    <button
-                        type="submit"
-                        class="regenerate-button"
-                    >
-                        Rename Project
-                    </button>
-
-                </form>
-
-
-                <form
-                    method="POST"
-                    action="/projects/{{ project.id }}/delete"
-                    onsubmit="return confirm('Delete this project? This action cannot be undone.');"
-                    style="margin: 0;"
-                >
-
-                    <button
-                        type="submit"
-                        class="regenerate-button"
-                    >
-                        Delete Project
-                    </button>
-
-                </form>
-
-            </div>
-
-        </div>
-
-
     </main>
-
 </div>
 
-
-<!-- =========================================================
-     JAVASCRIPT
-     ========================================================= -->
-
 <script>
-
 function showTab(tabId, button) {
+    const tabs = document.querySelectorAll(".content-tab");
+    const panels = document.querySelectorAll(".content-panel");
 
-    const tabs = document.querySelectorAll(
-        ".content-tab"
-    );
-
-    const panels = document.querySelectorAll(
-        ".content-panel"
-    );
-
-
-    tabs.forEach(function(tab) {
-
-        tab.classList.remove(
-            "active"
-        );
-
-    });
-
-
-    panels.forEach(function(panel) {
-
-        if (
-            panel.id === "outline" ||
-            panel.id === "script" ||
-            panel.id === "metadata"
-        ) {
-
-            panel.classList.remove(
-                "active-panel"
-            );
-
+    tabs.forEach(tab => tab.classList.remove("active"));
+    panels.forEach(panel => {
+        if (panel.id === "outline" || panel.id === "script" || panel.id === "metadata") {
+            panel.classList.remove("active-panel");
         }
-
     });
 
-
-    const selectedPanel =
-        document.getElementById(tabId);
-
-
-    if (selectedPanel) {
-
-        selectedPanel.classList.add(
-            "active-panel"
-        );
-
-    }
-
-
-    if (button) {
-
-        button.classList.add(
-            "active"
-        );
-
-    }
-
+    const selectedPanel = document.getElementById(tabId);
+    if (selectedPanel) selectedPanel.classList.add("active-panel");
+    if (button) button.classList.add("active");
 }
-
 
 function copyScript() {
-
-    const script =
-        document.getElementById(
-            "scriptText"
-        );
-
-
-    if (!script) {
-        return;
-    }
-
-
-    navigator.clipboard.writeText(
-        script.innerText
-    ).then(function() {
-
-        const button =
-            document.querySelector(
-                ".small-copy-button"
-            );
-
-
-        if (!button) {
-            return;
-        }
-
-
-        const originalText =
-            button.innerText;
-
-
-        button.innerText =
-            "Copied";
-
-
-        setTimeout(function() {
-
-            button.innerText =
-                originalText;
-
-        }, 1500);
-
+    const script = document.getElementById("scriptText");
+    if (!script) return;
+    navigator.clipboard.writeText(script.innerText).then(() => {
+        const button = document.querySelector(".small-copy-button");
+        if (!button) return;
+        const originalText = button.innerText;
+        button.innerText = "Copied";
+        setTimeout(() => button.innerText = originalText, 1500);
     });
-
 }
-
-
-function renameProject() {
-
-    const newName =
-        prompt(
-            "Enter the new project name:"
-        );
-
-
-    if (
-        !newName ||
-        !newName.trim()
-    ) {
-
-        return false;
-
-    }
-
-
-    document.getElementById(
-        "newTopic"
-    ).value =
-        newName.trim();
-
-
-    return true;
-
-}
-
 </script>
-
-
 </body>
-
 </html>
