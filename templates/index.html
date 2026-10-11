@@ -99,15 +99,15 @@
 
         .hero-section {
             text-align: center;
-            margin-top: 20px;
-            margin-bottom: 30px;
+            margin-top: 10px;
+            margin-bottom: 25px;
             padding: 0 10px;
         }
 
         .hero-title {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            margin-bottom: 18px;
+            margin-bottom: 12px;
             background: linear-gradient(135deg, #ffffff 30%, #00f0ff 70%, #ff007f 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -117,12 +117,12 @@
 
         .hero-subtitle {
             color: #ffffff;
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             max-width: 720px;
             margin: 0 auto;
-            line-height: 1.7;
+            line-height: 1.6;
             font-weight: 500;
-            padding: 14px 28px;
+            padding: 12px 24px;
             background: rgba(5, 7, 18, 0.65);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -292,6 +292,16 @@
 
     <main class="container">
         
+        <!-- ================= HERO SECTION (SELALU MUNCUL DI ATAS) ================= -->
+        <section class="hero-section">
+            <h1 class="hero-title">
+                Buat Script Konten & Dracin Lebih Cepat dengan AI
+            </h1>
+            <p class="hero-subtitle">
+                Rancang outline, skrip rekap drama China, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
+            </p>
+        </section>
+
         {% if is_unlocked %}
         <!-- ================= DASHBOARD AI GENERATOR ================= -->
         <div class="card" style="max-width: 750px; margin: 0 auto;">
@@ -439,16 +449,7 @@
         </script>
 
         {% else %}
-        <!-- ================= LANDING PAGE PUBLIK ================= -->
-        <section class="hero-section">
-            <h1 class="hero-title">
-                Buat Script Konten & Dracin Lebih Cepat dengan AI
-            </h1>
-            <p class="hero-subtitle">
-                Rancang outline, skrip rekap drama China, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
-            </p>
-        </section>
-
+        <!-- ================= PRICING BOX (SAAT BELUM LOGIN) ================= -->
         <div class="pricing-box">
             <div class="badge-promo">DISKON 50%</div>
             <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 5px;">Paket Langganan Full Studio</h3>
