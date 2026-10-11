@@ -158,7 +158,6 @@
             background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
-        /* TAB SWITCHER */
         .mode-switcher {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -292,7 +291,6 @@
 
     <main class="container">
         
-        <!-- ================= HERO SECTION (SELALU MUNCUL DI ATAS) ================= -->
         <section class="hero-section">
             <h1 class="hero-title">
                 Buat Script Konten & Dracin Lebih Cepat dengan AI
@@ -303,7 +301,6 @@
         </section>
 
         {% if is_unlocked %}
-        <!-- ================= DASHBOARD AI GENERATOR ================= -->
         <div class="card" style="max-width: 750px; margin: 0 auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="font-size: 1.5rem; font-weight: 700;">💫 Dashboard AI Generator</h2>
@@ -318,21 +315,21 @@
 
             <form action="/generate" method="POST">
                 
-                <!-- ================= FORM 1: MODE DRACIN ================= -->
+                <!-- FORM 1: MODE DRACIN -->
                 <div class="form-pane active" id="pane-dracin">
                     <div>
-                        <label for="d_title">Judul Drama China</label>
-                        <input type="text" id="d_title" name="topic" placeholder="Contoh: CEO Dingin Menikahi Wanita Miskin / Hidden Wealthy Boss">
+                        <label for="d_topic">Judul Drama China</label>
+                        <input type="text" id="d_topic" name="topic" placeholder="Contoh: CEO Dingin Menikahi Wanita Miskin / Hidden Wealthy Boss">
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <div>
-                            <label for="d_episode">Pilihan Episode</label>
-                            <select id="d_episode" name="d_episode_input">
-                                <option value="10 Episode">10 Episode</option>
-                                <option value="20 Episode" selected>20 Episode</option>
-                                <option value="30 Episode">30 Episode</option>
-                                <option value="50 Episode">50 Episode</option>
+                            <label for="d_duration">Pilihan Episode</label>
+                            <select id="d_duration" name="duration">
+                                <option value="Rekap 10 Episode">10 Episode</option>
+                                <option value="Rekap 20 Episode" selected>20 Episode</option>
+                                <option value="Rekap 30 Episode">30 Episode</option>
+                                <option value="Rekap 50 Episode">50 Episode</option>
                             </select>
                         </div>
 
@@ -346,8 +343,8 @@
                     </div>
 
                     <div>
-                        <label for="d_focus">Fokus Adegan Utama (Trope Dracin)</label>
-                        <select id="d_focus" name="audience">
+                        <label for="d_audience">Fokus Adegan Utama (Trope Dracin)</label>
+                        <select id="d_audience" name="audience">
                             <option value="Identitas Terbongkar (Hidden Identity / Secret Boss)">1. Identitas Terbongkar (Hidden Identity / Secret Boss)</option>
                             <option value="Balas Dendam / Pembalasan (Revenge & Redemption)">2. Balas Dendam / Pembalasan (Revenge & Redemption)</option>
                             <option value="Pernikahan Kontrak & Cinta Paksa (Contract Marriage)">3. Pernikahan Kontrak & Cinta Paksa (Contract Marriage)</option>
@@ -357,7 +354,7 @@
                     </div>
                 </div>
 
-                <!-- ================= FORM 2: MODE KONTEN UMUM ================= -->
+                <!-- FORM 2: MODE KONTEN UMUM -->
                 <div class="form-pane" id="pane-general">
                     <div>
                         <label for="g_topic">Topik / Judul Konten Umum</label>
@@ -403,13 +400,11 @@
                 const paneDracin = document.getElementById('pane-dracin');
                 const paneGeneral = document.getElementById('pane-general');
 
-                // Input Dracin
-                const dTitle = document.getElementById('d_title');
-                const dEp = document.getElementById('d_episode');
-                const dAud = document.getElementById('d_focus');
+                const dTopic = document.getElementById('d_topic');
+                const dDur = document.getElementById('d_duration');
+                const dAud = document.getElementById('d_audience');
                 const dLang = document.getElementById('d_language');
 
-                // Input General
                 const gTopic = document.getElementById('g_topic');
                 const gAud = document.getElementById('g_audience');
                 const gDur = document.getElementById('g_duration');
@@ -421,7 +416,8 @@
                     paneDracin.classList.add('active');
                     paneGeneral.classList.remove('active');
 
-                    dTitle.setAttribute('name', 'topic');
+                    dTopic.setAttribute('name', 'topic');
+                    dDur.setAttribute('name', 'duration');
                     dAud.setAttribute('name', 'audience');
                     dLang.setAttribute('name', 'language');
 
@@ -440,8 +436,8 @@
                     gDur.setAttribute('name', 'duration');
                     gLang.setAttribute('name', 'language');
 
-                    dTitle.removeAttribute('name');
-                    dEp.removeAttribute('name');
+                    dTopic.removeAttribute('name');
+                    dDur.removeAttribute('name');
                     dAud.removeAttribute('name');
                     dLang.removeAttribute('name');
                 }
@@ -449,7 +445,6 @@
         </script>
 
         {% else %}
-        <!-- ================= PRICING BOX (SAAT BELUM LOGIN) ================= -->
         <div class="pricing-box">
             <div class="badge-promo">DISKON 50%</div>
             <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 5px;">Paket Langganan Full Studio</h3>
