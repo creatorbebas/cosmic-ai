@@ -23,7 +23,6 @@ def normalize_outline(outline):
         elif key_info and not key_points:
             section["key_points"] = [key_info]
 
-        # Default fallback untuk atribut wajib lainnya
         if "purpose" not in section:
             section["purpose"] = ""
         if "narrative_goal" not in section:
@@ -35,18 +34,90 @@ def normalize_outline(outline):
 
 
 # ============================================================
-# GENERATE OUTLINE
+# GENERATE OUTLINE (MENDUKUNG DRACIN & KONTEN UMUM)
 # ============================================================
 
 def generate_outline(topic, duration, audience, language):
-    prompt = f"""
+    # Cek apakah ini mode Dracin berdasarkan format duration atau audience
+    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
+
+    if is_dracin:
+        prompt = f"""
+You are an expert Chinese Drama (Dracin) content strategist and viral recap writer.
+
+Create a detailed video outline for a Chinese Drama recap.
+
+DRACIN INFORMATION:
+Drama Title: {topic}
+Episode Scope: {duration}
+Core Trope / Focus Scene: {audience}
+Script Language: {language}
+
+Return ONLY valid JSON.
+Use exactly this structure:
+
+{{
+  "topic": "{topic}",
+  "duration_minutes": "{duration}",
+  "target_audience": "{audience}",
+  "language": "{language}",
+  "sections": [
+    {{
+      "name": "HOOK",
+      "purpose": "Shocking opening scene or dramatic conflict preview to hook viewers instantly.",
+      "key_information": "Most dramatic emotional peak from the episodes.",
+      "key_points": ["Most dramatic emotional peak from the episodes."],
+      "narrative_goal": "Force the audience to stay.",
+      "approximate_duration": "0:30"
+    }},
+    {{
+      "name": "INTRODUCTION",
+      "purpose": "Introduce main characters, status, and initial humiliation or premise.",
+      "key_information": "Background setup and character dynamics.",
+      "key_points": ["Background setup and character dynamics."],
+      "narrative_goal": "Establish the stakes clearly.",
+      "approximate_duration": "1:00"
+    }},
+    {{
+      "name": "CONFLICT BUILD-UP",
+      "purpose": "Escalation of conflict, toxic antagonists, or hidden secrets pressure.",
+      "key_information": "Key plot points leading to tension.",
+      "key_points": ["Key plot points leading to tension."],
+      "narrative_goal": "Build anticipation for the reveal.",
+      "approximate_duration": "2:00"
+    }},
+    {{
+      "name": "THE CLIMAX / REVEAL",
+      "purpose": "The core trope execution (e.g., identity revealed, revenge served, or contract twist).",
+      "key_information": "Shocking turning point and emotional satisfaction.",
+      "key_points": ["Shocking turning point and emotional satisfaction."],
+      "narrative_goal": "Deliver maximum emotional payoff.",
+      "approximate_duration": "2:00"
+    }},
+    {{
+      "name": "OUTRO / CTA",
+      "purpose": "Cliffhanger ending or question for viewers, teasing the next part.",
+      "key_information": "Call to action and engagement hook.",
+      "key_points": ["Call to action and engagement hook."],
+      "narrative_goal": "Drive comments and shares.",
+      "approximate_duration": "0:45"
+    }}
+  ]
+}}
+
+RULES:
+- Exactly 5 structural sections tailored for high-engagement Dracin recap.
+- Do not output markdown codeblocks outside JSON.
+"""
+    else:
+        prompt = f"""
 You are an expert YouTube content strategist.
 
 Create a detailed long-form YouTube video outline.
 
 VIDEO INFORMATION
 Topic: {topic}
-Target duration: {duration} minutes
+Target duration: {duration}
 Target audience: {audience}
 Script language: {language}
 
@@ -77,7 +148,7 @@ Use exactly this structure:
     }},
     {{
       "name": "SEGMENT 1",
-      "purpose": "First main subtopic or origin story.",
+      "purpose": "First main subtopic.",
       "key_information": "Detailed explanations and facts.",
       "key_points": ["Detailed explanations and facts."],
       "narrative_goal": "Build foundation.",
@@ -92,22 +163,6 @@ Use exactly this structure:
       "approximate_duration": "2:00"
     }},
     {{
-      "name": "SEGMENT 3",
-      "purpose": "Third main subtopic or analytical view.",
-      "key_information": "Nuance and counterarguments.",
-      "key_points": ["Nuance and counterarguments."],
-      "narrative_goal": "Heighten intrigue.",
-      "approximate_duration": "2:00"
-    }},
-    {{
-      "name": "TWIST",
-      "purpose": "Surprising insight or counter-intuitive revelation.",
-      "key_information": "The most shocking information.",
-      "key_points": ["The most shocking information."],
-      "narrative_goal": "Surprise the audience.",
-      "approximate_duration": "1:30"
-    }},
-    {{
       "name": "CLOSING",
       "purpose": "Summarize and conclude.",
       "key_information": "Final conclusions and call to action.",
@@ -119,10 +174,10 @@ Use exactly this structure:
 }}
 
 RULES:
-- Exactly 7 sections.
 - Avoid repetition and build progressive curiosity.
 - Do not output markdown codeblocks outside JSON.
 """
+
     result = ask_ai(prompt)
     if not result:
         return None
@@ -139,21 +194,43 @@ def regenerate_outline(topic, duration, audience, language):
 
 
 # ============================================================
-# GENERATE SCRIPT
+# GENERATE SCRIPT (MENDUKUNG DRACIN & KONTEN UMUM)
 # ============================================================
 
 def generate_script(topic, duration, audience, language, outline):
     normalized_outline = normalize_outline(outline)
     outline_json = json.dumps(normalized_outline, indent=2, ensure_ascii=False)
+    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
-    prompt = f"""
-You are an expert YouTube long-form scriptwriter.
+    if is_dracin:
+        prompt = f"""
+You are an expert Chinese Drama (Dracin) recap scriptwriter.
+
+Write a gripping, highly engaging, and emotional spoken narration script based on the structured outline below.
+
+DRACIN INFORMATION:
+Drama Title: {topic}
+Episode Scope: {duration}
+Core Trope: {audience}
+Script Language: {language}
+
+STRUCTURED OUTLINE:
+{outline_json}
+
+SCRIPT REQUIREMENTS:
+- Write natural, dramatic, and compelling spoken narration optimized for TikTok, Reels, or YouTube recap videos.
+- Avoid camera directions, visual cues, or technical production notes.
+- Use section headers matching the outline exactly.
+"""
+    else:
+        prompt = f"""
+You are an expert YouTube scriptwriter.
 
 Write a complete narration script based on the structured outline below.
 
-VIDEO INFORMATION
+VIDEO INFORMATION:
 Topic: {topic}
-Target duration: {duration} minutes
+Target duration: {duration}
 Target audience: {audience}
 Script language: {language}
 
@@ -163,7 +240,7 @@ STRUCTURED OUTLINE:
 SCRIPT REQUIREMENTS:
 - Follow the outline order exactly.
 - Write natural spoken narration without visual/camera cues or editing notes.
-- Use clear section headers like [HOOK], [INTRODUCTION], [SEGMENT 1], etc.
+- Use clear section headers matching the outline.
 """
     return ask_ai(prompt)
 
@@ -178,11 +255,11 @@ def regenerate_script(topic, duration, audience, language, outline):
 
 def generate_metadata(topic, script, outline, language):
     prompt = f"""
-You are a YouTube SEO and metadata expert.
+You are a YouTube SEO and social media metadata expert.
 
 Generate engaging hooks, clickable titles, and a video description for this content.
 
-Topic: {topic}
+Topic/Drama: {topic}
 Language: {language}
 
 Return ONLY valid JSON matching this structure:
