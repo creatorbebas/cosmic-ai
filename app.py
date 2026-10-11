@@ -126,7 +126,6 @@ def logout_access():
 
 @app.route("/settings")
 def settings_page():
-    # Pastikan file templates/settings.html tersedia di direktori proyek
     return render_template("settings.html")
 
 
@@ -289,7 +288,7 @@ def generate_script_from_outline_route(project_id):
 
 
 # ============================================================
-# SCRIPT EDITOR
+# SCRIPT EDITOR (LENGKAP DENGAN ANALYZE & REWRITE)
 # ============================================================
 
 @app.route("/projects/<int:project_id>/editor")
