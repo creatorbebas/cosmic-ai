@@ -63,11 +63,7 @@ app = Flask(
     static_url_path="/static"
 )
 
-# Kunci rahasia session Flask
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dullah-studio-secure-session-key')
-
-# Kunci rahasia akses utama (diatur ke studio_rahasia_2026 sesuai link aksesmu)
-ACCESS_KEY = os.environ.get('ACCESS_KEY', 'studio_rahasia_2026')
 
 
 # ============================================================
@@ -101,20 +97,21 @@ def save_json(filename, data):
 
 
 # ============================================================
-# HOME & ACCESS CONTROL (DIPROTEKSI DENGAN KEY)
+# HOME & ACCESS CONTROL (DIRECT BYPASS URL KEY)
 # ============================================================
 
 @app.route("/")
 def home():
-    # Cek apakah pengguna membawa parameter ?key=... di URL
     url_key = request.args.get('key')
     
-    if url_key == ACCESS_KEY:
-        # Jika key benar, buka akses penuh di sesi browser mereka
+    # Daftar kunci resmi yang diizinkan untuk bypass
+    allowed_keys = ['studio_rahasia_2026', 'dullahstudio777', 'dullahstudio_rahasia_2026']
+    
+    if url_key in allowed_keys:
         session['unlocked'] = True
     
-    # Status apakah akses penuh sudah terbuka
-    is_unlocked = session.get('unlocked', False)
+    # Memastikan langsung terbuka jika parameter URL benar
+    is_unlocked = session.get('unlocked', False) or (url_key in allowed_keys)
     
     return render_template("index.html", is_unlocked=is_unlocked)
 
