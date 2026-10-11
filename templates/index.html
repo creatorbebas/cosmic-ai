@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic AI - Script Generator</title>
+    <title>Cosmic AI - Script & Dracin Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -158,6 +158,41 @@
             background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
+        /* TAB SWITCHER STYLING */
+        .mode-switcher {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .mode-btn {
+            background: rgba(8, 10, 21, 0.8);
+            border: 1px solid var(--border-cosmic);
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--primary-glow), var(--pink-glow));
+            color: white;
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
         label {
             font-weight: 600;
             font-size: 0.95rem;
@@ -258,33 +293,56 @@
     <main class="container">
         
         {% if is_unlocked %}
-        <!-- DASHBOARD AI GENERATOR (DENGAN SHORTS 25S & EPISODE DRACIN) -->
+        <!-- ================= DASHBOARD AI GENERATOR ================= -->
         <div class="card" style="max-width: 750px; margin: 0 auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="font-size: 1.5rem; font-weight: 700;">💫 Dashboard AI Generator</h2>
                 <span style="background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Akses Penuh Aktif</span>
             </div>
 
+            <!-- TOMBOL PILIHAN MODE -->
+            <div class="mode-switcher">
+                <div class="mode-btn active" id="btn-dracin" onclick="switchMode('dracin')">🇨🇳 Mode Dracin (Drama China)</div>
+                <div class="mode-btn" id="btn-general" onclick="switchMode('general')">💡 Mode Konten Umum / Bebas</div>
+            </div>
+
             <form action="/generate" method="POST">
-                <div>
-                    <label for="topic">Judul Dracin / Topik Konten</label>
-                    <input type="text" id="topic" name="topic" placeholder="Contoh: CEO Dingin Menikahi Sekretaris / Rekomendasi Drama China" required>
+                
+                <!-- SECTION 1: MODE DRACIN -->
+                <div class="form-section active" id="section-dracin">
+                    <div>
+                        <label for="dracin_title">Judul Drama China / Sinopsis Utama</label>
+                        <input type="text" id="dracin_title" name="topic" placeholder="Contoh: Balas Dendam CEO Dingin / Secret Wealthy Husband">
+                    </div>
+
+                    <div>
+                        <label for="dracin_episode">Nomor Episode & Fokus Adegan</label>
+                        <input type="text" id="dracin_episode" name="audience" placeholder="Contoh: Episode 1-3, Fokus pada adegan penyamaran terbongkar">
+                    </div>
                 </div>
 
-                <!-- INPUT TAMBAHAN KHUSUS EPISODE DRACIN -->
-                <div>
-                    <label for="audience">Nomor Episode & Detail Dracin</label>
-                    <input type="text" id="audience" name="audience" placeholder="Contoh: Episode 1-3, Fokus ke adegan balas dendam" required>
+                <!-- SECTION 2: MODE KONTEN UMUM / BEBAS -->
+                <div class="form-section" id="section-general">
+                    <div>
+                        <label for="general_topic">Topik / Judul Konten</label>
+                        <input type="text" id="general_topic" name="topic_general" placeholder="Contoh: 5 Tips Produktivitas Menggunakan AI">
+                    </div>
+
+                    <div>
+                        <label for="general_audience">Target Audience</label>
+                        <input type="text" id="general_audience" name="audience_general" placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula">
+                    </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- PENGATURAN UMUM (DURASI & BAHASA) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
                     <div>
                         <label for="duration">Durasi / Format Konten</label>
                         <select id="duration" name="duration" required>
                             <option value="Shorts (25s)">Shorts Kilat (25 Detik / TikTok / Reels)</option>
                             <option value="Short (60s)">Short Standard (60 Detik)</option>
-                            <option value="Dracin Recap (Medium 3-5 min)">Dracin Recap (3-5 Menit)</option>
-                            <option value="Long (8-10 min)">Long-form / Review Full (8-10 Menit)</option>
+                            <option value="Dracin Recap (Medium 3-5 min)">Dracin Recap / Review (3-5 Menit)</option>
+                            <option value="Long (8-10 min)">Long-form Full (8-10 Menit)</option>
                         </select>
                     </div>
 
@@ -303,7 +361,45 @@
             </form>
         </div>
 
+        <script>
+            function switchMode(mode) {
+                const btnDracin = document.getElementById('btn-dracin');
+                const btnGeneral = document.getElementById('btn-general');
+                const secDracin = document.getElementById('section-dracin');
+                const secGeneral = document.getElementById('section-general');
+
+                const inputDracinTitle = document.getElementById('dracin_title');
+                const inputDracinEp = document.getElementById('dracin_episode');
+                const inputGenTopic = document.getElementById('general_topic');
+                const inputGenAud = document.getElementById('general_audience');
+
+                if (mode === 'dracin') {
+                    btnDracin.classList.add('active');
+                    btnGeneral.classList.remove('active');
+                    secDracin.classList.add('active');
+                    secGeneral.classList.remove('active');
+
+                    // Atur atribut name agar data terkirim dengan benar ke backend Flask
+                    inputDracinTitle.setAttribute('name', 'topic');
+                    inputDracinEp.setAttribute('name', 'audience');
+                    inputGenTopic.removeAttribute('name');
+                    inputGenAud.removeAttribute('name');
+                } else {
+                    btnGeneral.classList.add('active');
+                    btnDracin.classList.remove('active');
+                    secGeneral.classList.add('active');
+                    secDracin.classList.remove('active');
+
+                    inputGenTopic.setAttribute('name', 'topic');
+                    inputGenAud.setAttribute('name', 'audience');
+                    inputDracinTitle.removeAttribute('name');
+                    inputDracinEp.removeAttribute('name');
+                }
+            }
+        </script>
+
         {% else %}
+        <!-- ================= LANDING PAGE PUBLIK ================= -->
         <section class="hero-section">
             <h1 class="hero-title">
                 Buat Script Konten & Dracin Lebih Cepat dengan AI
