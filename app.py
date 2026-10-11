@@ -1,152 +1,642 @@
 import os
-import json
 from flask import Flask, render_template, request, redirect, url_for, session
-import google.generativeai as genai
+import json
 
-app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "cosmic-ai-secret-key-2026")
+from core.content import (
+    generate_outline,
+    regenerate_outline,
+    generate_script,
+    regenerate_script,
+    generate_metadata,
+    normalize_outline
+)
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+from core.database import (
+    init_database,
+    create_project,
+    get_projects,
+    search_projects,
+    get_project,
+    update_outline,
+    update_script,
+    update_metadata,
+    update_research,
+    update_analysis,
+    rename_project,
+    delete_project
+)
 
-ACCESS_KEY = os.environ.get("ACCESS_KEY", "dullahstudio_rahasia_2026")
+from core.script_editor import (
+    split_script,
+    combine_sections
+)
 
-@app.route('/')
+from core.script_rewriter import (
+    rewrite_section
+)
+
+from core.script_analyzer import (
+    analyze_script
+)
+
+from core.research import (
+    research_project
+)
+
+from core.research_outline import (
+    generate_outline_from_research
+)
+
+from core.outline_script import (
+    generate_script_from_outline,
+    script_to_text
+)
+
+
+# ============================================================
+# APP CONFIGURATION
+# ============================================================
+
+app = Flask(
+    __name__,
+    static_folder="static",
+    static_url_path="/static"
+)
+
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dullah-studio-secure-session-key')
+ACCESS_KEY = os.environ.get('ACCESS_KEY', 'dullahstudio777')
+
+
+# ============================================================
+# DATABASE
+# ============================================================
+
+try:
+    init_database()
+except Exception as e:
+    print("Database init handled:", e)
+
+
+# ============================================================
+# FILE HELPERS
+# ============================================================
+
+def save_text(filename, content):
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            file.write(content)
+    except Exception as e:
+        print(f"Skipped saving file {filename}: {e}")
+
+
+def save_json(filename, data):
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"Skipped saving JSON {filename}: {e}")
+
+
+# ============================================================
+# HOME & ACCESS CONTROL (DIPROTEKSI DENGAN KEY)
+# ============================================================
+
+@app.route("/")
 def home():
     url_key = request.args.get('key')
+    
     if url_key == ACCESS_KEY:
         session['unlocked'] = True
     
     is_unlocked = session.get('unlocked', False)
-    return render_template('index.html', is_unlocked=is_unlocked)
+    
+    return render_template("index.html", is_unlocked=is_unlocked)
 
-@app.route('/logout-access')
+
+@app.route("/logout-access")
 def logout_access():
     session.pop('unlocked', None)
     return redirect(url_for('home'))
 
-@app.route('/generate', methods=['POST'])
-def generate():
-    if not session.get('unlocked', False):
-        return redirect(url_for('home'))
-    
-    content_type = request.form.get('content_type', 'general')
-    topic = request.form.get('topic')
-    duration = request.form.get('duration')
-    language = request.form.get('language')
-    audience = request.form.get('audience')
-    
-    try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        
-        if content_type == 'dracin':
-            prompt = f"""
-            Bertindaklah sebagai Head Writer Drama China (Dracin) miniseri vertikal yang sangat viral.
-            Buatkan naskah drama pendek berdasarkan detail berikut:
-            - Premis/Judul Cerita: {topic}
-            - Durasi/Format: {duration}
-            - Bahasa: {language}
-            - Target Penonton: {audience}
 
-            Keluarkan hasil dalam format JSON murni TANPA markdown block (tanpa ```json ... ```), dengan struktur persis seperti ini:
-            {{
-                "outline": {{
-                    "sections": [
-                        {{
-                            "name": "Episode 1: Hook & Konflik Utama",
-                            "approximate_duration": "0-60 detik",
-                            "purpose": "Memancing emosi penonton di detik awal",
-                            "key_points": ["Tokoh utama dihina", "Plot twist tersembunyi terungkap"],
-                            "narrative_goal": "Membuat penonton penasaran setengah mati"
-                        }}
-                    ]
-                }},
-                "script": "Tulis naskah lengkap adegan demi adegan di sini...",
-                "metadata": {{
-                    "hooks": [
-                        {{"type": "Emotional Hook", "text": "Contoh kalimat pembuka emosional..."}},
-                        {{"type": "Shocking Hook", "text": "Contoh kalimat pembuka penuh kejutan..."}}
-                    ],
-                    "titles": [
-                        {{"title": "Judul Dracin Menarik 1", "angle": "Balas Dendam"}},
-                        {{"title": "Judul Dracin Menarik 2", "angle": "CEO Menyamar"}}
-                    ],
-                    "description": "Deskripsi singkat untuk platform penayangan...",
-                    "call_to_action": "Tonton kelanjutan episodenya!"
-                }}
-            }}
-            """
-        else:
-            prompt = f"""
-            Bertindaklah sebagai Content Strategist dan Professional Scriptwriter.
-            Buatkan skrip konten dan metadata lengkap berdasarkan detail berikut:
-            - Topik: {topic}
-            - Durasi: {duration}
-            - Bahasa: {language}
-            - Target Audience: {audience}
+# ============================================================
+# PROJECTS
+# ============================================================
 
-            Keluarkan hasil dalam format JSON murni TANPA markdown block (tanpa ```json ... ```), dengan struktur persis seperti ini:
-            {{
-                "outline": {{
-                    "sections": [
-                        {{
-                            "name": "Pendahuluan / Hook",
-                            "approximate_duration": "0-1 menit",
-                            "purpose": "Menarik perhatian penonton",
-                            "key_points": ["Pernyataan masalah utama", "Janji solusi di video"],
-                            "narrative_goal": "Retensi penonton tinggi di awal"
-                        }}
-                    ]
-                }},
-                "script": "Tulis naskah/narasi lengkap word-for-word di sini...",
-                "metadata": {{
-                    "hooks": [
-                        {{"type": "Question", "text": "Pertanyaan pemancing rasa penasaran..."}},
-                        {{"type": "Statistic", "text": "Fakta menarik atau angka mengejutkan..."}}
-                    ],
-                    "titles": [
-                        {{"title": "Judul Video Menarik 1", "angle": "Rasa Penasaran"}},
-                        {{"title": "Judul Video Menarik 2", "angle": "Solusi Instan"}}
-                    ],
-                    "description": "Deskripsi video yang ramah SEO...",
-                    "call_to_action": "Jangan lupa subscribe!"
-                }}
-            }}
-            """
+@app.route("/projects")
+def projects():
+    search_query = (
+        request.args.get("search") or request.args.get("q") or ""
+    ).strip()
 
-        response = model.generate_content(prompt)
-        raw_text = response.text.strip()
-        
-        if raw_text.startswith("```json"):
-            raw_text = raw_text[7:]
-        if raw_text.startswith("```"):
-            raw_text = raw_text[3:]
-        if raw_text.endswith("```"):
-            raw_text = raw_text[:-3]
-        raw_text = raw_text.strip()
-        
-        parsed_data = json.loads(raw_text)
-        
-        outline = parsed_data.get("outline", {})
-        script = parsed_data.get("script", "")
-        metadata = parsed_data.get("metadata", {})
-        
-    except Exception as e:
-        outline = {"sections": [{"name": "Error", "purpose": str(e)}]}
-        script = f"Terjadi kesalahan saat memproses data AI: {str(e)}"
-        metadata = {"hooks": [], "titles": [], "description": "", "call_to_action": ""}
+    if search_query:
+        project_list = search_projects(search_query)
+    else:
+        project_list = get_projects()
 
     return render_template(
-        'result.html', 
-        topic=topic, 
-        duration=duration, 
-        audience=audience, 
-        language=language, 
-        outline=outline, 
-        script=script, 
+        "projects.html",
+        projects=project_list,
+        search_query=search_query
+    )
+
+
+# ============================================================
+# PROJECT DETAIL
+# ============================================================
+
+@app.route("/projects/<int:project_id>")
+def project_detail(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    if "outline" in project and project["outline"]:
+        project["outline"] = normalize_outline(project["outline"])
+
+    return render_template(
+        "project.html",
+        project=project
+    )
+
+
+# ============================================================
+# RESEARCH PAGE
+# ============================================================
+
+@app.route("/projects/<int:project_id>/research")
+def research_page(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    return render_template(
+        "research.html",
+        project=project,
+        research=project.get("research"),
+        error=None
+    )
+
+
+# ============================================================
+# RUN RESEARCH
+# ============================================================
+
+@app.route("/projects/<int:project_id>/research/run", methods=["POST"])
+def research_run(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    mode = request.form.get("research_mode", "knowledge").strip().lower()
+    web_search = (mode == "web")
+
+    research = research_project(project, web_search=web_search)
+
+    if research is None:
+        return render_template(
+            "research.html",
+            project=project,
+            research=None,
+            error="Research gagal dibuat. Periksa API key atau koneksi."
+        )
+
+    update_research(project_id, research)
+    save_json("research.json", research)
+
+    return redirect(f"/projects/{project_id}/research")
+
+
+# ============================================================
+# GENERATE OUTLINE FROM RESEARCH
+# ============================================================
+
+@app.route("/projects/<int:project_id>/research/generate-outline", methods=["POST"])
+def generate_outline_from_research_route(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    research = project.get("research")
+
+    if not research:
+        return "Research belum tersedia.", 400
+
+    outline = generate_outline_from_research(
+        project=project,
+        research=research
+    )
+
+    if outline is None:
+        return "Gagal membuat outline dari research.", 500
+
+    outline = normalize_outline(outline)
+
+    update_outline(project_id, outline)
+    save_json("outline.json", outline)
+
+    return redirect(f"/projects/{project_id}")
+
+
+# ============================================================
+# GENERATE SCRIPT FROM OUTLINE
+# ============================================================
+
+@app.route("/projects/<int:project_id>/research/generate-script", methods=["POST"])
+def generate_script_from_outline_route(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    outline = project.get("outline")
+
+    if not outline:
+        return "Outline belum tersedia.", 400
+
+    script_data = generate_script_from_outline(
+        project=project,
+        outline=outline
+    )
+
+    if script_data is None:
+        return "Gagal membuat script dari outline.", 500
+
+    script = script_to_text(script_data)
+
+    if not script:
+        return "Script hasil generate kosong.", 500
+
+    update_script(project_id, script)
+    save_text("script.txt", script)
+
+    return redirect(f"/projects/{project_id}/editor")
+
+
+# ============================================================
+# SCRIPT EDITOR
+# ============================================================
+
+@app.route("/projects/<int:project_id>/editor")
+def script_editor(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    sections = split_script(project.get("script", ""))
+
+    return render_template(
+        "editor.html",
+        project=project,
+        sections=sections,
+        rewrite_preview=None,
+        rewrite_section_name=None,
+        rewrite_style=None,
+        analysis=None,
+        analysis_error=None
+    )
+
+
+# ============================================================
+# SAVE SCRIPT EDITOR
+# ============================================================
+
+@app.route("/projects/<int:project_id>/editor/save", methods=["POST"])
+def save_script_editor(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    section_names = request.form.getlist("section_name")
+    section_contents = request.form.getlist("section_content")
+
+    sections = [
+        {"name": name, "content": content}
+        for name, content in zip(section_names, section_contents)
+    ]
+
+    new_script = combine_sections(sections)
+
+    update_script(project_id, new_script)
+    save_text("script.txt", new_script)
+
+    return redirect(f"/projects/{project_id}/editor")
+
+
+# ============================================================
+# REWRITE SCRIPT SECTION
+# ============================================================
+
+@app.route("/projects/<int:project_id>/editor/rewrite", methods=["POST"])
+def rewrite_script_section(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    section_name = request.form.get("section_name", "").strip()
+    section_content = request.form.get("section_content", "").strip()
+    style = request.form.get("style", "More engaging").strip()
+
+    if not section_name or not section_content:
+        return "Section name dan content wajib diisi.", 400
+
+    rewritten_content = rewrite_section(
+        section_name=section_name,
+        section_content=section_content,
+        style=style,
+        language=project.get("language", "Indonesian")
+    )
+
+    if rewritten_content is None:
+        return "Gagal membuat rewrite.", 500
+
+    sections = split_script(project.get("script", ""))
+
+    return render_template(
+        "editor.html",
+        project=project,
+        sections=sections,
+        rewrite_preview=rewritten_content,
+        rewrite_section_name=section_name,
+        rewrite_style=style,
+        analysis=None,
+        analysis_error=None
+    )
+
+
+# ============================================================
+# ACCEPT REWRITE
+# ============================================================
+
+@app.route("/projects/<int:project_id>/editor/accept-rewrite", methods=["POST"])
+def accept_rewrite(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    section_name = request.form.get("section_name", "").strip()
+    new_content = request.form.get("new_content", "").strip()
+
+    if not section_name or not new_content:
+        return "Section name dan isi rewrite wajib diisi.", 400
+
+    sections = split_script(project.get("script", ""))
+    target_found = False
+
+    for section in sections:
+        if section.get("name", "").strip().upper() == section_name.upper():
+            section["content"] = new_content
+            target_found = True
+            break
+
+    if not target_found:
+        return "Section tidak ditemukan.", 404
+
+    new_script = combine_sections(sections)
+
+    update_script(project_id, new_script)
+    save_text("script.txt", new_script)
+
+    return redirect(f"/projects/{project_id}/editor")
+
+
+# ============================================================
+# SCRIPT ANALYZER
+# ============================================================
+
+@app.route("/projects/<int:project_id>/editor/analyze", methods=["POST"])
+def analyze_script_route(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    script = project.get("script", "").strip()
+
+    if not script:
+        return "Script kosong.", 400
+
+    result = analyze_script(
+        script=script,
+        language=project.get("language", "Indonesian")
+    )
+
+    if result is None:
+        return "Gagal menganalisis script.", 500
+
+    try:
+        analysis = json.loads(result)
+    except json.JSONDecodeError:
+        return render_template(
+            "editor.html",
+            project=project,
+            sections=split_script(script),
+            rewrite_preview=None,
+            rewrite_section_name=None,
+            rewrite_style=None,
+            analysis=None,
+            analysis_error="AI mengembalikan hasil yang bukan JSON valid."
+        )
+
+    update_analysis(project_id, analysis)
+
+    return render_template(
+        "editor.html",
+        project=project,
+        sections=split_script(script),
+        rewrite_preview=None,
+        rewrite_section_name=None,
+        rewrite_style=None,
+        analysis=analysis,
+        analysis_error=None
+    )
+
+
+# ============================================================
+# REGENERATE OUTLINE
+# ============================================================
+
+@app.route("/projects/<int:project_id>/regenerate-outline", methods=["POST"])
+def regenerate_outline_route(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    new_outline = regenerate_outline(
+        topic=project["topic"],
+        duration=project["duration"],
+        audience=project["audience"],
+        language=project["language"]
+    )
+
+    if new_outline is None:
+        return "Gagal membuat outline baru.", 500
+
+    new_outline = normalize_outline(new_outline)
+
+    update_outline(project_id, new_outline)
+    save_json("outline.json", new_outline)
+
+    return redirect(f"/projects/{project_id}")
+
+
+# ============================================================
+# REGENERATE SCRIPT
+# ============================================================
+
+@app.route("/projects/<int:project_id>/regenerate-script", methods=["POST"])
+def regenerate_script_route(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    new_script = regenerate_script(
+        topic=project["topic"],
+        duration=project["duration"],
+        audience=project["audience"],
+        language=project["language"],
+        outline=project["outline"]
+    )
+
+    if new_script is None:
+        return "Gagal membuat script baru.", 500
+
+    update_script(project_id, new_script)
+    save_text("script.txt", new_script)
+
+    return redirect(f"/projects/{project_id}")
+
+
+# ============================================================
+# REGENERATE METADATA
+# ============================================================
+
+@app.route("/projects/<int:project_id>/regenerate-metadata", methods=["POST"])
+def regenerate_metadata_route(project_id):
+    project = get_project(project_id)
+
+    if project is None:
+        return "Project tidak ditemukan.", 404
+
+    new_metadata = generate_metadata(
+        topic=project["topic"],
+        script=project["script"],
+        outline=project["outline"],
+        language=project["language"]
+    )
+
+    if new_metadata is None:
+        return "Gagal membuat metadata baru.", 500
+
+    update_metadata(project_id, new_metadata)
+    save_json("metadata.json", new_metadata)
+
+    return redirect(f"/projects/{project_id}")
+
+
+# ============================================================
+# RENAME & DELETE PROJECT
+# ============================================================
+
+@app.route("/projects/<int:project_id>/rename", methods=["POST"])
+def rename_project_route(project_id):
+    new_topic = request.form.get("new_topic", "").strip()
+    if new_topic:
+        rename_project(project_id, new_topic)
+    return redirect(f"/projects/{project_id}")
+
+
+@app.route("/projects/<int:project_id>/delete", methods=["POST"])
+def delete_project_route(project_id):
+    delete_project(project_id)
+    return redirect("/projects")
+
+
+# ============================================================
+# GENERATOR
+# ============================================================
+
+@app.route("/generate", methods=["POST"])
+def generate():
+    topic = request.form.get("topic", "").strip()
+    duration = request.form.get("duration", "").strip()
+    audience = request.form.get("audience", "").strip()
+    language = request.form.get("language", "").strip()
+
+    if not topic or not duration or not audience or not language:
+        return "Semua field input wajib diisi.", 400
+
+    outline = generate_outline(
+        topic=topic,
+        duration=duration,
+        audience=audience,
+        language=language
+    )
+
+    if outline is None:
+        return "Gagal membuat outline.", 500
+
+    outline = normalize_outline(outline)
+
+    script = generate_script(
+        topic=topic,
+        duration=duration,
+        audience=audience,
+        language=language,
+        outline=outline
+    )
+
+    if script is None:
+        return "Gagal membuat script.", 500
+
+    metadata = generate_metadata(
+        topic=topic,
+        script=script,
+        outline=outline,
+        language=language
+    )
+
+    if metadata is None:
+        return "Gagal membuat metadata.", 500
+
+    try:
+        save_json("outline.json", outline)
+        save_text("script.txt", script)
+        save_json("metadata.json", metadata)
+    except Exception as e:
+        print("Abaikan error penulisan file lokal:", e)
+
+    project_id = create_project(
+        topic=topic,
+        duration=duration,
+        audience=audience,
+        language=language,
+        outline=outline,
+        script=script,
         metadata=metadata
     )
 
-if __name__ == '__main__':
+    if not project_id:
+        return "Gagal menyimpan proyek ke database.", 500
+
+    return redirect(f"/projects/{project_id}")
+
+
+# ============================================================
+# RUN SERVER
+# ============================================================
+
+app = app
+
+if __name__ == "__main__":
     app.run(debug=True)
