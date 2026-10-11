@@ -166,7 +166,7 @@
             font-size: 0.9rem;
         }
 
-        form textarea, input[type="text"], select {
+        textarea, input[type="text"], select {
             width: 100%;
             background: rgba(4, 6, 14, 0.9);
             border: 1px solid var(--border-cosmic);
@@ -179,7 +179,7 @@
             resize: vertical;
         }
 
-        form textarea:focus, input:focus {
+        textarea:focus, input:focus {
             outline: none;
             border-color: var(--cyan-glow);
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
@@ -257,7 +257,7 @@
                     <p>Analyze overall script quality or rewrite sections.</p>
                 </div>
                 <form method="POST" action="/projects/{{ project.id }}/editor/analyze" style="margin: 0;" onsubmit="showAnalyzeLoading(this)">
-                    <button type="submit" class="new-video-button" id="analyze-btn">Analyze Script</button>
+                    <button type="submit" class="new-video-button">Analyze Script</button>
                 </form>
             </div>
 
@@ -302,7 +302,7 @@
             {% endif %}
         </div>
 
-        <!-- SECTION EDITOR FORM -->
+        <!-- SECTION EDITOR FORM (DIPISAH PER SECTION AGAR REWRITE & SAVE TEPAT SASARAN) -->
         <div class="content-panel">
             <div class="panel-header">
                 <div>
@@ -311,9 +311,9 @@
                 </div>
             </div>
 
-            <form method="POST" action="/projects/{{ project.id }}/editor/save" onsubmit="showSaveLoading(this)">
-                {% for sec in sections %}
-                <div class="section-card">
+            {% for sec in sections %}
+            <div class="section-card">
+                <form method="POST" action="/projects/{{ project.id }}/editor/save">
                     <div class="section-title">
                         Section {{ loop.index }}: {{ sec.name }}
                     </div>
@@ -321,7 +321,7 @@
                     <textarea name="section_content" rows="4">{{ sec.content }}</textarea>
 
                     <div class="action-bar">
-                        <button type="submit" formaction="/projects/{{ project.id }}/editor/rewrite" name="section_name" value="{{ sec.name }}" formmethod="POST" class="regenerate-button rewrite-btn" style="padding: 6px 14px; font-size: 0.85rem;" onclick="handleRewriteClick(this)">
+                        <button type="submit" formaction="/projects/{{ project.id }}/editor/rewrite" name="section_name" value="{{ sec.name }}" class="regenerate-button" style="padding: 6px 14px; font-size: 0.85rem;" onclick="this.innerText='✨ Sedang meracik ulang...';">
                             ✨ Rewrite with AI
                         </button>
                         <select name="style" style="width: auto; padding: 6px 10px; margin-bottom: 0;">
@@ -330,14 +330,13 @@
                             <option value="More casual">More casual</option>
                             <option value="Professional">Professional</option>
                         </select>
+                        <button type="submit" class="new-video-button" style="padding: 6px 14px; font-size: 0.85rem; background: #10b981; box-shadow: none;">
+                            💾 Save Section
+                        </button>
                     </div>
-                </div>
-                {% endfor %}
-
-                <div style="margin-top: 25px;">
-                    <button type="submit" class="new-video-button save-btn" style="font-size: 1rem; padding: 12px 30px;">Save All Changes</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            {% endfor %}
 
             {% if rewrite_preview %}
             <div style="background: rgba(123, 97, 255, 0.15); border: 1px solid var(--primary-glow); padding: 20px; border-radius: 12px; margin-top: 25px;">
@@ -356,26 +355,10 @@
 </div>
 
 <script>
-function handleRewriteClick(btn) {
-    btn.innerText = "✨ Sedang meracik ulang...";
-    btn.style.opacity = "0.7";
-    btn.style.cursor = "wait";
-    // Biarkan form tetap ter-submit ke server dengan aman
-}
-
 function showAnalyzeLoading(form) {
     const btn = form.querySelector('button');
     if (btn) {
         btn.innerText = "📊 Menganalisis Script...";
-        btn.disabled = true;
-        btn.style.opacity = "0.7";
-    }
-}
-
-function showSaveLoading(form) {
-    const btn = form.querySelector('.save-btn');
-    if (btn) {
-        btn.innerText = "💾 Menyimpan...";
         btn.disabled = true;
         btn.style.opacity = "0.7";
     }
