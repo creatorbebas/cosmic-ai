@@ -63,8 +63,11 @@ app = Flask(
     static_url_path="/static"
 )
 
+# Kunci rahasia session Flask
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dullah-studio-secure-session-key')
-ACCESS_KEY = os.environ.get('ACCESS_KEY', 'dullahstudio777')
+
+# Kunci rahasia akses utama (diatur ke studio_rahasia_2026 sesuai link aksesmu)
+ACCESS_KEY = os.environ.get('ACCESS_KEY', 'studio_rahasia_2026')
 
 
 # ============================================================
@@ -103,11 +106,14 @@ def save_json(filename, data):
 
 @app.route("/")
 def home():
+    # Cek apakah pengguna membawa parameter ?key=... di URL
     url_key = request.args.get('key')
     
     if url_key == ACCESS_KEY:
+        # Jika key benar, buka akses penuh di sesi browser mereka
         session['unlocked'] = True
     
+    # Status apakah akses penuh sudah terbuka
     is_unlocked = session.get('unlocked', False)
     
     return render_template("index.html", is_unlocked=is_unlocked)
