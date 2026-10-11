@@ -336,8 +336,14 @@
                     </div>
 
                     <div>
-                        <label for="d_focus">Fokus Adegan / Trope Cerita</label>
-                        <input type="text" id="d_focus" name="audience" placeholder="Contoh: Identitas asli CEO terbongkar, mertua meremehkan">
+                        <label for="d_focus">Fokus Adegan Utama (Trope Dracin)</label>
+                        <select id="d_focus" name="audience">
+                            <option value="Identitas Terbongkar (Hidden Identity / Secret Boss)">1. Identitas Terbongkar (Hidden Identity / Secret Boss)</option>
+                            <option value="Balas Dendam / Pembalasan (Revenge & Redemption)">2. Balas Dendam / Pembalasan (Revenge & Redemption)</option>
+                            <option value="Pernikahan Kontrak & Cinta Paksa (Contract Marriage)">3. Pernikahan Kontrak & Cinta Paksa (Contract Marriage)</option>
+                            <option value="Mertua Toksik & Penghinaan (Toxic In-laws & Humiliation)">4. Mertua Toksik & Penghinaan (Toxic In-laws & Humiliation)</option>
+                            <option value="Kisah Cinta Segitiga & Cemburu Berat (Love Triangle & Jealousy)">5. Kisah Cinta Segitiga & Cemburu Berat (Love Triangle & Jealousy)</option>
+                        </select>
                     </div>
                 </div>
 
@@ -421,7 +427,6 @@
 
                     gTopic.setAttribute('name', 'topic');
                     gAud.setAttribute('name', 'audience');
-                    // Kirim durasi umum ke backend
                     gDur.setAttribute('name', 'duration');
                     gLang.setAttribute('name', 'language');
 
