@@ -308,7 +308,7 @@
 
             <form action="/generate" method="POST">
                 
-                <!-- ================= FORM 1: MODE DRACIN TERPISAH ================= -->
+                <!-- ================= FORM 1: MODE DRACIN ================= -->
                 <div class="form-pane active" id="pane-dracin">
                     <div>
                         <label for="d_title">Judul Drama China</label>
@@ -327,12 +327,10 @@
                         </div>
 
                         <div>
-                            <label for="d_duration">Durasi / Format Dracin</label>
-                            <select id="d_duration" name="duration">
-                                <option value="Shorts (25s)">Shorts Kilat (25 Detik / TikTok / Reels)</option>
-                                <option value="Short (60s)">Short Standard (60 Detik)</option>
-                                <option value="Dracin Recap (Medium 3-5 min)">Dracin Recap (3-5 Menit)</option>
-                                <option value="Long (8-10 min)">Long-form / Review Full (8-10 Menit)</option>
+                            <label for="d_language">Bahasa Script Dracin</label>
+                            <select id="d_language" name="language">
+                                <option value="Indonesian" selected>Indonesia</option>
+                                <option value="English">Inggris (English)</option>
                             </select>
                         </div>
                     </div>
@@ -341,17 +339,9 @@
                         <label for="d_focus">Fokus Adegan / Trope Cerita</label>
                         <input type="text" id="d_focus" name="audience" placeholder="Contoh: Identitas asli CEO terbongkar, mertua meremehkan">
                     </div>
-
-                    <div>
-                        <label for="d_language">Bahasa Script Dracin</label>
-                        <select id="d_language" name="language">
-                            <option value="Indonesian" selected>Indonesia</option>
-                            <option value="English">Inggris (English)</option>
-                        </select>
-                    </div>
                 </div>
 
-                <!-- ================= FORM 2: MODE KONTEN UMUM TERPISAH ================= -->
+                <!-- ================= FORM 2: MODE KONTEN UMUM ================= -->
                 <div class="form-pane" id="pane-general">
                     <div>
                         <label for="g_topic">Topik / Judul Konten Umum</label>
@@ -401,7 +391,6 @@
                 const dTitle = document.getElementById('d_title');
                 const dEp = document.getElementById('d_episode');
                 const dAud = document.getElementById('d_focus');
-                const dDur = document.getElementById('d_duration');
                 const dLang = document.getElementById('d_language');
 
                 // Input General
@@ -418,7 +407,6 @@
 
                     dTitle.setAttribute('name', 'topic');
                     dAud.setAttribute('name', 'audience');
-                    dDur.setAttribute('name', 'duration');
                     dLang.setAttribute('name', 'language');
 
                     gTopic.removeAttribute('name');
@@ -433,13 +421,13 @@
 
                     gTopic.setAttribute('name', 'topic');
                     gAud.setAttribute('name', 'audience');
+                    // Kirim durasi umum ke backend
                     gDur.setAttribute('name', 'duration');
                     gLang.setAttribute('name', 'language');
 
                     dTitle.removeAttribute('name');
                     dEp.removeAttribute('name');
                     dAud.removeAttribute('name');
-                    dDur.removeAttribute('name');
                     dLang.removeAttribute('name');
                 }
             }
@@ -449,10 +437,10 @@
         <!-- ================= LANDING PAGE PUBLIK ================= -->
         <section class="hero-section">
             <h1 class="hero-title">
-                Buat Script Konten & Dracin Lebih Cepat dengan AI
+                Buat Script Konten Lebih Cepat dengan AI
             </h1>
             <p class="hero-subtitle">
-                Rancang outline, skrip rekap drama China, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
+                Rancang outline, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
             </p>
         </section>
 
