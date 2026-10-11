@@ -256,8 +256,8 @@
                     <h2>AI Script Tools</h2>
                     <p>Analyze overall script quality or rewrite sections.</p>
                 </div>
-                <form method="POST" action="/projects/{{ project.id }}/editor/analyze" style="margin: 0;">
-                    <button type="submit" class="new-video-button">Analyze Script</button>
+                <form method="POST" action="/projects/{{ project.id }}/editor/analyze" style="margin: 0;" onsubmit="handleAnalyzeLoading(this)">
+                    <button type="submit" class="new-video-button" id="analyze-btn">Analyze Script</button>
                 </form>
             </div>
 
@@ -321,7 +321,7 @@
                     <textarea name="section_content" rows="4">{{ sec.content }}</textarea>
 
                     <div class="action-bar">
-                        <button type="submit" formaction="/projects/{{ project.id }}/editor/rewrite" name="section_name" value="{{ sec.name }}" formmethod="POST" class="regenerate-button" style="padding: 6px 14px; font-size: 0.85rem;">
+                        <button type="submit" formaction="/projects/{{ project.id }}/editor/rewrite" name="section_name" value="{{ sec.name }}" formmethod="POST" class="regenerate-button" style="padding: 6px 14px; font-size: 0.85rem;" onclick="handleRewriteLoading(this)">
                             ✨ Rewrite with AI
                         </button>
                         <select name="style" style="width: auto; padding: 6px 10px; margin-bottom: 0;">
@@ -354,6 +354,25 @@
         </div>
     </main>
 </div>
+
+<script>
+function handleAnalyzeLoading(form) {
+    const btn = form.querySelector('#analyze-btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.style.opacity = "0.7";
+        btn.style.cursor = "wait";
+        btn.innerText = "⏳ Sedang Menganalisis AI...";
+    }
+}
+
+function handleRewriteLoading(btn) {
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+    btn.style.cursor = "wait";
+    btn.innerText = "✨ Sedang Menulis Ulang...";
+}
+</script>
 
 </body>
 </html>
