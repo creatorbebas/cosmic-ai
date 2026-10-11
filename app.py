@@ -104,13 +104,11 @@ def save_json(filename, data):
 def home():
     url_key = request.args.get('key')
     
-    # Daftar kunci resmi yang diizinkan untuk bypass
     allowed_keys = ['studio_rahasia_2026', 'dullahstudio777', 'dullahstudio_rahasia_2026']
     
     if url_key in allowed_keys:
         session['unlocked'] = True
     
-    # Memastikan langsung terbuka jika parameter URL benar
     is_unlocked = session.get('unlocked', False) or (url_key in allowed_keys)
     
     return render_template("index.html", is_unlocked=is_unlocked)
@@ -566,15 +564,27 @@ def delete_project_route(project_id):
 
 
 # ============================================================
-# GENERATOR
+# GENERATOR (MENDUKUNG MODE DRACIN & KONTEN UMUM)
 # ============================================================
 
 @app.route("/generate", methods=["POST"])
 def generate():
     topic = request.form.get("topic", "").strip()
-    duration = request.form.get("duration", "").strip()
     audience = request.form.get("audience", "").strip()
     language = request.form.get("language", "").strip()
+    
+    # Cek apakah ini berasal dari Mode Dracin (yang mengirim d_episode_input)
+    episode_input = request.form.get("d_episode_input", "").strip()
+    
+    if episode_input:
+        # Jika Mode Dracin, jadikan pilihan episode sebagai format durasi otomatis
+        duration = f"Rekap {episode_input}"
+        # Jika audience kosong, berikan default trope Dracin
+        if not audience:
+            audience = "Drama China Rekap Fokus Emosional"
+    else:
+      # Jika Mode Konten Umum, ambil durasi dari form umum
+      duration = request.form.get("duration", "").strip()
 
     if not topic or not duration or not audience or not language:
         return "Semua field input wajib diisi.", 400
