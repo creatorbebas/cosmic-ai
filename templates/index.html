@@ -315,17 +315,17 @@
                         <input type="text" id="d_title" name="topic" placeholder="Contoh: CEO Dingin Menikahi Wanita Miskin / Hidden Wealthy Boss">
                     </div>
 
-                    <div>
-                        <label for="d_episode">Nomor Episode (Cth: Episode 1-3)</label>
-                        <input type="text" id="d_episode" name="d_episode_input" placeholder="Contoh: Episode 5 (Fokus adegan balas dendam di pesta)">
-                    </div>
-
-                    <div>
-                        <label for="d_focus">Fokus Adegan / Trope Cerita</label>
-                        <input type="text" id="d_focus" name="audience" placeholder="Contoh: Identitas asli CEO terbongkar, mertua meremehkan">
-                    </div>
-
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label for="d_episode">Pilihan Episode</label>
+                            <select id="d_episode" name="d_episode_input">
+                                <option value="10 Episode">10 Episode</option>
+                                <option value="20 Episode" selected>20 Episode</option>
+                                <option value="30 Episode">30 Episode</option>
+                                <option value="50 Episode">50 Episode</option>
+                            </select>
+                        </div>
+
                         <div>
                             <label for="d_duration">Durasi / Format Dracin</label>
                             <select id="d_duration" name="duration">
@@ -335,14 +335,19 @@
                                 <option value="Long (8-10 min)">Long-form / Review Full (8-10 Menit)</option>
                             </select>
                         </div>
+                    </div>
 
-                        <div>
-                            <label for="d_language">Bahasa Script Dracin</label>
-                            <select id="d_language" name="language">
-                                <option value="Indonesian" selected>Indonesia</option>
-                                <option value="English">Inggris (English)</option>
-                            </select>
-                        </div>
+                    <div>
+                        <label for="d_focus">Fokus Adegan / Trope Cerita</label>
+                        <input type="text" id="d_focus" name="audience" placeholder="Contoh: Identitas asli CEO terbongkar, mertua meremehkan">
+                    </div>
+
+                    <div>
+                        <label for="d_language">Bahasa Script Dracin</label>
+                        <select id="d_language" name="language">
+                            <option value="Indonesian" selected>Indonesia</option>
+                            <option value="English">Inggris (English)</option>
+                        </select>
                     </div>
                 </div>
 
@@ -411,9 +416,7 @@
                     paneDracin.classList.add('active');
                     paneGeneral.classList.remove('active');
 
-                    // Set name attribute untuk dikirim ke backend Flask /generate
                     dTitle.setAttribute('name', 'topic');
-                    // Gabungkan episode dan focus adegan agar terbaca maksimal oleh backend
                     dAud.setAttribute('name', 'audience');
                     dDur.setAttribute('name', 'duration');
                     dLang.setAttribute('name', 'language');
