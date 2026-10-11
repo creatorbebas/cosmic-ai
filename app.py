@@ -12,8 +12,8 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
-# Konfigurasi Akses Kunci URL
-ACCESS_KEY = os.environ.get("ACCESS_KEY", "rahasia123")
+# Konfigurasi Akses Kunci URL (Disesuaikan dengan link kamu)
+ACCESS_KEY = os.environ.get("ACCESS_KEY", "dullahstudio_rahasia_2026")
 
 @app.route('/')
 def home():
@@ -44,7 +44,6 @@ def generate():
         model = genai.GenerativeModel('gemini-1.5-flash')
         
         if content_type == 'dracin':
-            # Prompt Khusus Dracin / Drama Pendek dalam format JSON agar sinkron dengan template result.html
             prompt = f"""
             Bertindaklah sebagai Head Writer Drama China (Dracin) miniseri vertikal yang sangat viral.
             Buatkan naskah drama pendek berdasarkan detail berikut:
@@ -82,7 +81,6 @@ def generate():
             }}
             """
         else:
-            # Prompt General Content (YouTube/TikTok) dalam format JSON
             prompt = f"""
             Bertindaklah sebagai Content Strategist dan Professional Scriptwriter.
             Buatkan skrip konten dan metadata lengkap berdasarkan detail berikut:
@@ -123,7 +121,6 @@ def generate():
         response = model.generate_content(prompt)
         raw_text = response.text.strip()
         
-        # Bersihkan blok markdown jika AI tidak sengaja menyertakannya
         if raw_text.startswith("```json"):
             raw_text = raw_text[7:]
         if raw_text.startswith("```"):
@@ -139,7 +136,6 @@ def generate():
         metadata = parsed_data.get("metadata", {})
         
     except Exception as e:
-        # Fallback jika parsing JSON gagal agar web tidak error putih
         outline = {"sections": [{"name": "Error", "purpose": str(e)}]}
         script = f"Terjadi kesalahan saat memproses data AI: {str(e)}"
         metadata = {"hooks": [], "titles": [], "description": "", "call_to_action": ""}
