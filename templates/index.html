@@ -9,9 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ==========================================
-           COSMIC AI - HIGH CONTRAST & READABLE THEME
-           ========================================== */
         :root {
             --bg-card: rgba(10, 12, 28, 0.85);
             --border-cosmic: rgba(0, 240, 255, 0.45);
@@ -46,7 +43,6 @@
             justify-content: space-between;
         }
 
-        /* NAVBAR HEADER */
         header {
             display: flex;
             justify-content: space-between;
@@ -101,7 +97,6 @@
             transform: translateY(-2px);
         }
 
-        /* HERO SECTION STYLING */
         .hero-section {
             text-align: center;
             margin-top: 20px;
@@ -137,7 +132,6 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         }
 
-        /* CONTAINER & GLASS CARDS */
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -164,7 +158,6 @@
             background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
-        /* FORM & INPUTS */
         label {
             font-weight: 600;
             font-size: 0.95rem;
@@ -212,7 +205,6 @@
             transform: scale(1.02);
         }
 
-        /* PRICING BOX STYLING */
         .pricing-box {
             background: rgba(10, 12, 28, 0.95);
             border: 1px solid rgba(0, 240, 255, 0.4);
@@ -238,7 +230,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* FOOTER */
         footer {
             text-align: center;
             padding: 25px;
@@ -251,7 +242,6 @@
 </head>
 <body>
 
-    <!-- NAVBAR HEADER -->
     <header>
         <a href="/" class="nav-brand">
             ✨ COSMIC AI
@@ -265,11 +255,10 @@
         </nav>
     </header>
 
-    <!-- KONTEN UTAMA -->
     <main class="container">
         
         {% if is_unlocked %}
-        <!-- ================= KONDISI 1: SUDAH PUNYA KEY (AKSES PENUH) ================= -->
+        <!-- DASHBOARD AI GENERATOR (DENGAN OPSI DRACIN) -->
         <div class="card" style="max-width: 750px; margin: 0 auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                 <h2 style="font-size: 1.5rem; font-weight: 700;">💫 Dashboard AI Generator</h2>
@@ -278,17 +267,19 @@
 
             <form action="/generate" method="POST">
                 <div>
-                    <label for="topic">Topik / Judul Konten</label>
-                    <input type="text" id="topic" name="topic" placeholder="Contoh: 5 Tips AI untuk Produktivitas" required>
+                    <label for="topic">Topik / Judul / Sinopsis Dracin (Drama China)</label>
+                    <input type="text" id="topic" name="topic" placeholder="Contoh: Rekomendasi Dracin CEO Dingin / Sinopsis Episode 1" required>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
-                        <label for="duration">Durasi Konten</label>
+                        <label for="duration">Format / Durasi Konten</label>
                         <select id="duration" name="duration" required>
-                            <option value="Short (60s)">Short (60 detik / Reels / TikTok)</option>
+                            <option value="Dracin Recap (Shorts/Reels)">Dracin Recap (Shorts / Reels / TikTok)</option>
+                            <option value="Dracin Review (Long-form)">Dracin Review / Analisis (YouTube)</option>
+                            <option value="Short (60s)">Short Standard (60 detik)</option>
                             <option value="Medium (3-5 min)">Medium (3-5 menit)</option>
-                            <option value="Long (8-10 min)">Long (8-10 menit / YouTube)</option>
+                            <option value="Long (8-10 min)">Long (8-10 menit)</option>
                         </select>
                     </div>
 
@@ -303,33 +294,30 @@
 
                 <div>
                     <label for="audience">Target Audience</label>
-                    <input type="text" id="audience" name="audience" placeholder="Contoh: Gen Z, Pekerja Kantoran, Pemula" required>
+                    <input type="text" id="audience" name="audience" placeholder="Contoh: Pencinta Drama China, Penggemar Genre CEO / Romantis" required>
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    ✨ Generate Script Sekarang
+                    ✨ Generate Script & Dracin Sekarang
                 </button>
             </form>
         </div>
 
         {% else %}
-        <!-- ================= KONDISI 2: PUBLIK (LANDING PAGE & PRICING EKSKLUSIF) ================= -->
         <section class="hero-section">
             <h1 class="hero-title">
-                Buat Script Konten Lebih Cepat dengan AI
+                Buat Script Konten & Dracin Lebih Cepat dengan AI
             </h1>
             <p class="hero-subtitle">
-                Rancang outline, skrip video, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
+                Rancang outline, skrip rekap drama China, dan metadata otomatis untuk TikTok, YouTube, Reels, dan platform lainnya dengan asisten bertenaga kecerdasan kosmik.
             </p>
         </section>
 
-        <!-- PRICING / PROMO BOX -->
         <div class="pricing-box">
             <div class="badge-promo">DISKON 50%</div>
             <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 5px;">Paket Langganan Full Studio</h3>
-            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 22px;">Akses penuh tanpa batas seluruh fitur generator AI.</p>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 22px;">Akses penuh tanpa batas seluruh fitur generator AI & Dracin.</p>
 
-            <!-- HARGA CORET & PROMO -->
             <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 22px;">
                 <span style="font-size: 2.3rem; font-weight: 800; color: #fff;">Rp75.000</span>
                 <span style="font-size: 1.2rem; color: #ef4444; text-decoration: line-through; font-weight: 600;">Rp150.000</span>
@@ -337,7 +325,7 @@
             </div>
 
             <ul style="list-style: none; font-size: 0.9rem; color: #cbd5e1; margin-bottom: 25px; line-height: 2.2;">
-                <li>✅ Full Akses Generator & Editor AI</li>
+                <li>✅ Full Akses Generator & Dracin Editor AI</li>
                 <li>✅ Durasi Aktif Penuh 30 Hari (1 Bulan)</li>
                 <li>✅ Update & Dukungan Bantuan Langsung</li>
             </ul>
@@ -351,7 +339,6 @@
 
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <p>&copy; 2026 Cosmic AI Studio. All rights reserved.</p>
         <p style="margin-top: 5px;">WhatsApp: <strong>+62-882-1062-7434</strong> | Email: <strong>creatorbebas81@gmail.com</strong></p>
