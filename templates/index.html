@@ -258,7 +258,7 @@
     <main class="container">
         
         {% if is_unlocked %}
-        <!-- DASHBOARD AI GENERATOR (DENGAN OPSI DRACIN) -->
+        <!-- DASHBOARD AI GENERATOR (DENGAN SHORTS 25S & EPISODE DRACIN) -->
         <div class="card" style="max-width: 750px; margin: 0 auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
                 <h2 style="font-size: 1.5rem; font-weight: 700;">💫 Dashboard AI Generator</h2>
@@ -267,19 +267,24 @@
 
             <form action="/generate" method="POST">
                 <div>
-                    <label for="topic">Topik / Judul / Sinopsis Dracin (Drama China)</label>
-                    <input type="text" id="topic" name="topic" placeholder="Contoh: Rekomendasi Dracin CEO Dingin / Sinopsis Episode 1" required>
+                    <label for="topic">Judul Dracin / Topik Konten</label>
+                    <input type="text" id="topic" name="topic" placeholder="Contoh: CEO Dingin Menikahi Sekretaris / Rekomendasi Drama China" required>
+                </div>
+
+                <!-- INPUT TAMBAHAN KHUSUS EPISODE DRACIN -->
+                <div>
+                    <label for="audience">Nomor Episode & Detail Dracin</label>
+                    <input type="text" id="audience" name="audience" placeholder="Contoh: Episode 1-3, Fokus ke adegan balas dendam" required>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
-                        <label for="duration">Format / Durasi Konten</label>
+                        <label for="duration">Durasi / Format Konten</label>
                         <select id="duration" name="duration" required>
-                            <option value="Dracin Recap (Shorts/Reels)">Dracin Recap (Shorts / Reels / TikTok)</option>
-                            <option value="Dracin Review (Long-form)">Dracin Review / Analisis (YouTube)</option>
-                            <option value="Short (60s)">Short Standard (60 detik)</option>
-                            <option value="Medium (3-5 min)">Medium (3-5 menit)</option>
-                            <option value="Long (8-10 min)">Long (8-10 menit)</option>
+                            <option value="Shorts (25s)">Shorts Kilat (25 Detik / TikTok / Reels)</option>
+                            <option value="Short (60s)">Short Standard (60 Detik)</option>
+                            <option value="Dracin Recap (Medium 3-5 min)">Dracin Recap (3-5 Menit)</option>
+                            <option value="Long (8-10 min)">Long-form / Review Full (8-10 Menit)</option>
                         </select>
                     </div>
 
@@ -290,11 +295,6 @@
                             <option value="English">Inggris</option>
                         </select>
                     </div>
-                </div>
-
-                <div>
-                    <label for="audience">Target Audience</label>
-                    <input type="text" id="audience" name="audience" placeholder="Contoh: Pencinta Drama China, Penggemar Genre CEO / Romantis" required>
                 </div>
 
                 <button type="submit" class="btn-submit">
