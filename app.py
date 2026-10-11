@@ -121,6 +121,16 @@ def logout_access():
 
 
 # ============================================================
+# SETTINGS PAGE (FIX 404 NOT FOUND)
+# ============================================================
+
+@app.route("/settings")
+def settings_page():
+    # Pastikan file templates/settings.html tersedia di direktori proyek
+    return render_template("settings.html")
+
+
+# ============================================================
 # PROJECTS
 # ============================================================
 
@@ -573,18 +583,14 @@ def generate():
     audience = request.form.get("audience", "").strip()
     language = request.form.get("language", "").strip()
     
-    # Cek apakah ini berasal dari Mode Dracin (yang mengirim d_episode_input)
     episode_input = request.form.get("d_episode_input", "").strip()
     
     if episode_input:
-        # Jika Mode Dracin, jadikan pilihan episode sebagai format durasi otomatis
         duration = f"Rekap {episode_input}"
-        # Jika audience kosong, berikan default trope Dracin
         if not audience:
             audience = "Drama China Rekap Fokus Emosional"
     else:
-      # Jika Mode Konten Umum, ambil durasi dari form umum
-      duration = request.form.get("duration", "").strip()
+        duration = request.form.get("duration", "").strip()
 
     if not topic or not duration or not audience or not language:
         return "Semua field input wajib diisi.", 400
