@@ -7,10 +7,6 @@ from core.ai import ask_ai
 # ============================================================
 
 def normalize_outline(outline):
-    """
-    Memastikan struktur outline selalu memiliki baik 'key_information' (string)
-    maupun 'key_points' (list) agar kompatibel dengan seluruh template UI & script.
-    """
     if not isinstance(outline, dict) or "sections" not in outline:
         return outline
 
@@ -34,7 +30,7 @@ def normalize_outline(outline):
 
 
 # ============================================================
-# GENERATE OUTLINE (PEMISAHAN TOTAL C-DRAMA & KONTEN UMUM)
+# GENERATE OUTLINE (C-DRAMA ENGINE SUITE PRO)
 # ============================================================
 
 def generate_outline(topic, duration, audience, language):
@@ -62,23 +58,23 @@ Use exactly this structure with these exact section names:
     {{
       "name": "Draf Karakter Utama",
       "purpose": "Detailed character profiles including background, core motivation, strengths, and flaws.",
-      "key_information": "1. [Nama Karakter Utama 1]\n- Nama: ...\n- Umur: ...\n- Penampilan: ...\n- Kepribadian: ...\n- Latar Belakang: ...\n- Motivasi: ...\n- Kelebihan: ...\n- Kekurangan: ...\n\n2. [Nama Karakter Utama 2]\n- Nama: ...\n- Umur: ...\n- Penampilan: ...\n- Kepribadian: ...\n- Latar Belakang: ...\n- Motivasi: ...\n- Kelebihan: ...\n- Kekurangan: ..."
+      "key_information": "1. [Nama Karakter Utama / Protagonis]\n- Nama: ...\n- Peran / Status: ...\n- Visual & Karakteristik: ...\n- Motivasi Utama / Balas Dendam: ...\n- Kelebihan & Keahlian: ...\n- Kelemahan / Flaw:\n\n2. [Nama Antagonis / Tokoh Pendukung]\n- Nama: ...\n- Peran: ...\n- Hubungan dengan Protagonis: ..."
     }},
     {{
       "name": "Konflik & Dinamika Hubungan",
       "purpose": "Core narrative friction, internal/external conflicts, and relationship progression web.",
-      "key_information": "Konflik Utama: ...\nInternal Karakter: ...\nEksternal & Antagonis: ...\nBagan Hubungan Antar Karakter: ..."
+      "key_information": "- Konflik Utama (Core Conflict): ...\n- Hambatan Eksternal (Mertua Toksik / Keluarga Saingan): ...\n- Titik Balik Emosional (Emotional Turning Point): ...\n- Dinamika Hubungan (Love-Hate / Contract / Hidden Identity): ..."
     }},
     {{
       "name": "Outline Episode Utama",
       "purpose": "Structured episode breakdown with hooks, dramatic turning points, and cliffhangers.",
-      "key_information": "Jumlah Episode: {duration}\n\nEpisode 1:\n- Judul & Premis:\n- Alur Adegan Utama:\n- Cliffhanger:\n\nEpisode 2:\n- Judul & Premis:\n- Alur Adegan Utama:\n- Cliffhanger:"
+      "key_information": "Lingkup: {duration}\n\n[Episode 1-5: Pengenalan & Penghinaan Awal]\n- Fokus Plot: ...\n- Cliffhanger: ...\n\n[Episode 6-15: Eskalasi Konflik & Pembalasan]\n- Fokus Plot: ...\n- Cliffhanger: ...\n\n[Episode 16-{duration}: Klimaks & Puasnya Pembalasan]\n- Fokus Plot: ...\n- Cliffhanger Akhir:"
     }}
   ]
 }}
 
 RULES:
-- Rich, highly engaging, professional C-Drama pre-production dossier format matching the user reference.
+- Rich, highly engaging, professional C-Drama pre-production dossier format matching industry standards.
 - Do not output markdown codeblocks outside JSON.
 """
     else:
@@ -166,7 +162,7 @@ def regenerate_outline(topic, duration, audience, language):
 
 
 # ============================================================
-# GENERATE SCRIPT (PEMISAHAN TOTAL C-DRAMA & KONTEN UMUM)
+# GENERATE SCRIPT
 # ============================================================
 
 def generate_script(topic, duration, audience, language, outline):
@@ -226,7 +222,32 @@ def regenerate_script(topic, duration, audience, language, outline):
 # ============================================================
 
 def generate_metadata(topic, script, outline, language):
-    prompt = f"""
+    is_dracin = "Rekap" in str(outline.get("duration_minutes", "")) or "Episode" in str(outline.get("duration_minutes", ""))
+
+    if is_dracin:
+        prompt = f"""
+You are an expert C-Drama Marketing & SEO Strategist.
+Generate viral titles, hook lines, and synopsis metadata for this Chinese Drama project.
+
+Drama Title: {topic}
+Language: {language}
+
+Return ONLY valid JSON matching this structure:
+{{
+  "hooks": [
+    {{"type": "curiosity", "text": "Hook text..."}},
+    {{"type": "emotional", "text": "Hook text..."}}
+  ],
+  "titles": [
+    {{"title": "Title 1", "text": "Title 1", "angle": "Angle 1"}},
+    {{"title": "Title 2", "text": "Title 2", "angle": "Angle 2"}}
+  ],
+  "description": "Engaging series synopsis and description...",
+  "call_to_action": "Subscribe and watch next part..."
+}}
+"""
+    else:
+        prompt = f"""
 You are a YouTube SEO and social media metadata expert.
 
 Generate engaging hooks, clickable titles, and a video description for this content.
