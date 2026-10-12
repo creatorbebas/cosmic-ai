@@ -30,24 +30,24 @@ def normalize_outline(outline):
 
 
 # ============================================================
-# GENERATE OUTLINE (C-DRAMA ENGINE SUITE PRO)
+# GENERATE OUTLINE (C-DRAMA DOSSIER SESUAI REFERENSI)
 # ============================================================
 
 def generate_outline(topic, duration, audience, language):
-    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
+    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration) or "Drama" in str(duration) or "CEO" in str(duration) or "Mafia" in str(duration)
 
     if is_dracin:
         prompt = f"""
-You are the Master Showrunner and Executive Producer for C-Drama Engine Suite Pro.
+You are the Master Showrunner and Executive Producer for C-Drama AI Engine Suite Pro.
 Create a professional pre-production dossier and multi-episode outline for a Chinese Drama based on these parameters:
 
 Drama Title / Concept: {topic}
-Episode Scope: {duration}
+Episode Scope & Parameters: {duration}
 Core Trope / Focus: {audience}
 Script Language: {language}
 
 Return ONLY valid JSON.
-Use exactly this structure with these exact section names:
+Use exactly this structure with these exact section names to match the professional dossier format:
 
 {{
   "topic": "{topic}",
@@ -58,23 +58,23 @@ Use exactly this structure with these exact section names:
     {{
       "name": "Draf Karakter Utama",
       "purpose": "Detailed character profiles including background, core motivation, strengths, and flaws.",
-      "key_information": "1. [Nama Karakter Utama / Protagonis]\n- Nama: ...\n- Peran / Status: ...\n- Visual & Karakteristik: ...\n- Motivasi Utama / Balas Dendam: ...\n- Kelebihan & Keahlian: ...\n- Kelemahan / Flaw:\n\n2. [Nama Antagonis / Tokoh Pendukung]\n- Nama: ...\n- Peran: ...\n- Hubungan dengan Protagonis: ..."
+      "key_information": "1. Lin Yan\nNama: Lin Yan (林妍)\nUmur: 22 tahun\nPenampilan: Mahasiswi yang sederhana namun menawan. Rambut hitam panjang tergerai atau terkadang diikat ekor kuda. Mata besar yang ekspresif, memancarkan kecerdasan dan sedikit keras kepala. Sering memakai pakaian kasual yang nyaman namun rapi. Postur tubuh ramping, namun terlihat energik.\nKepribadian: Cerdas, mandiri, pekerja keras, dan teguh pendirian. Memiliki idealisme tinggi dan menjunjung tinggi kejujuran.\nLatar Belakang: Tumbuh dalam keluarga sederhana. Ayahnya meninggal dunia karena kecelakaan kerja yang melibatkan kelalaian perusahaan besar.\nMotivasi: Lulus kuliah dengan gemilang, membangun karier yang jujur, dan menciptakan rumah impian untuk ibunya.\nKelebihan: Cerdas, gigih, berintegritas tinggi, loyal, empati, dan memiliki visi kuat.\nKekurangan: Terlalu idealis, mudah prasangka terhadap orang kaya.\n\n2. Jiang Chen\nNama: Jiang Chen (江辰)\nUmur: 28 tahun\nPenampilan: Postur tinggi tegap, tatapan tajam berwibawa.\nKepribadian: Perfeksionis, dingin di luar namun sangat setia di dalam.\nLatar Belakang: Pewaris tunggal konglomerat besar yang menyamar sebagai teknisi.\nMotivasi: Mencari cinta sejati tanpa memandang harta.\nKelebihan: Cerdas, karismatik, sumber daya tak terbatas.\nKekurangan: Cenderung manipulatif dengan penyamaran."
     }},
     {{
       "name": "Konflik & Dinamika Hubungan",
       "purpose": "Core narrative friction, internal/external conflicts, and relationship progression web.",
-      "key_information": "- Konflik Utama (Core Conflict): ...\n- Hambatan Eksternal (Mertua Toksik / Keluarga Saingan): ...\n- Titik Balik Emosional (Emotional Turning Point): ...\n- Dinamika Hubungan (Love-Hate / Contract / Hidden Identity): ..."
+      "key_information": "Konflik Utama: Konflik utama adalah Penyamaran CEO (Jiang Chen) dan dampak yang ditimbulkannya pada hubungan dengan Lin Yan. Jiang Chen, sebagai CEO kaya menyamar menjadi pria sederhana untuk mencari cinta tulus. Lin Yan, seorang mahasiswi yang membenci orang kaya dan penipuan, jatuh cinta pada \"pria sederhana\" itu.\nInternal Jiang Chen: Pergumulan untuk mempertahankan penyamaran, rasa bersalah karena menipu Lin Yan, ketakutan akan kehilangan Lin Yan jika kebenaran terungkap.\nInternal Lin Yan: Pertentangan antara perasaannya yang kuat pada \"Jiang Chen si teknisi\" dan prasangkanya terhadap orang kaya.\nEksternal: Ancaman dari pihak ketiga (Li Ming) yang mengungkap penyamaran, tekanan dari keluarga dan dewan direksi Jiang Chen."
     }},
     {{
       "name": "Outline Episode Utama",
       "purpose": "Structured episode breakdown with hooks, dramatic turning points, and cliffhangers.",
-      "key_information": "Lingkup: {duration}\n\n[Episode 1-5: Pengenalan & Penghinaan Awal]\n- Fokus Plot: ...\n- Cliffhanger: ...\n\n[Episode 6-15: Eskalasi Konflik & Pembalasan]\n- Fokus Plot: ...\n- Cliffhanger: ...\n\n[Episode 16-{duration}: Klimaks & Puasnya Pembalasan]\n- Fokus Plot: ...\n- Cliffhanger Akhir:"
+      "key_information": "Jumlah Episode: {duration}\n\nEpisode 1: Tabrakan Takdir di Halte Bus\n- Pengenalan Lin Yan: Mahasiswi pekerja keras, trauma masa lalu.\n- Pengenalan Jiang Chen: CEO yang lelah dengan kepalsuan, memutuskan menyamar sebagai teknisi lepas.\n- Pertemuan pertama: Lin Yan menabrak Jiang Chen di halte bus. Jiang Chen terkesan dengan ketulusan Lin Yan.\n- Cliffhanger: Jiang Chen melihat Lin Yan bekerja paruh waktu di sebuah kafe, tersenyum misterius.\n\nEpisode 2: Jejak Kopi dan Kode Rahasia\n- Jiang Chen sengaja sering mengunjungi kafe tempat Lin Yan bekerja.\n- Mereka mulai mengobrol lebih intens, menemukan minat yang sama.\n- Cliffhanger: Atasan kafe bersikap kasar pada Lin Yan, dan Jiang Chen menatap tajam dari sudut ruangan."
     }}
   ]
 }}
 
 RULES:
-- Rich, highly engaging, professional C-Drama pre-production dossier format matching industry standards.
+- Rich, highly engaging, professional C-Drama pre-production dossier format matching the exact user reference.
 - Do not output markdown codeblocks outside JSON.
 """
     else:
@@ -168,12 +168,12 @@ def regenerate_outline(topic, duration, audience, language):
 def generate_script(topic, duration, audience, language, outline):
     normalized_outline = normalize_outline(outline)
     outline_json = json.dumps(normalized_outline, indent=2, ensure_ascii=False)
-    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
+    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration) or "Drama" in str(duration) or "CEO" in str(duration)
 
     if is_dracin:
         prompt = f"""
 You are an elite C-Drama Master Screenwriter and Dialogue Director for C-Drama Engine Suite Pro.
-Write a breathtaking, emotionally charged professional screenplay script based on the dossier and outline below.
+Write a breathtaking, emotionally charged professional screenplay script based on the dossier and outline below, matching the reference format (Visual Cinematik, Scene headers, and dialogue):
 
 DRACIN INFORMATION:
 Drama Title: {topic}
@@ -185,10 +185,9 @@ OUTLINE & DOSSIER:
 {outline_json}
 
 SCRIPT REQUIREMENTS:
-- Write vivid visual cinematography notes (e.g., [Visual Cinematik], lighting, camera angle, atmospheric tension).
-- Write professional scene headers (e.g., INT. KANTOR - SIANG).
+- Write vivid visual cinematography notes (e.g., Visual Sinematik: Pembukaan dengan establishing shot megahnya gedung...).
+- Write professional scene headers (e.g., INT. KANTOR CEO - SIANG).
 - Write gripping, emotional dialogue with subtext and character expressions.
-- Structure it cleanly into immersive scenes.
 """
     else:
         prompt = f"""
@@ -208,7 +207,6 @@ STRUCTURED OUTLINE:
 SCRIPT REQUIREMENTS:
 - Follow the outline order exactly.
 - Write natural spoken narration without visual/camera cues or editing notes.
-- Use clear section headers matching the outline.
 """
     return ask_ai(prompt)
 

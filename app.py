@@ -121,7 +121,7 @@ def logout_access():
 
 
 # ============================================================
-# SETTINGS PAGE (FIX 404 NOT FOUND)
+# SETTINGS PAGE
 # ============================================================
 
 @app.route("/settings")
@@ -288,7 +288,7 @@ def generate_script_from_outline_route(project_id):
 
 
 # ============================================================
-# SCRIPT EDITOR (LENGKAP DENGAN ANALYZE & REWRITE)
+# SCRIPT EDITOR
 # ============================================================
 
 @app.route("/projects/<int:project_id>/editor")
@@ -573,7 +573,7 @@ def delete_project_route(project_id):
 
 
 # ============================================================
-# GENERATOR (DENGAN PEMISAHAN TOTAL C-DRAMA & KONTEN UMUM)
+# GENERATOR (MENDUKUNG MODE DRACIN & KONTEN UMUM)
 # ============================================================
 
 @app.route("/generate", methods=["POST"])
@@ -653,8 +653,6 @@ def generate():
 # ============================================================
 # RUN SERVER
 # ============================================================
-
-app = app
 
 if __name__ == "__main__":
     app.run(debug=True)
