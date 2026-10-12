@@ -51,14 +51,10 @@ def normalize_research(research, topic, research_mode):
     return result
 
 def build_research_prompt(topic, audience="General", language="English", web_enabled=False):
-    web_instruction = """
-WEB RESEARCH IS ENABLED. Use web search tool and prioritize reputable scientific sources. Do not fabricate URLs.
-""" if web_enabled else """
-WEB RESEARCH IS DISABLED. Use general knowledge only. "sources" MUST be [].
-"""
+    web_instruction = "WEB RESEARCH IS ENABLED. Use web search tool and prioritize reputable scientific sources." if web_enabled else "WEB RESEARCH IS DISABLED. Use general knowledge only."
 
     return f"""
-You are the Research Engine of a professional YouTube documentary and science-content production system.
+You are the Research Engine of a professional YouTube documentary production system.
 Research topic: {topic}
 Target audience: {audience}
 Output language: {language}

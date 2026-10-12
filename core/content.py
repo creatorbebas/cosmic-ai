@@ -1,6 +1,5 @@
 import json
-from core.ai import ask_ai
-from core.ai import parse_json_response
+from core.ai import ask_ai, parse_json_response
 
 def normalize_outline(outline):
     if not isinstance(outline, dict) or "sections" not in outline:
@@ -93,7 +92,6 @@ RULES:
 - Do not output markdown codeblocks outside JSON.
 """
     else:
-        # Menambahkan target jumlah kata berdasarkan durasi
         word_count_target = "60-75 words" if "25s" in str(duration) else "130-150 words per minute"
         prompt = f"""
 You are an expert YouTube content strategist.

@@ -42,7 +42,6 @@ def init_database():
     finally:
         conn.close()
 
-# Inisialisasi sekali saat modul dimuat
 try:
     init_database()
 except Exception:

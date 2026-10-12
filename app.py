@@ -61,13 +61,11 @@ app = Flask(
 
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dullah-studio-secure-session-key')
 
-# Inisialisasi Database
 try:
     init_database()
 except Exception as e:
     print("Database init handled:", e)
 
-# Decorator Akses Berbayar / Terkunci
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

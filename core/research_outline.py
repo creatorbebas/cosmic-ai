@@ -45,15 +45,17 @@ def normalize_outline(outline):
 
     return {"sections": normalized}
 
-def build_research_outline_prompt(project, research):
+def generate_outline_from_research(project, research):
+    if not project or not research:
+        return empty_outline()
+    
     topic = project.get("topic") or project.get("title") or ""
     audience = project.get("audience") or "General"
     language = project.get("language") or "English"
     research_json = json.dumps(research, ensure_ascii=False, indent=2)
 
-    return f"""
-You are the Outline Engine of Cosmic-AI, a professional YouTube documentary production system.
-Transform the research dossier below into a strong narrative YouTube outline.
+    prompt = f"""
+You are the Outline Engine of Cosmic-AI. Transform the research dossier below into a strong narrative YouTube outline.
 PROJECT TOPIC: {topic}
 TARGET AUDIENCE: {audience}
 LANGUAGE: {language}
@@ -73,11 +75,6 @@ Return ONLY valid JSON using exactly this structure:
   ]
 }}
 """
-
-def generate_outline_from_research(project, research):
-    if not project or not research:
-        return empty_outline()
-    prompt = build_research_outline_prompt(project=project, research=research)
     response = ask_ai(prompt)
     parsed = parse_json_response(response)
     return normalize_outline(parsed)

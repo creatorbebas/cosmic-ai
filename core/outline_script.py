@@ -2,7 +2,7 @@ import json
 from core.ai import ask_ai, parse_json_response
 
 SCRIPT_SECTION_NAMES = [
-    "HOOK", "INTRO", "SEGMENT 1", "SEGMENT 2", "SEGMENT 3", "TWIST", "CLOSING"
+    "HOOK", "INTRO", "SEGMENT 1", "SEGMENT 2", "SEGMENT 3", "TWIST", "CLOSING",
 ]
 
 def normalize_script(data):
@@ -32,16 +32,18 @@ def normalize_script(data):
 
     return {"sections": normalized}
 
-def build_script_prompt(project, outline):
+def generate_script_from_outline(project, outline):
+    if not outline:
+        return None
+    
     topic = project.get("topic", "")
     duration = project.get("duration", "")
     audience = project.get("audience", "")
     language = project.get("language", "")
     outline_text = json.dumps(outline, ensure_ascii=False, indent=2)
 
-    return f"""
-You are the senior documentary scriptwriter for Cosmic AI.
-Transform the provided VIDEO OUTLINE into a complete YouTube documentary script.
+    prompt = f"""
+You are the senior documentary scriptwriter for Cosmic AI. Transform the provided VIDEO OUTLINE into a complete YouTube documentary script.
 PROJECT: Topic: {topic}, Target duration: {duration}, Audience: {audience}, Language: {language}
 
 Return ONLY valid JSON using exactly this structure:
@@ -59,11 +61,6 @@ Return ONLY valid JSON using exactly this structure:
 VIDEO OUTLINE:
 {outline_text}
 """
-
-def generate_script_from_outline(project, outline):
-    if not outline:
-        return None
-    prompt = build_script_prompt(project, outline)
     response = ask_ai(prompt)
     data = parse_json_response(response)
     return normalize_script(data)

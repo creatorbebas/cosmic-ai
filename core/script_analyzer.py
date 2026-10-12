@@ -21,7 +21,7 @@ Your analysis must focus on:
 4. STORY FLOW
 5. CURIOSITY
 
-Also analyze sections if they exist (HOOK, INTRO, SEGMENT 1, 2, 3, TWIST, CLOSING), providing score (0-100), status ("excellent", "strong", "good", "needs_work", "weak"), diagnosis, and improvement.
+Also analyze sections if they exist (HOOK, INTRO, SEGMENT 1, 2, 3, TWIST, CLOSING), providing score (0-100), status, diagnosis, and improvement.
 Provide 3 strengths, 3 weaknesses, and 3 specific recommendations. Calculate overall score.
 
 Return ONLY valid JSON matching this exact structure:
