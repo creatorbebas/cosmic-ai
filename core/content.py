@@ -7,6 +7,10 @@ from core.ai import ask_ai
 # ============================================================
 
 def normalize_outline(outline):
+    """
+    Memastikan struktur outline selalu memiliki baik 'key_information' (string)
+    maupun 'key_points' (list) agar kompatibel dengan seluruh template UI & script.
+    """
     if not isinstance(outline, dict) or "sections" not in outline:
         return outline
 
@@ -30,24 +34,27 @@ def normalize_outline(outline):
 
 
 # ============================================================
-# GENERATE OUTLINE (C-DRAMA DOSSIER SESUAI REFERENSI)
+# GENERATE OUTLINE (MENDUKUNG DRACIN & KONTEN UMUM)
 # ============================================================
 
 def generate_outline(topic, duration, audience, language):
-    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration) or "Drama" in str(duration) or "CEO" in str(duration) or "Mafia" in str(duration)
+    # Cek apakah ini mode Dracin berdasarkan format duration atau audience
+    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
     if is_dracin:
         prompt = f"""
-You are the Master Showrunner and Executive Producer for C-Drama AI Engine Suite Pro.
-Create a professional pre-production dossier and multi-episode outline for a Chinese Drama based on these parameters:
+You are an expert Chinese Drama (Dracin) content strategist and viral recap writer.
 
-Drama Title / Concept: {topic}
-Episode Scope & Parameters: {duration}
-Core Trope / Focus: {audience}
+Create a detailed video outline for a Chinese Drama recap.
+
+DRACIN INFORMATION:
+Drama Title: {topic}
+Episode Scope: {duration}
+Core Trope / Focus Scene: {audience}
 Script Language: {language}
 
 Return ONLY valid JSON.
-Use exactly this structure with these exact section names to match the professional dossier format:
+Use exactly this structure:
 
 {{
   "topic": "{topic}",
@@ -56,25 +63,50 @@ Use exactly this structure with these exact section names to match the professio
   "language": "{language}",
   "sections": [
     {{
-      "name": "Draf Karakter Utama",
-      "purpose": "Detailed character profiles including background, core motivation, strengths, and flaws.",
-      "key_information": "1. Lin Yan\nNama: Lin Yan (林妍)\nUmur: 22 tahun\nPenampilan: Mahasiswi yang sederhana namun menawan. Rambut hitam panjang tergerai atau terkadang diikat ekor kuda. Mata besar yang ekspresif, memancarkan kecerdasan dan sedikit keras kepala. Sering memakai pakaian kasual yang nyaman namun rapi. Postur tubuh ramping, namun terlihat energik.\nKepribadian: Cerdas, mandiri, pekerja keras, dan teguh pendirian. Memiliki idealisme tinggi dan menjunjung tinggi kejujuran.\nLatar Belakang: Tumbuh dalam keluarga sederhana. Ayahnya meninggal dunia karena kecelakaan kerja yang melibatkan kelalaian perusahaan besar.\nMotivasi: Lulus kuliah dengan gemilang, membangun karier yang jujur, dan menciptakan rumah impian untuk ibunya.\nKelebihan: Cerdas, gigih, berintegritas tinggi, loyal, empati, dan memiliki visi kuat.\nKekurangan: Terlalu idealis, mudah prasangka terhadap orang kaya.\n\n2. Jiang Chen\nNama: Jiang Chen (江辰)\nUmur: 28 tahun\nPenampilan: Postur tinggi tegap, tatapan tajam berwibawa.\nKepribadian: Perfeksionis, dingin di luar namun sangat setia di dalam.\nLatar Belakang: Pewaris tunggal konglomerat besar yang menyamar sebagai teknisi.\nMotivasi: Mencari cinta sejati tanpa memandang harta.\nKelebihan: Cerdas, karismatik, sumber daya tak terbatas.\nKekurangan: Cenderung manipulatif dengan penyamaran."
+      "name": "HOOK",
+      "purpose": "Shocking opening scene or dramatic conflict preview to hook viewers instantly.",
+      "key_information": "Most dramatic emotional peak from the episodes.",
+      "key_points": ["Most dramatic emotional peak from the episodes."],
+      "narrative_goal": "Force the audience to stay.",
+      "approximate_duration": "0:30"
     }},
     {{
-      "name": "Konflik & Dinamika Hubungan",
-      "purpose": "Core narrative friction, internal/external conflicts, and relationship progression web.",
-      "key_information": "Konflik Utama: Konflik utama adalah Penyamaran CEO (Jiang Chen) dan dampak yang ditimbulkannya pada hubungan dengan Lin Yan. Jiang Chen, sebagai CEO kaya menyamar menjadi pria sederhana untuk mencari cinta tulus. Lin Yan, seorang mahasiswi yang membenci orang kaya dan penipuan, jatuh cinta pada \"pria sederhana\" itu.\nInternal Jiang Chen: Pergumulan untuk mempertahankan penyamaran, rasa bersalah karena menipu Lin Yan, ketakutan akan kehilangan Lin Yan jika kebenaran terungkap.\nInternal Lin Yan: Pertentangan antara perasaannya yang kuat pada \"Jiang Chen si teknisi\" dan prasangkanya terhadap orang kaya.\nEksternal: Ancaman dari pihak ketiga (Li Ming) yang mengungkap penyamaran, tekanan dari keluarga dan dewan direksi Jiang Chen."
+      "name": "INTRODUCTION",
+      "purpose": "Introduce main characters, status, and initial humiliation or premise.",
+      "key_information": "Background setup and character dynamics.",
+      "key_points": ["Background setup and character dynamics."],
+      "narrative_goal": "Establish the stakes clearly.",
+      "approximate_duration": "1:00"
     }},
     {{
-      "name": "Outline Episode Utama",
-      "purpose": "Structured episode breakdown with hooks, dramatic turning points, and cliffhangers.",
-      "key_information": "Jumlah Episode: {duration}\n\nEpisode 1: Tabrakan Takdir di Halte Bus\n- Pengenalan Lin Yan: Mahasiswi pekerja keras, trauma masa lalu.\n- Pengenalan Jiang Chen: CEO yang lelah dengan kepalsuan, memutuskan menyamar sebagai teknisi lepas.\n- Pertemuan pertama: Lin Yan menabrak Jiang Chen di halte bus. Jiang Chen terkesan dengan ketulusan Lin Yan.\n- Cliffhanger: Jiang Chen melihat Lin Yan bekerja paruh waktu di sebuah kafe, tersenyum misterius.\n\nEpisode 2: Jejak Kopi dan Kode Rahasia\n- Jiang Chen sengaja sering mengunjungi kafe tempat Lin Yan bekerja.\n- Mereka mulai mengobrol lebih intens, menemukan minat yang sama.\n- Cliffhanger: Atasan kafe bersikap kasar pada Lin Yan, dan Jiang Chen menatap tajam dari sudut ruangan."
+      "name": "CONFLICT BUILD-UP",
+      "purpose": "Escalation of conflict, toxic antagonists, or hidden secrets pressure.",
+      "key_information": "Key plot points leading to tension.",
+      "key_points": ["Key plot points leading to tension."],
+      "narrative_goal": "Build anticipation for the reveal.",
+      "approximate_duration": "2:00"
+    }},
+    {{
+      "name": "THE CLIMAX / REVEAL",
+      "purpose": "The core trope execution (e.g., identity revealed, revenge served, or contract twist).",
+      "key_information": "Shocking turning point and emotional satisfaction.",
+      "key_points": ["Shocking turning point and emotional satisfaction."],
+      "narrative_goal": "Deliver maximum emotional payoff.",
+      "approximate_duration": "2:00"
+    }},
+    {{
+      "name": "OUTRO / CTA",
+      "purpose": "Cliffhanger ending or question for viewers, teasing the next part.",
+      "key_information": "Call to action and engagement hook.",
+      "key_points": ["Call to action and engagement hook."],
+      "narrative_goal": "Drive comments and shares.",
+      "approximate_duration": "0:45"
     }}
   ]
 }}
 
 RULES:
-- Rich, highly engaging, professional C-Drama pre-production dossier format matching the exact user reference.
+- Exactly 5 structural sections tailored for high-engagement Dracin recap.
 - Do not output markdown codeblocks outside JSON.
 """
     else:
@@ -162,18 +194,19 @@ def regenerate_outline(topic, duration, audience, language):
 
 
 # ============================================================
-# GENERATE SCRIPT
+# GENERATE SCRIPT (MENDUKUNG DRACIN & KONTEN UMUM)
 # ============================================================
 
 def generate_script(topic, duration, audience, language, outline):
     normalized_outline = normalize_outline(outline)
     outline_json = json.dumps(normalized_outline, indent=2, ensure_ascii=False)
-    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration) or "Drama" in str(duration) or "CEO" in str(duration)
+    is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
     if is_dracin:
         prompt = f"""
-You are an elite C-Drama Master Screenwriter and Dialogue Director for C-Drama Engine Suite Pro.
-Write a breathtaking, emotionally charged professional screenplay script based on the dossier and outline below, matching the reference format (Visual Cinematik, Scene headers, and dialogue):
+You are an expert Chinese Drama (Dracin) recap scriptwriter.
+
+Write a gripping, highly engaging, and emotional spoken narration script based on the structured outline below.
 
 DRACIN INFORMATION:
 Drama Title: {topic}
@@ -181,13 +214,13 @@ Episode Scope: {duration}
 Core Trope: {audience}
 Script Language: {language}
 
-OUTLINE & DOSSIER:
+STRUCTURED OUTLINE:
 {outline_json}
 
 SCRIPT REQUIREMENTS:
-- Write vivid visual cinematography notes (e.g., Visual Sinematik: Pembukaan dengan establishing shot megahnya gedung...).
-- Write professional scene headers (e.g., INT. KANTOR CEO - SIANG).
-- Write gripping, emotional dialogue with subtext and character expressions.
+- Write natural, dramatic, and compelling spoken narration optimized for TikTok, Reels, or YouTube recap videos.
+- Avoid camera directions, visual cues, or technical production notes.
+- Use section headers matching the outline exactly.
 """
     else:
         prompt = f"""
@@ -207,6 +240,7 @@ STRUCTURED OUTLINE:
 SCRIPT REQUIREMENTS:
 - Follow the outline order exactly.
 - Write natural spoken narration without visual/camera cues or editing notes.
+- Use clear section headers matching the outline.
 """
     return ask_ai(prompt)
 
@@ -220,32 +254,7 @@ def regenerate_script(topic, duration, audience, language, outline):
 # ============================================================
 
 def generate_metadata(topic, script, outline, language):
-    is_dracin = "Rekap" in str(outline.get("duration_minutes", "")) or "Episode" in str(outline.get("duration_minutes", ""))
-
-    if is_dracin:
-        prompt = f"""
-You are an expert C-Drama Marketing & SEO Strategist.
-Generate viral titles, hook lines, and synopsis metadata for this Chinese Drama project.
-
-Drama Title: {topic}
-Language: {language}
-
-Return ONLY valid JSON matching this structure:
-{{
-  "hooks": [
-    {{"type": "curiosity", "text": "Hook text..."}},
-    {{"type": "emotional", "text": "Hook text..."}}
-  ],
-  "titles": [
-    {{"title": "Title 1", "text": "Title 1", "angle": "Angle 1"}},
-    {{"title": "Title 2", "text": "Title 2", "angle": "Angle 2"}}
-  ],
-  "description": "Engaging series synopsis and description...",
-  "call_to_action": "Subscribe and watch next part..."
-}}
-"""
-    else:
-        prompt = f"""
+    prompt = f"""
 You are a YouTube SEO and social media metadata expert.
 
 Generate engaging hooks, clickable titles, and a video description for this content.
