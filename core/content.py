@@ -1,16 +1,8 @@
 import json
 from core.ai import ask_ai
-
-
-# ============================================================
-# HELPER: NORMALISASI OUTLINE
-# ============================================================
+from core.ai import parse_json_response
 
 def normalize_outline(outline):
-    """
-    Memastikan struktur outline selalu memiliki baik 'key_information' (string)
-    maupun 'key_points' (list) agar kompatibel dengan seluruh template UI & script.
-    """
     if not isinstance(outline, dict) or "sections" not in outline:
         return outline
 
@@ -32,19 +24,12 @@ def normalize_outline(outline):
 
     return outline
 
-
-# ============================================================
-# GENERATE OUTLINE (MENDUKUNG DRACIN & KONTEN UMUM)
-# ============================================================
-
 def generate_outline(topic, duration, audience, language):
-    # Cek apakah ini mode Dracin berdasarkan format duration atau audience
     is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
     if is_dracin:
         prompt = f"""
 You are an expert Chinese Drama (Dracin) content strategist and viral recap writer.
-
 Create a detailed video outline for a Chinese Drama recap.
 
 DRACIN INFORMATION:
@@ -55,7 +40,6 @@ Script Language: {language}
 
 Return ONLY valid JSON.
 Use exactly this structure:
-
 {{
   "topic": "{topic}",
   "duration_minutes": "{duration}",
@@ -104,16 +88,16 @@ Use exactly this structure:
     }}
   ]
 }}
-
 RULES:
 - Exactly 5 structural sections tailored for high-engagement Dracin recap.
 - Do not output markdown codeblocks outside JSON.
 """
     else:
+        # Menambahkan target jumlah kata berdasarkan durasi
+        word_count_target = "60-75 words" if "25s" in str(duration) else "130-150 words per minute"
         prompt = f"""
 You are an expert YouTube content strategist.
-
-Create a detailed long-form YouTube video outline.
+Create a detailed long-form YouTube video outline. Target duration context: {duration} (Target pacing scale: {word_count_target}).
 
 VIDEO INFORMATION
 Topic: {topic}
@@ -123,7 +107,6 @@ Script language: {language}
 
 Return ONLY valid JSON.
 Use exactly this structure:
-
 {{
   "topic": "{topic}",
   "duration_minutes": "{duration}",
@@ -172,7 +155,6 @@ Use exactly this structure:
     }}
   ]
 }}
-
 RULES:
 - Avoid repetition and build progressive curiosity.
 - Do not output markdown codeblocks outside JSON.
@@ -181,31 +163,21 @@ RULES:
     result = ask_ai(prompt)
     if not result:
         return None
-
-    try:
-        data = json.loads(result)
-        return normalize_outline(data)
-    except json.JSONDecodeError:
-        return None
-
+    data = parse_json_response(result)
+    return normalize_outline(data) if data else None
 
 def regenerate_outline(topic, duration, audience, language):
     return generate_outline(topic, duration, audience, language)
-
-
-# ============================================================
-# GENERATE SCRIPT (MENDUKUNG DRACIN & KONTEN UMUM)
-# ============================================================
 
 def generate_script(topic, duration, audience, language, outline):
     normalized_outline = normalize_outline(outline)
     outline_json = json.dumps(normalized_outline, indent=2, ensure_ascii=False)
     is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
+    word_limit_rule = "- STRICT LENGTH RULE: If duration is Shorts (25s), keep total word count strictly between 60 to 75 words." if "25s" in str(duration) else ""
 
     if is_dracin:
         prompt = f"""
 You are an expert Chinese Drama (Dracin) recap scriptwriter.
-
 Write a gripping, highly engaging, and emotional spoken narration script based on the structured outline below.
 
 DRACIN INFORMATION:
@@ -221,11 +193,11 @@ SCRIPT REQUIREMENTS:
 - Write natural, dramatic, and compelling spoken narration optimized for TikTok, Reels, or YouTube recap videos.
 - Avoid camera directions, visual cues, or technical production notes.
 - Use section headers matching the outline exactly.
+{word_limit_rule}
 """
     else:
         prompt = f"""
 You are an expert YouTube scriptwriter.
-
 Write a complete narration script based on the structured outline below.
 
 VIDEO INFORMATION:
@@ -241,29 +213,31 @@ SCRIPT REQUIREMENTS:
 - Follow the outline order exactly.
 - Write natural spoken narration without visual/camera cues or editing notes.
 - Use clear section headers matching the outline.
+{word_limit_rule}
 """
     return ask_ai(prompt)
-
 
 def regenerate_script(topic, duration, audience, language, outline):
     return generate_script(topic, duration, audience, language, outline)
 
-
-# ============================================================
-# GENERATE METADATA
-# ============================================================
-
 def generate_metadata(topic, script, outline, language):
+    outline_json = json.dumps(outline, indent=2, ensure_ascii=False) if outline else ""
+    script_text = script if script else ""
+
     prompt = f"""
 You are a YouTube SEO and social media metadata expert.
-
-Generate engaging hooks, clickable titles, and a video description for this content.
+Generate engaging hooks, clickable titles, and a video description based on the actual script and outline provided below.
 
 Topic/Drama: {topic}
 Language: {language}
 
-Return ONLY valid JSON matching this structure:
+OUTLINE:
+{outline_json}
 
+SCRIPT EXCERPT:
+{script_text[:3000]}
+
+Return ONLY valid JSON matching this structure:
 {{
   "hooks": [
     {{"type": "curiosity", "text": "Hook text..."}},
@@ -283,8 +257,4 @@ Return ONLY valid JSON matching this structure:
     result = ask_ai(prompt)
     if not result:
         return None
-
-    try:
-        return json.loads(result)
-    except json.JSONDecodeError:
-        return None
+    return parse_json_response(result)
