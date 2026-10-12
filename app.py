@@ -573,7 +573,7 @@ def delete_project_route(project_id):
 
 
 # ============================================================
-# GENERATOR (MENDUKUNG MODE DRACIN & KONTEN UMUM)
+# GENERATOR (DENGAN PEMISAHAN TOTAL C-DRAMA & KONTEN UMUM)
 # ============================================================
 
 @app.route("/generate", methods=["POST"])

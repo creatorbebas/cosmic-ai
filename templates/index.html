@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic AI - Script & Dracin Generator</title>
+    <title>C-Drama AI Engine Suite Pro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -266,7 +266,7 @@
 
     <header>
         <a href="/" class="nav-brand">
-            ✨ COSMIC AI
+            ✨ C-Drama AI Engine Suite Pro
         </a>
         <nav class="nav-links">
             <a href="/" class="btn-nav">🏠 Home</a>
@@ -281,22 +281,22 @@
         
         <section class="hero-section">
             <h1 class="hero-title">
-                Buat Script Konten & Dracin Lebih Cepat dengan AI
+                C-Drama AI Engine Suite Pro & Content Generator
             </h1>
             <p class="hero-subtitle">
-                Rancang outline, skrip rekap drama China, skrip video, dan metadata otomatis untuk TikTok, YouTube, dan Reels dengan kecerdasan kosmik.
+                Rancang pre-production dossier, draf karakter utama, dinamika hubungan, dan outline episode drama China secara profesional.
             </p>
         </section>
 
         {% if is_unlocked %}
         <div class="card">
             <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
-                <h2 style="font-size: 1.25rem; font-weight: 700;">💫 Dashboard AI Generator</h2>
+                <h2 style="font-size: 1.25rem; font-weight: 700;">💫 Dashboard AI Generator Suite</h2>
                 <span style="background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; width: fit-content;">Akses Penuh Aktif</span>
             </div>
 
             <div class="mode-switcher">
-                <div class="mode-btn active" id="tab-dracin" onclick="switchMode('dracin')">🇨🇳 Mode Dracin</div>
+                <div class="mode-btn active" id="tab-dracin" onclick="switchMode('dracin')">🇨🇳 C-Drama Engine Pro</div>
                 <div class="mode-btn" id="tab-general" onclick="switchMode('general')">💡 Mode Konten Umum</div>
             </div>
 
@@ -305,13 +305,13 @@
                 <!-- MODE DRACIN -->
                 <div class="form-pane active" id="pane-dracin">
                     <div>
-                        <label for="d_topic">Judul Drama China</label>
-                        <input type="text" id="d_topic" name="topic" placeholder="Contoh: CEO Dingin Menikahi Wanita Miskin">
+                        <label for="d_topic">Judul Cerita (Opsional)</label>
+                        <input type="text" id="d_topic" name="topic" placeholder="Biarkan AI menentukan judul yang memikat...">
                     </div>
 
                     <div class="grid-2">
                         <div>
-                            <label for="d_duration">Pilihan Episode</label>
+                            <label for="d_duration">Jumlah Episode</label>
                             <select id="d_duration" name="duration">
                                 <option value="Rekap 10 Episode">10 Episode</option>
                                 <option value="Rekap 20 Episode" selected>20 Episode</option>
@@ -321,16 +321,16 @@
                         </div>
 
                         <div>
-                            <label for="d_language">Bahasa Script</label>
+                            <label for="d_language">Bahasa Output</label>
                             <select id="d_language" name="language">
-                                <option value="Indonesian" selected>Indonesia</option>
-                                <option value="English">Inggris (English)</option>
+                                <option value="Indonesian" selected>Bahasa Indonesia</option>
+                                <option value="English">English</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
-                        <label for="d_audience">Fokus Adegan Utama (Trope Dracin)</label>
+                        <label for="d_audience">Core Trope / Dinamika Hubungan</label>
                         <select id="d_audience" name="audience">
                             <option value="Identitas Terbongkar (Hidden Identity / Secret Boss)">1. Identitas Terbongkar (Hidden Identity / Secret Boss)</option>
                             <option value="Balas Dendam / Pembalasan (Revenge & Redemption)">2. Balas Dendam / Pembalasan (Revenge & Redemption)</option>
@@ -341,7 +341,7 @@
                     </div>
                 </div>
 
-                <!-- MODE KONTEN UMUM (DENGAN DROPDOWN TARGET AUDIENCE) -->
+                <!-- MODE KONTEN UMUM -->
                 <div class="form-pane" id="pane-general">
                     <div>
                         <label for="g_topic">Topik / Judul Konten Umum</label>
@@ -381,7 +381,7 @@
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    ✨ Generate Script Sekarang
+                    ✨ Generate Story / Script Sekarang
                 </button>
             </form>
         </div>
@@ -412,7 +412,7 @@
                     submitBtn.disabled = true;
                     submitBtn.style.opacity = "0.7";
                     submitBtn.style.cursor = "wait";
-                    submitBtn.innerText = "✨ Sedang meracik keajaiban kosmik...";
+                    submitBtn.innerText = "✨ Sedang meracik pre-production dossier...";
                 }
             }
         </script>
@@ -445,7 +445,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Cosmic AI Studio. All rights reserved.</p>
+        <p>&copy; 2026 C-Drama AI Engine Suite Pro. All rights reserved.</p>
         <p style="margin-top: 4px;">WhatsApp: <strong>+62-882-1062-7434</strong></p>
     </footer>
 

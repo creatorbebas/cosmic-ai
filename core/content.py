@@ -34,27 +34,24 @@ def normalize_outline(outline):
 
 
 # ============================================================
-# GENERATE OUTLINE (MENDUKUNG DRACIN & KONTEN UMUM)
+# GENERATE OUTLINE (PEMISAHAN TOTAL C-DRAMA & KONTEN UMUM)
 # ============================================================
 
 def generate_outline(topic, duration, audience, language):
-    # Cek apakah ini mode Dracin berdasarkan format duration atau audience
     is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
     if is_dracin:
         prompt = f"""
-You are an expert Chinese Drama (Dracin) content strategist and viral recap writer.
+You are the Master Showrunner and Executive Producer for C-Drama Engine Suite Pro.
+Create a professional pre-production dossier and multi-episode outline for a Chinese Drama based on these parameters:
 
-Create a detailed video outline for a Chinese Drama recap.
-
-DRACIN INFORMATION:
-Drama Title: {topic}
+Drama Title / Concept: {topic}
 Episode Scope: {duration}
-Core Trope / Focus Scene: {audience}
+Core Trope / Focus: {audience}
 Script Language: {language}
 
 Return ONLY valid JSON.
-Use exactly this structure:
+Use exactly this structure with these exact section names:
 
 {{
   "topic": "{topic}",
@@ -63,50 +60,25 @@ Use exactly this structure:
   "language": "{language}",
   "sections": [
     {{
-      "name": "HOOK",
-      "purpose": "Shocking opening scene or dramatic conflict preview to hook viewers instantly.",
-      "key_information": "Most dramatic emotional peak from the episodes.",
-      "key_points": ["Most dramatic emotional peak from the episodes."],
-      "narrative_goal": "Force the audience to stay.",
-      "approximate_duration": "0:30"
+      "name": "Draf Karakter Utama",
+      "purpose": "Detailed character profiles including background, core motivation, strengths, and flaws.",
+      "key_information": "1. [Nama Karakter Utama 1]\n- Nama: ...\n- Umur: ...\n- Penampilan: ...\n- Kepribadian: ...\n- Latar Belakang: ...\n- Motivasi: ...\n- Kelebihan: ...\n- Kekurangan: ...\n\n2. [Nama Karakter Utama 2]\n- Nama: ...\n- Umur: ...\n- Penampilan: ...\n- Kepribadian: ...\n- Latar Belakang: ...\n- Motivasi: ...\n- Kelebihan: ...\n- Kekurangan: ..."
     }},
     {{
-      "name": "INTRODUCTION",
-      "purpose": "Introduce main characters, status, and initial humiliation or premise.",
-      "key_information": "Background setup and character dynamics.",
-      "key_points": ["Background setup and character dynamics."],
-      "narrative_goal": "Establish the stakes clearly.",
-      "approximate_duration": "1:00"
+      "name": "Konflik & Dinamika Hubungan",
+      "purpose": "Core narrative friction, internal/external conflicts, and relationship progression web.",
+      "key_information": "Konflik Utama: ...\nInternal Karakter: ...\nEksternal & Antagonis: ...\nBagan Hubungan Antar Karakter: ..."
     }},
     {{
-      "name": "CONFLICT BUILD-UP",
-      "purpose": "Escalation of conflict, toxic antagonists, or hidden secrets pressure.",
-      "key_information": "Key plot points leading to tension.",
-      "key_points": ["Key plot points leading to tension."],
-      "narrative_goal": "Build anticipation for the reveal.",
-      "approximate_duration": "2:00"
-    }},
-    {{
-      "name": "THE CLIMAX / REVEAL",
-      "purpose": "The core trope execution (e.g., identity revealed, revenge served, or contract twist).",
-      "key_information": "Shocking turning point and emotional satisfaction.",
-      "key_points": ["Shocking turning point and emotional satisfaction."],
-      "narrative_goal": "Deliver maximum emotional payoff.",
-      "approximate_duration": "2:00"
-    }},
-    {{
-      "name": "OUTRO / CTA",
-      "purpose": "Cliffhanger ending or question for viewers, teasing the next part.",
-      "key_information": "Call to action and engagement hook.",
-      "key_points": ["Call to action and engagement hook."],
-      "narrative_goal": "Drive comments and shares.",
-      "approximate_duration": "0:45"
+      "name": "Outline Episode Utama",
+      "purpose": "Structured episode breakdown with hooks, dramatic turning points, and cliffhangers.",
+      "key_information": "Jumlah Episode: {duration}\n\nEpisode 1:\n- Judul & Premis:\n- Alur Adegan Utama:\n- Cliffhanger:\n\nEpisode 2:\n- Judul & Premis:\n- Alur Adegan Utama:\n- Cliffhanger:"
     }}
   ]
 }}
 
 RULES:
-- Exactly 5 structural sections tailored for high-engagement Dracin recap.
+- Rich, highly engaging, professional C-Drama pre-production dossier format matching the user reference.
 - Do not output markdown codeblocks outside JSON.
 """
     else:
@@ -194,7 +166,7 @@ def regenerate_outline(topic, duration, audience, language):
 
 
 # ============================================================
-# GENERATE SCRIPT (MENDUKUNG DRACIN & KONTEN UMUM)
+# GENERATE SCRIPT (PEMISAHAN TOTAL C-DRAMA & KONTEN UMUM)
 # ============================================================
 
 def generate_script(topic, duration, audience, language, outline):
@@ -204,9 +176,8 @@ def generate_script(topic, duration, audience, language, outline):
 
     if is_dracin:
         prompt = f"""
-You are an expert Chinese Drama (Dracin) recap scriptwriter.
-
-Write a gripping, highly engaging, and emotional spoken narration script based on the structured outline below.
+You are an elite C-Drama Master Screenwriter and Dialogue Director for C-Drama Engine Suite Pro.
+Write a breathtaking, emotionally charged professional screenplay script based on the dossier and outline below.
 
 DRACIN INFORMATION:
 Drama Title: {topic}
@@ -214,13 +185,14 @@ Episode Scope: {duration}
 Core Trope: {audience}
 Script Language: {language}
 
-STRUCTURED OUTLINE:
+OUTLINE & DOSSIER:
 {outline_json}
 
 SCRIPT REQUIREMENTS:
-- Write natural, dramatic, and compelling spoken narration optimized for TikTok, Reels, or YouTube recap videos.
-- Avoid camera directions, visual cues, or technical production notes.
-- Use section headers matching the outline exactly.
+- Write vivid visual cinematography notes (e.g., [Visual Cinematik], lighting, camera angle, atmospheric tension).
+- Write professional scene headers (e.g., INT. KANTOR - SIANG).
+- Write gripping, emotional dialogue with subtext and character expressions.
+- Structure it cleanly into immersive scenes.
 """
     else:
         prompt = f"""
