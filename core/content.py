@@ -34,50 +34,33 @@ def normalize_outline(outline):
 
 
 # ============================================================
-# GENERATE OUTLINE (2 JALUR: DRACIN PRO & KONTEN UMUM ASLI)
+# GENERATE OUTLINE (MENDUKUNG DRACIN & KONTEN UMUM)
 # ============================================================
 
 def generate_outline(topic, duration, audience, language):
-    # Pengecekan 2 jalur persis seperti kode asli lu
+    # Cek apakah ini mode Dracin berdasarkan format duration atau audience
     is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
     if is_dracin:
-        # JALUR 1: DRAMA CINA PRO (DISEMPURNAKAN DENGAN CHARACTERS & DYNAMICS)
         prompt = f"""
-You are an elite Chinese Drama (Dracin) Showrunner, Executive Producer, and Master Scriptwriter.
+You are an expert Chinese Drama (Dracin) content strategist and viral recap writer.
 
-Create a comprehensive professional C-Drama Suite Pro production package.
+Create a detailed video outline for a Chinese Drama recap.
 
-PARAMETERS:
-Drama Title / Topic: {topic if topic else "Auto-generate high engagement viral C-Drama trope"}
+DRACIN INFORMATION:
+Drama Title: {topic}
 Episode Scope: {duration}
-Story Parameters / Tropes & Focus: {audience}
+Core Trope / Focus Scene: {audience}
 Script Language: {language}
 
 Return ONLY valid JSON.
-Use exactly this strict structure:
+Use exactly this structure:
 
 {{
-  "topic": "{topic if topic else 'Custom C-Drama Production'}",
+  "topic": "{topic}",
   "duration_minutes": "{duration}",
   "target_audience": "{audience}",
   "language": "{language}",
-  "characters": [
-    {{
-      "name": "Character Name 1",
-      "age": "22-28",
-      "appearance": "Detailed physical description, style, and aura.",
-      "personality": "Core traits, strengths, flaws, and vulnerabilities.",
-      "background": "Deep trauma, past betrayal, or social standing.",
-      "motivation": "Ultimate goal, hidden ambition, or revenge objective."
-    }}
-  ],
-  "dynamics": {{
-    "core_conflict": "Detailed explanation of the primary dramatic conflict.",
-    "internal_lead": "Psychological friction and emotional barriers.",
-    "external_friction": "External pressure from toxic family or corporate rivals.",
-    "relationship_map": "Brief summary of alliances and rivalries."
-  }},
   "sections": [
     {{
       "name": "HOOK",
@@ -123,11 +106,10 @@ Use exactly this strict structure:
 }}
 
 RULES:
-- Exactly 5 structural sections tailored for high-engagement Dracin recap, plus deep psychological character profiles and relationship dynamics.
+- Exactly 5 structural sections tailored for high-engagement Dracin recap.
 - Do not output markdown codeblocks outside JSON.
 """
     else:
-        # JALUR 2: KONTEN UMUM ASLI (100% SESUAI KODE ASLI LU SEBELUM PEROMBAKAN)
         prompt = f"""
 You are an expert YouTube content strategist.
 
@@ -212,7 +194,7 @@ def regenerate_outline(topic, duration, audience, language):
 
 
 # ============================================================
-# GENERATE SCRIPT (2 JALUR: DRACIN PRO & KONTEN UMUM ASLI)
+# GENERATE SCRIPT (MENDUKUNG DRACIN & KONTEN UMUM)
 # ============================================================
 
 def generate_script(topic, duration, audience, language, outline):
@@ -221,19 +203,18 @@ def generate_script(topic, duration, audience, language, outline):
     is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
     if is_dracin:
-        # SCRIPT JALUR 1: DRAMA CINA PRO
         prompt = f"""
-You are an expert Chinese Drama (Dracin) recap scriptwriter and dialogue director.
+You are an expert Chinese Drama (Dracin) recap scriptwriter.
 
 Write a gripping, highly engaging, and emotional spoken narration script based on the structured outline below.
 
 DRACIN INFORMATION:
 Drama Title: {topic}
 Episode Scope: {duration}
-Core Trope & Parameters: {audience}
+Core Trope: {audience}
 Script Language: {language}
 
-STRUCTURED OUTLINE & CHARACTERS:
+STRUCTURED OUTLINE:
 {outline_json}
 
 SCRIPT REQUIREMENTS:
@@ -242,7 +223,6 @@ SCRIPT REQUIREMENTS:
 - Use section headers matching the outline exactly.
 """
     else:
-        # SCRIPT JALUR 2: KONTEN UMUM ASLI (100% SESUAI KODE ASLI LU)
         prompt = f"""
 You are an expert YouTube scriptwriter.
 

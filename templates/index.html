@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C-Drama AI Engine Suite Pro</title>
+    <title>Cosmic AI - Script & Dracin Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -105,7 +105,7 @@
 
         @media (min-width: 640px) {
             .hero-title {
-                font-size: 2.3rem;
+                font-size: 2.5rem;
             }
         }
 
@@ -123,8 +123,16 @@
             border-radius: 20px;
         }
 
+        @media (min-width: 640px) {
+            .hero-subtitle {
+                font-size: 1.05rem;
+                border-radius: 50px;
+                padding: 12px 24px;
+            }
+        }
+
         .container {
-            max-width: 950px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 15px 15px 30px;
             width: 100%;
@@ -143,7 +151,7 @@
 
         @media (min-width: 640px) {
             .card {
-                padding: 35px;
+                padding: 40px;
             }
         }
 
@@ -154,9 +162,42 @@
             background: linear-gradient(90deg, var(--primary-glow), var(--cyan-glow), var(--pink-glow));
         }
 
+        .mode-switcher {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            background: rgba(8, 10, 21, 0.9);
+            border: 1px solid var(--border-cosmic);
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--primary-glow), var(--pink-glow));
+            color: white;
+            border-color: var(--cyan-glow);
+        }
+
+        .form-pane {
+            display: none;
+        }
+
+        .form-pane.active {
+            display: block;
+        }
+
         label {
             font-weight: 600;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             color: #f1f5f9;
             display: block;
             margin-bottom: 6px;
@@ -170,7 +211,7 @@
             border-radius: 10px !important;
             padding: 12px 14px !important;
             margin-bottom: 16px;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
         }
 
         .grid-2 {
@@ -186,52 +227,17 @@
             }
         }
 
-        .genre-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .genre-pill {
-            background: rgba(8, 10, 21, 0.9);
-            border: 1px solid var(--border-cosmic);
-            color: var(--text-muted);
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.2s ease;
-        }
-
-        .genre-pill.selected {
-            background: linear-gradient(135deg, var(--primary-glow), var(--pink-glow));
-            color: white;
-            border-color: var(--cyan-glow);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
-        }
-
         .btn-submit {
             background: linear-gradient(135deg, var(--primary-glow) 0%, var(--pink-glow) 100%);
             color: #ffffff;
             border: none;
             border-radius: 12px;
-            padding: 15px;
+            padding: 14px;
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
             margin-top: 10px;
-            box-shadow: 0 5px 20px rgba(255, 0, 127, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .btn-submit:hover {
-            box-shadow: 0 0 25px var(--cyan-glow);
-            transform: translateY(-2px);
         }
 
         .pricing-box {
@@ -260,7 +266,7 @@
 
     <header>
         <a href="/" class="nav-brand">
-            🎬 C-Drama Engine Pro
+            ✨ COSMIC AI
         </a>
         <nav class="nav-links">
             <a href="/" class="btn-nav">🏠 Home</a>
@@ -275,142 +281,139 @@
         
         <section class="hero-section">
             <h1 class="hero-title">
-                C-Drama Engine Suite Pro
+                Buat Script Konten & Dracin Lebih Cepat dengan AI
             </h1>
             <p class="hero-subtitle">
-                Generator skrip drama China profesional dengan Characters Studio, Relationship Dynamics, & Episodes Manager mendalam.
+                Rancang outline, skrip rekap drama China, skrip video, dan metadata otomatis untuk TikTok, YouTube, dan Reels dengan kecerdasan kosmik.
             </p>
         </section>
 
         {% if is_unlocked %}
         <div class="card">
-            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;">
-                <h2 style="font-size: 1.25rem; font-weight: 700;">⚙️ Setup Story Parameters</h2>
-                <span style="background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; width: fit-content;">Engine Suite Pro Active</span>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                <h2 style="font-size: 1.25rem; font-weight: 700;">💫 Dashboard AI Generator</h2>
+                <span style="background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; width: fit-content;">Akses Penuh Aktif</span>
             </div>
 
-            <form action="/generate" method="POST" onsubmit="prepareForm(this)">
+            <div class="mode-switcher">
+                <div class="mode-btn active" id="tab-dracin" onclick="switchMode('dracin')">🇨🇳 Mode Dracin</div>
+                <div class="mode-btn" id="tab-general" onclick="switchMode('general')">💡 Mode Konten Umum</div>
+            </div>
+
+            <form action="/generate" method="POST" onsubmit="showLoadingState(this)">
                 
-                <div>
-                    <label for="topic">Judul Cerita / Drama (Opsional)</label>
-                    <input type="text" id="topic" name="topic" placeholder="Biarkan kosong jika ingin AI yang membuatkan judul memikat...">
-                </div>
-
-                <div>
-                    <label>Genre (Bisa Pilih Beberapa)</label>
-                    <div class="genre-grid">
-                        <div class="genre-pill selected" onclick="toggleGenre(this)">Romance</div>
-                        <div class="genre-pill selected" onclick="toggleGenre(this)">CEO</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Family</div>
-                        <div class="genre-pill selected" onclick="toggleGenre(this)">Revenge</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Marriage Contract</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Billionaire</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Office</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Business</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Action</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Crime</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Mystery</div>
-                        <div class="genre-pill" onclick="toggleGenre(this)">Hidden Identity</div>
-                    </div>
-                    <input type="hidden" id="genres_input" name="genres" value="Romance, CEO, Revenge">
-                </div>
-
-                <div class="grid-2">
+                <!-- MODE DRACIN -->
+                <div class="form-pane active" id="pane-dracin">
                     <div>
-                        <label for="lead_female">Tokoh Utama Wanita</label>
-                        <select id="lead_female" name="lead_female">
-                            <option value="CEO Wanita Dingin & Berkuasa">CEO Wanita Dingin & Berkuasa</option>
-                            <option value="Mahasiswi / Pekerja Miskin Tertindas">Mahasiswi / Pekerja Miskin Tertindas</option>
-                            <option value="Istri Tersiksa & Diremehkan">Istri Tersiksa & Diremehkan</option>
-                            <option value="Ahli Waris Tersembunyi">Ahli Waris Tersembunyi</option>
-                        </select>
+                        <label for="d_topic">Judul Drama China</label>
+                        <input type="text" id="d_topic" name="topic" placeholder="Contoh: CEO Dingin Menikahi Wanita Miskin">
+                    </div>
+
+                    <div class="grid-2">
+                        <div>
+                            <label for="d_duration">Pilihan Episode</label>
+                            <select id="d_duration" name="duration">
+                                <option value="Rekap 10 Episode">10 Episode</option>
+                                <option value="Rekap 20 Episode" selected>20 Episode</option>
+                                <option value="Rekap 30 Episode">30 Episode</option>
+                                <option value="Rekap 50 Episode">50 Episode</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="d_language">Bahasa Script</label>
+                            <select id="d_language" name="language">
+                                <option value="Indonesian" selected>Indonesia</option>
+                                <option value="English">Inggris (English)</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div>
-                        <label for="lead_male">Tokoh Utama Pria</label>
-                        <select id="lead_male" name="lead_male">
-                            <option value="CEO Konglomerat Dingin (Hidden Identity)">CEO Konglomerat Dingin (Hidden Identity)</option>
-                            <option value="Mafia / Penguasa Dunia Bawah">Mafia / Penguasa Dunia Bawah</option>
-                            <option value="Pewaris Kaya Raya Arrogant">Pewaris Kaya Raya Arrogant</option>
-                            <option value="Pria Sederhana / Teknisi">Pria Sederhana / Teknisi</option>
+                        <label for="d_audience">Fokus Adegan Utama (Trope Dracin)</label>
+                        <select id="d_audience" name="audience">
+                            <option value="Identitas Terbongkar (Hidden Identity / Secret Boss)">1. Identitas Terbongkar (Hidden Identity / Secret Boss)</option>
+                            <option value="Balas Dendam / Pembalasan (Revenge & Redemption)">2. Balas Dendam / Pembalasan (Revenge & Redemption)</option>
+                            <option value="Pernikahan Kontrak & Cinta Paksa (Contract Marriage)">3. Pernikahan Kontrak & Cinta Paksa (Contract Marriage)</option>
+                            <option value="Mertua Toksik & Penghinaan (Toxic In-laws & Humiliation)">4. Mertua Toksik & Penghinaan (Toxic In-laws & Humiliation)</option>
+                            <option value="Kisah Cinta Segitiga & Cemburu Berat (Love Triangle & Jealousy)">5. Kisah Cinta Segitiga & Cemburu Berat (Love Triangle & Jealousy)</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="grid-2">
+                <!-- MODE KONTEN UMUM (DENGAN DROPDOWN TARGET AUDIENCE) -->
+                <div class="form-pane" id="pane-general">
                     <div>
-                        <label for="conflict">Konflik Utama</label>
-                        <select id="conflict" name="conflict">
-                            <option value="Identitas Terbongkar & Penghinaan">Identitas Terbongkar & Penghinaan</option>
-                            <option value="Pembalasan Dendam Keluarga (Revenge)">Pembalasan Dendam Keluarga (Revenge)</option>
-                            <option value="Pernikahan Kontrak & Mertua Toksik">Pernikahan Kontrak & Mertua Toksik</option>
-                            <option value="Kisah Cinta Segitiga & Cemburu">Kisah Cinta Segitiga & Cemburu</option>
-                        </select>
+                        <label for="g_topic">Topik / Judul Konten Umum</label>
+                        <input type="text" id="g_topic" name="topic" placeholder="Contoh: 5 Tips Produktivitas Harian Menggunakan AI">
                     </div>
 
                     <div>
-                        <label for="duration">Jumlah Episode</label>
-                        <select id="duration" name="duration">
-                            <option value="Rekap 10 Episode">10 Episode</option>
-                            <option value="Rekap 20 Episode" selected>20 Episode</option>
-                            <option value="Rekap 30 Episode">30 Episode</option>
-                            <option value="Rekap 50 Episode">50 Episode</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid-2">
-                    <div>
-                        <label for="ending">Ending Cerita</label>
-                        <select id="ending" name="ending">
-                            <option value="Happy Ending (Puas & Membalas Semua Musuh)">Happy Ending (Puas & Membalas Semua Musuh)</option>
-                            <option value="Cliffhanger / Season 2 Tease">Cliffhanger / Season 2 Tease</option>
-                            <option value="Dramatic Plot Twist">Dramatic Plot Twist</option>
+                        <label for="g_audience">Target Audience</label>
+                        <select id="g_audience" name="audience">
+                            <option value="Gen Z" selected>Gen Z</option>
+                            <option value="Mahasiswa">Mahasiswa</option>
+                            <option value="Kantoran">Kantoran</option>
+                            <option value="Orang Dewasa">Orang Dewasa</option>
+                            <option value="Luar Negri">Luar Negri</option>
                         </select>
                     </div>
 
-                    <div>
-                        <label for="plot_twist">Level Plot Twist</label>
-                        <select id="plot_twist" name="plot_twist">
-                            <option value="High" selected>High (Sangat Dramatis)</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Extreme">Extreme (Banyak Kejutan)</option>
-                        </select>
-                    </div>
-                </div>
+                    <div class="grid-2">
+                        <div>
+                            <label for="g_duration">Format Durasi</label>
+                            <select id="g_duration" name="duration">
+                                <option value="Shorts (25s)">Shorts Kilat (25s)</option>
+                                <option value="Short (60s)">Short Standard (60s)</option>
+                                <option value="Medium (3-5 min)">Medium (3-5 min)</option>
+                                <option value="Long (8-10 min)">Long-form (8-10 min)</option>
+                            </select>
+                        </div>
 
-                <div>
-                    <label for="language">Bahasa Output</label>
-                    <select id="language" name="language">
-                        <option value="Indonesian" selected>Bahasa Indonesia</option>
-                        <option value="English">English</option>
-                    </select>
+                        <div>
+                            <label for="g_language">Bahasa Konten</label>
+                            <select id="g_language" name="language">
+                                <option value="Indonesian" selected>Indonesia</option>
+                                <option value="English">Inggris (English)</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    🚀 Generate Pro C-Drama Suite
+                    ✨ Generate Script Sekarang
                 </button>
             </form>
         </div>
 
         <script>
-            function toggleGenre(element) {
-                element.classList.toggle('selected');
-                updateGenresInput();
+            function switchMode(mode) {
+                const tabDracin = document.getElementById('tab-dracin');
+                const tabGeneral = document.getElementById('tab-general');
+                const paneDracin = document.getElementById('pane-dracin');
+                const paneGeneral = document.getElementById('pane-general');
+
+                if (mode === 'dracin') {
+                    tabDracin.classList.add('active');
+                    tabGeneral.classList.remove('active');
+                    paneDracin.classList.add('active');
+                    paneGeneral.classList.remove('active');
+                } else {
+                    tabGeneral.classList.add('active');
+                    tabDracin.classList.remove('active');
+                    paneGeneral.classList.add('active');
+                    paneDracin.classList.remove('active');
+                }
             }
 
-            function updateGenresInput() {
-                const selected = document.querySelectorAll('.genre-pill.selected');
-                const values = Array.from(selected).map(el => el.innerText);
-                document.getElementById('genres_input').value = values.join(', ');
-            }
-
-            function prepareForm(form) {
-                const btn = form.querySelector('.btn-submit');
-                btn.disabled = true;
-                btn.style.opacity = "0.7";
-                btn.style.cursor = "wait";
-                btn.innerText = "✨ Meracik Karakter, Konflik, & Episodes Studio...";
+            function showLoadingState(form) {
+                const submitBtn = form.querySelector('.btn-submit');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = "0.7";
+                    submitBtn.style.cursor = "wait";
+                    submitBtn.innerText = "✨ Sedang meracik keajaiban kosmik...";
+                }
             }
         </script>
 
@@ -418,8 +421,8 @@
         <div class="pricing-box">
             <div style="position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #7b61ff, #ff007f); color: white; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 6px;">DISKON 50%</div>
             
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; padding-right: 70px;">C-Drama Engine Suite Pro</h3>
-            <p style="color: #94a3b8; font-size: 0.82rem; margin-bottom: 16px; line-height: 1.4;">Akses penuh Engine Suite Pro untuk produksi masal skrip Dracin.</p>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; padding-right: 70px;">Paket Langganan Full Studio</h3>
+            <p style="color: #94a3b8; font-size: 0.82rem; margin-bottom: 16px; line-height: 1.4;">Akses penuh tanpa batas seluruh fitur generator AI & Dracin.</p>
 
             <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px;">
                 <span style="font-size: 1.8rem; font-weight: 800; color: #fff;">Rp75.000</span>
@@ -427,12 +430,12 @@
             </div>
 
             <ul style="list-style: none; font-size: 0.82rem; color: #cbd5e1; margin-bottom: 18px; line-height: 1.9;">
-                <li>✅ Full Characters Studio & Psychological Profile</li>
-                <li>✅ Relationship Dynamics & Conflict Mapping</li>
-                <li>✅ Multi-Episode Manager & Cinematic Visual Prompts</li>
+                <li>✅ Full Akses Generator & Dracin Editor AI</li>
+                <li>✅ Durasi Aktif Penuh 30 Hari (1 Bulan)</li>
+                <li>✅ Update & Dukungan Bantuan Langsung</li>
             </ul>
 
-            <a href="https://wa.me/6288210627434?text=Halo%20Admin,%20saya%20ingin%20berlangganan%20C-Drama%20Engine%20Suite%20Pro%20(Rp75rb/bulan)." target="_blank" 
+            <a href="https://wa.me/6288210627434?text=Halo%20Admin,%20saya%20ingin%20berlangganan%20Cosmic%20AI%20Studio%20Promo%2050%%%20(Rp75rb/bulan)." target="_blank" 
                style="display: block; text-align: center; background: #10b981; color: white; font-weight: 700; padding: 12px; border-radius: 12px; text-decoration: none; font-size: 0.92rem;">
                💬 Langganan via WhatsApp
             </a>
@@ -442,7 +445,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 C-Drama Engine Suite Pro. All rights reserved.</p>
+        <p>&copy; 2026 Cosmic AI Studio. All rights reserved.</p>
         <p style="margin-top: 4px;">WhatsApp: <strong>+62-882-1062-7434</strong></p>
     </footer>
 
