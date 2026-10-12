@@ -121,7 +121,7 @@ def logout_access():
 
 
 # ============================================================
-# SETTINGS PAGE
+# SETTINGS PAGE (FIX 404 NOT FOUND)
 # ============================================================
 
 @app.route("/settings")
@@ -288,7 +288,7 @@ def generate_script_from_outline_route(project_id):
 
 
 # ============================================================
-# SCRIPT EDITOR
+# SCRIPT EDITOR (LENGKAP DENGAN ANALYZE & REWRITE)
 # ============================================================
 
 @app.route("/projects/<int:project_id>/editor")
@@ -653,6 +653,8 @@ def generate():
 # ============================================================
 # RUN SERVER
 # ============================================================
+
+app = app
 
 if __name__ == "__main__":
     app.run(debug=True)
