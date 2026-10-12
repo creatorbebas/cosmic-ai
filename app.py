@@ -68,13 +68,14 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dullah-studio-secure-sessio
 
 
 # ============================================================
-# DATABASE INIT
+# SAFETY LAZY DATABASE INITIALIZATION
 # ============================================================
 
-try:
-    init_database()
-except Exception as e:
-    print("Database init handled:", e)
+def ensure_db():
+    try:
+        init_database()
+    except Exception as e:
+        print(f"[DB Init Error Notice]: {e}")
 
 
 # ============================================================
@@ -96,6 +97,7 @@ def login_required(f):
 
 @app.route("/")
 def home():
+    ensure_db()
     url_key = request.args.get('key')
     allowed_keys = ['studio_rahasia_2026', 'dullahstudio777', 'dullahstudio_rahasia_2026']
     
@@ -133,6 +135,7 @@ def settings_page():
 @app.route("/projects")
 @login_required
 def projects():
+    ensure_db()
     search_query = (
         request.args.get("search") or request.args.get("q") or ""
     ).strip()
@@ -156,6 +159,7 @@ def projects():
 @app.route("/projects/<int:project_id>")
 @login_required
 def project_detail(project_id):
+    ensure_db()
     project = get_project(project_id)
 
     if project is None:
@@ -177,6 +181,7 @@ def project_detail(project_id):
 @app.route("/projects/<int:project_id>/research")
 @login_required
 def research_page(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -192,6 +197,7 @@ def research_page(project_id):
 @app.route("/projects/<int:project_id>/research/run", methods=["POST"])
 @login_required
 def research_run(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -216,6 +222,7 @@ def research_run(project_id):
 @app.route("/projects/<int:project_id>/research/generate-outline", methods=["POST"])
 @login_required
 def generate_outline_from_research_route(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -236,6 +243,7 @@ def generate_outline_from_research_route(project_id):
 @app.route("/projects/<int:project_id>/research/generate-script", methods=["POST"])
 @login_required
 def generate_script_from_outline_route(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -257,12 +265,13 @@ def generate_script_from_outline_route(project_id):
 
 
 # ============================================================
-# SCRIPT EDITOR & SAVE SECTION (FIXED: AMBIL DARI DB)
+# SCRIPT EDITOR & SAVE SECTION
 # ============================================================
 
 @app.route("/projects/<int:project_id>/editor")
 @login_required
 def script_editor(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -283,6 +292,7 @@ def script_editor(project_id):
 @app.route("/projects/<int:project_id>/editor/save", methods=["POST"])
 @login_required
 def save_script_editor(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -312,6 +322,7 @@ def save_script_editor(project_id):
 @app.route("/projects/<int:project_id>/editor/rewrite", methods=["POST"])
 @login_required
 def rewrite_script_section(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -349,6 +360,7 @@ def rewrite_script_section(project_id):
 @app.route("/projects/<int:project_id>/editor/accept-rewrite", methods=["POST"])
 @login_required
 def accept_rewrite(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -379,6 +391,7 @@ def accept_rewrite(project_id):
 @app.route("/projects/<int:project_id>/editor/analyze", methods=["POST"])
 @login_required
 def analyze_script_route(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -425,6 +438,7 @@ def analyze_script_route(project_id):
 @app.route("/projects/<int:project_id>/regenerate-outline", methods=["POST"])
 @login_required
 def regenerate_outline_route(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -444,6 +458,7 @@ def regenerate_outline_route(project_id):
 @app.route("/projects/<int:project_id>/regenerate-script", methods=["POST"])
 @login_required
 def regenerate_script_route(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -463,6 +478,7 @@ def regenerate_script_route(project_id):
 @app.route("/projects/<int:project_id>/regenerate-metadata", methods=["POST"])
 @login_required
 def regenerate_metadata_route(project_id):
+    ensure_db()
     project = get_project(project_id)
     if project is None:
         return "Project tidak ditemukan.", 404
@@ -481,6 +497,7 @@ def regenerate_metadata_route(project_id):
 @app.route("/projects/<int:project_id>/rename", methods=["POST"])
 @login_required
 def rename_project_route(project_id):
+    ensure_db()
     new_topic = request.form.get("new_topic", "").strip()
     if new_topic:
         rename_project(project_id, new_topic)
@@ -490,17 +507,19 @@ def rename_project_route(project_id):
 @app.route("/projects/<int:project_id>/delete", methods=["POST"])
 @login_required
 def delete_project_route(project_id):
+    ensure_db()
     delete_project(project_id)
     return redirect("/projects")
 
 
 # ============================================================
-# GENERATOR (SAFE FORM HANDLING)
+# GENERATOR
 # ============================================================
 
 @app.route("/generate", methods=["POST"])
 @login_required
 def generate():
+    ensure_db()
     mode = request.form.get("mode", "general").strip()
     
     if mode == "dracin":
