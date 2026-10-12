@@ -5,7 +5,7 @@ def split_script(script_text):
         return [{"name": "FULL SCRIPT", "content": ""}]
 
     script_text = script_text.strip()
-    pattern = r'(?i)(?:^|\n)(?:[#*\[\s]*)(HOOK|INTRO(?:DUCTION)?|PROBLEM|SOLUTION|SEGMENT(?:\s*\d+)?|BODY(?:\s*\d+)?|POINT(?:\s*\d+)?|TWIST|SECTION(?:\s*\d+)?|CALL TO ACTION|CTA|OUTRO|CLOSING|SUMMARY|DRAF KARAKTER UTAMA|KONFLIK & DINAMIKA HUBUNGAN|OUTLINE EPISODE UTAMA|CONFLICT BUILD-UP|THE CLIMAX / REVEAL)(?:[\]*:\s]*)(?=\n|$)'
+    pattern = r'(?i)(?:^|\n)(?:[#*\[\s]*)(HOOK|INTRO(?:DUCTION)?|PROBLEM|SOLUTION|SEGMENT(?:\s*\d+)?|BODY(?:\s*\d+)?|POINT(?:\s*\d+)?|TWIST|SECTION(?:\s*\d+)?|CALL TO ACTION|CTA|OUTRO|CLOSING|SUMMARY|CONFLICT BUILD-UP|THE CLIMAX / REVEAL|OUTRO / CTA)(?:[\]*:\s]*)(?=\n|$)'
 
     matches = list(re.finditer(pattern, script_text))
 
@@ -41,6 +41,7 @@ def split_script(script_text):
         })
 
     return sections
+
 
 def combine_sections(sections):
     combined = []

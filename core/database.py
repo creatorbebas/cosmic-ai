@@ -1,10 +1,11 @@
 import os
 import sqlite3
-import json
 
-# Deteksi variabel lingkungan Turso
 TURSO_URL = os.environ.get("TURSO_DATABASE_URL")
 TURSO_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+
+ALLOWED_UPDATE_FIELDS = {"topic", "duration", "audience", "language", "outline", "script", "metadata", "research", "analysis"}
+
 
 def get_connection():
     if TURSO_URL and TURSO_TOKEN:
@@ -17,9 +18,11 @@ def get_connection():
         conn.row_factory = sqlite3.Row
         return conn
 
+
 def init_database():
-    conn = get_connection()
+    conn = None
     try:
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS projects (
@@ -40,17 +43,18 @@ def init_database():
     except Exception as e:
         print("Database init error:", e)
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
-try:
-    init_database()
-except Exception:
-    pass
 
 def create_project(topic, duration, audience, language, outline, script, metadata):
-    conn = get_connection()
+    conn = None
     try:
+        init_database()
+        conn = get_connection()
         cursor = conn.cursor()
+        
+        import json
         outline_str = json.dumps(outline) if isinstance(outline, (dict, list)) else str(outline)
         metadata_str = json.dumps(metadata) if isinstance(metadata, (dict, list)) else str(metadata)
 
@@ -66,11 +70,15 @@ def create_project(topic, duration, audience, language, outline, script, metadat
         print("Error creating project:", e)
         return None
     finally:
-        conn.close()
+        if conn:
+            conn.close()
+
 
 def get_projects():
-    conn = get_connection()
+    conn = None
     try:
+        init_database()
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM projects ORDER BY id DESC")
         rows = cursor.fetchall()
@@ -91,11 +99,15 @@ def get_projects():
         print("Error getting projects:", e)
         return []
     finally:
-        conn.close()
+        if conn:
+            conn.close()
+
 
 def search_projects(query):
-    conn = get_connection()
+    conn = None
     try:
+        init_database()
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM projects WHERE topic LIKE ? ORDER BY id DESC", (f"%{query}%",))
         rows = cursor.fetchall()
@@ -116,16 +128,21 @@ def search_projects(query):
         print("Error searching projects:", e)
         return []
     finally:
-        conn.close()
+        if conn:
+            conn.close()
+
 
 def get_project(project_id):
-    conn = get_connection()
+    conn = None
     try:
+        init_database()
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM projects WHERE id = ?", (project_id,))
         row = cursor.fetchone()
         
         if row:
+            import json
             if hasattr(row, 'keys'):
                 project = dict(row)
             else:
@@ -148,16 +165,22 @@ def get_project(project_id):
         print(f"Error getting project {project_id}:", e)
         return None
     finally:
-        conn.close()
+        if conn:
+            conn.close()
+
 
 def _update_field(project_id, field_name, value):
-    allowed_fields = ["outline", "script", "metadata", "research", "analysis", "topic"]
-    if field_name not in allowed_fields:
+    if field_name not in ALLOWED_UPDATE_FIELDS:
+        print(f"Invalid update field: {field_name}")
         return False
 
-    conn = get_connection()
+    conn = None
     try:
+        init_database()
+        conn = get_connection()
         cursor = conn.cursor()
+        
+        import json
         if isinstance(value, (dict, list)):
             value = json.dumps(value)
 
@@ -168,29 +191,39 @@ def _update_field(project_id, field_name, value):
         print(f"Error updating {field_name}:", e)
         return False
     finally:
-        conn.close()
+        if conn:
+            conn.close()
+
 
 def update_outline(project_id, outline):
     return _update_field(project_id, "outline", outline)
 
+
 def update_script(project_id, script):
     return _update_field(project_id, "script", script)
+
 
 def update_metadata(project_id, metadata):
     return _update_field(project_id, "metadata", metadata)
 
+
 def update_research(project_id, research):
     return _update_field(project_id, "research", research)
+
 
 def update_analysis(project_id, analysis):
     return _update_field(project_id, "analysis", analysis)
 
+
 def rename_project(project_id, new_topic):
     return _update_field(project_id, "topic", new_topic)
 
+
 def delete_project(project_id):
-    conn = get_connection()
+    conn = None
     try:
+        init_database()
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("DELETE FROM projects WHERE id = ?", (project_id,))
         conn.commit()
@@ -199,4 +232,5 @@ def delete_project(project_id):
         print(f"Error deleting project {project_id}:", e)
         return False
     finally:
-        conn.close()
+        if conn:
+            conn.close()
