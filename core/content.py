@@ -34,15 +34,15 @@ def normalize_outline(outline):
 
 
 # ============================================================
-# GENERATE OUTLINE (JALUR GANDA: DRACIN PRO & KONTEN UMUM ASLI)
+# GENERATE OUTLINE (2 JALUR: DRACIN PRO & KONTEN UMUM ASLI)
 # ============================================================
 
 def generate_outline(topic, duration, audience, language):
-    # Cek apakah ini mode Dracin berdasarkan format duration sesuai file asli lu
+    # Pengecekan 2 jalur persis seperti kode asli lu
     is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
     if is_dracin:
-        # JALUR 1: C-DRAMA ENGINE SUITE PRO (DENGAN CHARACTERS & DYNAMICS)
+        # JALUR 1: DRAMA CINA PRO (DISEMPURNAKAN DENGAN CHARACTERS & DYNAMICS)
         prompt = f"""
 You are an elite Chinese Drama (Dracin) Showrunner, Executive Producer, and Master Scriptwriter.
 
@@ -127,7 +127,7 @@ RULES:
 - Do not output markdown codeblocks outside JSON.
 """
     else:
-        # JALUR 2: KONTEN UMUM / YOUTUBE (100% SESUAI FILE ASLI LU)
+        # JALUR 2: KONTEN UMUM ASLI (100% SESUAI KODE ASLI LU SEBELUM PEROMBAKAN)
         prompt = f"""
 You are an expert YouTube content strategist.
 
@@ -212,7 +212,7 @@ def regenerate_outline(topic, duration, audience, language):
 
 
 # ============================================================
-# GENERATE SCRIPT (JALUR GANDA: DRACIN PRO & KONTEN UMUM ASLI)
+# GENERATE SCRIPT (2 JALUR: DRACIN PRO & KONTEN UMUM ASLI)
 # ============================================================
 
 def generate_script(topic, duration, audience, language, outline):
@@ -221,7 +221,7 @@ def generate_script(topic, duration, audience, language, outline):
     is_dracin = "Rekap" in str(duration) or "Episode" in str(duration)
 
     if is_dracin:
-        # SCRIPT JALUR 1: C-DRAMA PRO
+        # SCRIPT JALUR 1: DRAMA CINA PRO
         prompt = f"""
 You are an expert Chinese Drama (Dracin) recap scriptwriter and dialogue director.
 
@@ -238,11 +238,11 @@ STRUCTURED OUTLINE & CHARACTERS:
 
 SCRIPT REQUIREMENTS:
 - Write natural, dramatic, and compelling spoken narration optimized for TikTok, Reels, or YouTube recap videos.
-- Include cinematic visual prompts where necessary.
+- Avoid camera directions, visual cues, or technical production notes.
 - Use section headers matching the outline exactly.
 """
     else:
-        # SCRIPT JALUR 2: KONTEN UMUM (100% SESUAI FILE ASLI LU)
+        # SCRIPT JALUR 2: KONTEN UMUM ASLI (100% SESUAI KODE ASLI LU)
         prompt = f"""
 You are an expert YouTube scriptwriter.
 
