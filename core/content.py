@@ -45,8 +45,6 @@ def normalize_outline(outline):
 # ============================================================
 
 def generate_outline(topic, duration, audience, language):
-    # Parameter tambahan yang dikirim dari form Engine Pro
-    # audience parameter disini bisa menampung gabungan parameter pro
     prompt = f"""
 You are an elite Chinese Drama (Dracin) Showrunner, Executive Producer, and Master Scriptwriter.
 
@@ -68,43 +66,27 @@ Use exactly this strict structure:
   "language": "{language}",
   "characters": [
     {{
-      "name": "Character Name 1 (Mandarin character if applicable)",
+      "name": "Character Name 1",
       "age": "22-28",
       "appearance": "Detailed physical description, style, and aura.",
-      "personality": "Core traits, core strengths, flaws, and emotional vulnerabilities.",
-      "background": "Deep trauma, past betrayal, or social standing background.",
-      "motivation": "Ultimate goal, hidden ambition, or driving revenge objective."
-    },
-    {{
-      "name": "Character Name 2",
-      "age": "25-32",
-      "appearance": "Physical description and presence.",
-      "personality": "Traits and flaws.",
-      "background": "Background history.",
-      "motivation": "Core objective."
+      "personality": "Core traits, strengths, flaws, and vulnerabilities.",
+      "background": "Deep trauma, past betrayal, or social standing.",
+      "motivation": "Ultimate goal, hidden ambition, or revenge objective."
     }}
   ],
   "dynamics": {{
-    "core_conflict": "Detailed explanation of the primary dramatic conflict between main leads and antagonists.",
-    "internal_lead": "Psychological friction and emotional barriers of the main characters.",
-    "external_friction": "External pressure from toxic family, corporate rivals, or social status gaps.",
-    "relationship_map": "Brief summary of character alliances and rivalries."
+    "core_conflict": "Detailed explanation of the primary dramatic conflict.",
+    "internal_lead": "Psychological friction and emotional barriers.",
+    "external_friction": "External pressure from toxic family or corporate rivals.",
+    "relationship_map": "Brief summary of alliances and rivalries."
   }},
   "sections": [
     {{
-      "name": "EPISODE 1: TABRAKAN TAKDIR & PENGHINAAN",
-      "purpose": "Opening hook, establishing humiliation, and initial dramatic encounter.",
+      "name": "EPISODE 1: TABRAKAN TAKDIR",
+      "purpose": "Opening hook and initial dramatic encounter.",
       "key_information": "Key plot events for episode 1.",
-      "key_points": ["Key plot event 1", "Key plot event 2"],
+      "key_points": ["Key plot event 1"],
       "narrative_goal": "Hook viewers instantly.",
-      "approximate_duration": "2:00"
-    }},
-    {{
-      "name": "EPISODE 2: IDENTITAS TERSEMBUNYI",
-      "purpose": "Escalation of tension and secret power hints.",
-      "key_information": "Key plot events for episode 2.",
-      "key_points": ["Key plot event 1", "Key plot event 2"],
-      "narrative_goal": "Build anticipation.",
       "approximate_duration": "2:00"
     }}
   ]
@@ -184,14 +166,10 @@ Return ONLY valid JSON matching this structure:
 {{
   "hooks": [
     {{"type": "shocking", "text": "Hook text..."}},
-    {{"type": "emotional", "text": "Hook text..."}},
-    {{"type": "revenge", "text": "Hook text..."}},
-    {{"type": "secret", "text": "Hook text..."}},
-    {{"type": "cliffhanger", "text": "Hook text..."}}
+    {{"type": "emotional", "text": "Hook text..."}}
   ],
   "titles": [
-    {{"title": "Title 1", "text": "Title 1", "angle": "Viral TikTok Angle 1"}},
-    {{"title": "Title 2", "text": "Title 2", "angle": "Viral YouTube Angle 2"}}
+    {{"title": "Title 1", "text": "Title 1", "angle": "Viral TikTok Angle 1"}}
   ],
   "description": "Comprehensive viral video description with hashtags...",
   "call_to_action": "Like & follow untuk part selanjutnya..."
