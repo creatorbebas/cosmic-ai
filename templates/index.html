@@ -300,7 +300,7 @@
                 <div class="mode-btn" id="tab-general" onclick="switchMode('general')">💡 Mode Konten Umum</div>
             </div>
 
-            <form action="/generate" method="POST" onsubmit="showLoadingState(this)">
+            <form action="/generate" method="POST" onsubmit="prepareSubmit(this); showLoadingState(this);">
                 
                 <!-- MODE DRACIN -->
                 <div class="form-pane active" id="pane-dracin">
@@ -403,6 +403,19 @@
                     tabDracin.classList.remove('active');
                     paneGeneral.classList.add('active');
                     paneDracin.classList.remove('active');
+                }
+            }
+
+            function prepareSubmit(form) {
+                const activePane = document.querySelector('.form-pane.active');
+                const inactivePaneId = activePane.id === 'pane-dracin' ? 'pane-general' : 'pane-dracin';
+                const inactivePane = document.getElementById(inactivePaneId);
+                
+                if (inactivePane) {
+                    const inputs = inactivePane.querySelectorAll('input, select, textarea');
+                    inputs.forEach(input => {
+                        input.disabled = true;
+                    });
                 }
             }
 

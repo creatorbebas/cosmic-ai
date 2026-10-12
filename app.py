@@ -579,17 +579,9 @@ def delete_project_route(project_id):
 @app.route("/generate", methods=["POST"])
 def generate():
     topic = request.form.get("topic", "").strip()
+    duration = request.form.get("duration", "").strip()
     audience = request.form.get("audience", "").strip()
     language = request.form.get("language", "").strip()
-    
-    episode_input = request.form.get("d_episode_input", "").strip()
-    
-    if episode_input:
-        duration = f"Rekap {episode_input}"
-        if not audience:
-            audience = "Drama China Rekap Fokus Emosional"
-    else:
-        duration = request.form.get("duration", "").strip()
 
     if not topic or not duration or not audience or not language:
         return "Semua field input wajib diisi.", 400
