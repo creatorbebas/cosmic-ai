@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import json
 
 TURSO_URL = os.environ.get("TURSO_DATABASE_URL")
 TURSO_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
@@ -8,15 +9,20 @@ ALLOWED_UPDATE_FIELDS = {"topic", "duration", "audience", "language", "outline",
 
 
 def get_connection():
+    # Coba gunakan Turso jika kredensial tersedia dan library terpasang
     if TURSO_URL and TURSO_TOKEN:
-        import libsql_experimental as libsql
-        conn = libsql.connect(database=TURSO_URL, auth_token=TURSO_TOKEN)
-        return conn
-    else:
-        DB_PATH = "/tmp/database.db" if os.environ.get("VERCEL") else "database.db"
-        conn = sqlite3.connect(DB_PATH)
-        conn.row_factory = sqlite3.Row
-        return conn
+        try:
+            import libsql_experimental as libsql
+            conn = libsql.connect(database=TURSO_URL, auth_token=TURSO_TOKEN)
+            return conn
+        except Exception as e:
+            print(f"[DB Warning] Gagal koneksi Turso, beralih ke SQLite lokal: {e}")
+    
+    # Fallback ke SQLite (menggunakan /tmp di Vercel agar bisa ditulis)
+    DB_PATH = "/tmp/database.db" if os.environ.get("VERCEL") else "database.db"
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
 def init_database():
@@ -54,7 +60,6 @@ def create_project(topic, duration, audience, language, outline, script, metadat
         conn = get_connection()
         cursor = conn.cursor()
         
-        import json
         outline_str = json.dumps(outline) if isinstance(outline, (dict, list)) else str(outline)
         metadata_str = json.dumps(metadata) if isinstance(metadata, (dict, list)) else str(metadata)
 
@@ -142,7 +147,6 @@ def get_project(project_id):
         row = cursor.fetchone()
         
         if row:
-            import json
             if hasattr(row, 'keys'):
                 project = dict(row)
             else:
@@ -180,7 +184,6 @@ def _update_field(project_id, field_name, value):
         conn = get_connection()
         cursor = conn.cursor()
         
-        import json
         if isinstance(value, (dict, list)):
             value = json.dumps(value)
 
