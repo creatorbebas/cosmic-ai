@@ -98,10 +98,22 @@ def _load_access_keys():
     return keys
 
 
-ACCESS_KEYS = _load_access_keys()
+# Kunci lama yang sudah dibagikan ke pengguna. Tetap berlaku seperti sebelumnya,
+# jadi link lama (?key=...) tidak perlu diganti dan Vercel tidak perlu diubah.
+# Catatan: kunci di sini tersimpan di kode/GitHub. Untuk menggantinya nanti,
+# kosongkan daftar ini ([]) lalu isi ACCESS_KEYS di Vercel dengan kunci baru.
+LEGACY_ACCESS_KEYS = [
+    "studio_rahasia_2026",
+    "dullahstudio777",
+    "dullahstudio_rahasia_2026",
+]
+
+ENV_ACCESS_KEYS = _load_access_keys()
+
+ACCESS_KEYS = list(dict.fromkeys(LEGACY_ACCESS_KEYS + ENV_ACCESS_KEYS))
 
 if not ACCESS_KEYS:
-    print("PERINGATAN: ACCESS_KEYS belum diatur, tidak ada kunci akses yang bisa dipakai membuka studio.")
+    print("PERINGATAN: tidak ada kunci akses, studio tidak bisa dibuka.")
 
 
 def _build_secret_key():
@@ -265,7 +277,8 @@ def logout_access():
 @app.route("/cek-akses")
 def cek_akses():
     lines = [
-        f"ACCESS_KEYS terbaca: {len(ACCESS_KEYS)} kunci",
+        f"Kunci dari Vercel (ACCESS_KEYS / ACCESS_KEY): {len(ENV_ACCESS_KEYS)}",
+        f"Kunci bawaan lama di kode: {len(LEGACY_ACCESS_KEYS)}",
         "FLASK_SECRET_KEY: " + ("terisi" if os.environ.get("FLASK_SECRET_KEY") else "KOSONG"),
         "API key AI: " + ("terisi" if (os.environ.get("AI_API_KEY") or os.environ.get("OPENAI_API_KEY")) else "KOSONG"),
         "Turso: " + ("terisi" if (os.environ.get("TURSO_DATABASE_URL") and os.environ.get("TURSO_AUTH_TOKEN")) else "KOSONG (data hanya sementara)"),
