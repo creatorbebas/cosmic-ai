@@ -1,35 +1,103 @@
+import json
 import os
 import sqlite3
-import json
 
-TURSO_URL = os.environ.get("TURSO_DATABASE_URL")
-TURSO_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
 
-ALLOWED_UPDATE_FIELDS = {"topic", "duration", "audience", "language", "outline", "script", "metadata", "research", "analysis"}
+# ============================================================
+# KONFIGURASI
+# ============================================================
 
+# Urutan kolom tabel projects. SELECT selalu memakai nama kolom eksplisit
+# supaya hasil tuple dari libsql/Turso selalu cocok dengan urutan ini,
+# walaupun urutan kolom di database lama berbeda.
+COLUMNS = [
+    "id", "topic", "duration", "audience", "language",
+    "outline", "script", "metadata", "research", "analysis",
+    "created_at"
+]
+
+# Kolom ringan untuk halaman daftar project (tanpa outline/script yang besar)
+LIST_COLUMNS = ["id", "topic", "duration", "audience", "language", "created_at"]
+
+JSON_FIELDS = ("outline", "metadata", "research", "analysis")
+
+UPDATABLE_FIELDS = (
+    "topic", "outline", "script", "metadata", "research", "analysis"
+)
+
+_db_ready = False
+
+
+# ============================================================
+# KONEKSI
+# ============================================================
 
 def get_connection():
-    # Coba gunakan Turso jika kredensial tersedia dan library terpasang
-    if TURSO_URL and TURSO_TOKEN:
-        try:
-            import libsql_experimental as libsql
-            conn = libsql.connect(database=TURSO_URL, auth_token=TURSO_TOKEN)
-            return conn
-        except Exception as e:
-            print(f"[DB Warning] Gagal koneksi Turso, beralih ke SQLite lokal: {e}")
-    
-    # Fallback ke SQLite (menggunakan /tmp di Vercel agar bisa ditulis)
-    DB_PATH = "/tmp/database.db" if os.environ.get("VERCEL") else "database.db"
-    conn = sqlite3.connect(DB_PATH)
+    turso_url = os.environ.get("TURSO_DATABASE_URL")
+    turso_token = os.environ.get("TURSO_AUTH_TOKEN")
+
+    if turso_url and turso_token:
+        # Menggunakan Turso Cloud Database
+        import libsql_experimental as libsql
+
+        return libsql.connect(database=turso_url, auth_token=turso_token)
+
+    # Menggunakan SQLite lokal saat pengembangan lokal.
+    # Di Vercel folder /tmp bersifat sementara: data hilang saat instance
+    # berganti, jadi di production wajib memakai Turso.
+    db_path = "/tmp/database.db" if os.environ.get("VERCEL") else "database.db"
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
 
+def _close(conn):
+    if conn is None:
+        return
+
+    try:
+        conn.close()
+    except Exception:
+        pass
+
+
+def _row_to_dict(row, columns):
+    if row is None:
+        return None
+
+    if hasattr(row, "keys"):
+        return dict(row)
+
+    # Hasil tuple dari libsql
+    return dict(zip(columns, row))
+
+
+def _to_text(value):
+    if value is None:
+        return None
+
+    if isinstance(value, (dict, list)):
+        return json.dumps(value, ensure_ascii=False)
+
+    return str(value)
+
+
+# ============================================================
+# INIT DATABASE (dijalankan sekali per proses, bukan tiap request)
+# ============================================================
+
 def init_database():
+    global _db_ready
+
+    if _db_ready:
+        return
+
     conn = None
+
     try:
         conn = get_connection()
         cursor = conn.cursor()
+
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS projects (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,157 +113,211 @@ def init_database():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+
+        # Migrasi otomatis: tambahkan kolom yang belum ada di database lama
+        try:
+            cursor.execute("PRAGMA table_info(projects)")
+            existing = {row[1] for row in cursor.fetchall()}
+
+            for column in COLUMNS:
+                if column in existing or column == "id":
+                    continue
+
+                column_type = "TIMESTAMP" if column == "created_at" else "TEXT"
+                cursor.execute(
+                    f"ALTER TABLE projects ADD COLUMN {column} {column_type}"
+                )
+                print(f"Database migration: kolom '{column}' ditambahkan.")
+        except Exception as e:
+            print("Database migration check skipped:", e)
+
         conn.commit()
+        _db_ready = True
+
     except Exception as e:
         print("Database init error:", e)
-    finally:
-        if conn:
-            conn.close()
 
+    finally:
+        _close(conn)
+
+
+# ============================================================
+# PROJECT OPERATIONS
+# ============================================================
 
 def create_project(topic, duration, audience, language, outline, script, metadata):
     conn = None
+
     try:
         init_database()
         conn = get_connection()
         cursor = conn.cursor()
-        
-        outline_str = json.dumps(outline) if isinstance(outline, (dict, list)) else str(outline)
-        metadata_str = json.dumps(metadata) if isinstance(metadata, (dict, list)) else str(metadata)
 
         cursor.execute("""
             INSERT INTO projects (topic, duration, audience, language, outline, script, metadata)
             VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (topic, duration, audience, language, outline_str, script, metadata_str))
+        """, (
+            topic,
+            duration,
+            audience,
+            language,
+            _to_text(outline),
+            script,
+            _to_text(metadata)
+        ))
 
-        project_id = cursor.lastrowid
         conn.commit()
+
+        project_id = getattr(cursor, "lastrowid", None)
+
+        if not project_id:
+            try:
+                cursor.execute("SELECT last_insert_rowid()")
+                row = cursor.fetchone()
+                project_id = row[0] if row else None
+            except Exception:
+                project_id = None
+
+        if not project_id:
+            cursor.execute("SELECT MAX(id) FROM projects")
+            row = cursor.fetchone()
+            project_id = row[0] if row else None
+
         return project_id
+
     except Exception as e:
         print("Error creating project:", e)
         return None
+
     finally:
-        if conn:
-            conn.close()
+        _close(conn)
 
 
 def get_projects():
     conn = None
+
     try:
         init_database()
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM projects ORDER BY id DESC")
+
+        cursor.execute(
+            f"SELECT {', '.join(LIST_COLUMNS)} FROM projects ORDER BY id DESC"
+        )
         rows = cursor.fetchall()
-        
-        projects = []
-        for row in rows:
-            if hasattr(row, 'keys'):
-                projects.append(dict(row))
-            else:
-                projects.append({
-                    "id": row[0], "topic": row[1], "duration": row[2],
-                    "audience": row[3], "language": row[4], "outline": row[5],
-                    "script": row[6], "metadata": row[7], "research": row[8],
-                    "analysis": row[9], "created_at": row[10]
-                })
-        return projects
+
+        return [_row_to_dict(row, LIST_COLUMNS) for row in rows]
+
     except Exception as e:
         print("Error getting projects:", e)
         return []
+
     finally:
-        if conn:
-            conn.close()
+        _close(conn)
 
 
 def search_projects(query):
     conn = None
+
     try:
         init_database()
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM projects WHERE topic LIKE ? ORDER BY id DESC", (f"%{query}%",))
+
+        # Escape karakter wildcard supaya pencarian "50%" atau "a_b" tidak aneh
+        safe_query = (
+            str(query)
+            .replace("\\", "\\\\")
+            .replace("%", "\\%")
+            .replace("_", "\\_")
+        )
+
+        cursor.execute(
+            f"SELECT {', '.join(LIST_COLUMNS)} FROM projects "
+            "WHERE topic LIKE ? ESCAPE '\\' ORDER BY id DESC",
+            (f"%{safe_query}%",)
+        )
         rows = cursor.fetchall()
-        
-        projects = []
-        for row in rows:
-            if hasattr(row, 'keys'):
-                projects.append(dict(row))
-            else:
-                projects.append({
-                    "id": row[0], "topic": row[1], "duration": row[2],
-                    "audience": row[3], "language": row[4], "outline": row[5],
-                    "script": row[6], "metadata": row[7], "research": row[8],
-                    "analysis": row[9], "created_at": row[10]
-                })
-        return projects
+
+        return [_row_to_dict(row, LIST_COLUMNS) for row in rows]
+
     except Exception as e:
         print("Error searching projects:", e)
         return []
+
     finally:
-        if conn:
-            conn.close()
+        _close(conn)
 
 
 def get_project(project_id):
     conn = None
+
     try:
         init_database()
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM projects WHERE id = ?", (project_id,))
+
+        cursor.execute(
+            f"SELECT {', '.join(COLUMNS)} FROM projects WHERE id = ?",
+            (project_id,)
+        )
         row = cursor.fetchone()
-        
-        if row:
-            if hasattr(row, 'keys'):
-                project = dict(row)
-            else:
-                project = {
-                    "id": row[0], "topic": row[1], "duration": row[2],
-                    "audience": row[3], "language": row[4], "outline": row[5],
-                    "script": row[6], "metadata": row[7], "research": row[8],
-                    "analysis": row[9], "created_at": row[10]
-                }
-            
-            for field in ["outline", "metadata", "research", "analysis"]:
-                if project.get(field):
-                    try:
-                        project[field] = json.loads(project[field])
-                    except Exception:
-                        pass
-            return project
-        return None
+
+        if not row:
+            return None
+
+        project = _row_to_dict(row, COLUMNS)
+
+        for field in JSON_FIELDS:
+            if project.get(field):
+                try:
+                    project[field] = json.loads(project[field])
+                except Exception:
+                    pass
+
+        # Script kosong selalu berupa string, bukan None
+        project["script"] = project.get("script") or ""
+
+        return project
+
     except Exception as e:
         print(f"Error getting project {project_id}:", e)
         return None
-    finally:
-        if conn:
-            conn.close()
 
+    finally:
+        _close(conn)
+
+
+# ============================================================
+# UPDATE OPERATIONS
+# ============================================================
 
 def _update_field(project_id, field_name, value):
-    if field_name not in ALLOWED_UPDATE_FIELDS:
-        print(f"Invalid update field: {field_name}")
+    # Nama kolom tidak boleh berasal dari input bebas
+    if field_name not in UPDATABLE_FIELDS:
+        print(f"Error updating: kolom '{field_name}' tidak diizinkan.")
         return False
 
     conn = None
+
     try:
         init_database()
         conn = get_connection()
         cursor = conn.cursor()
-        
-        if isinstance(value, (dict, list)):
-            value = json.dumps(value)
 
-        cursor.execute(f"UPDATE projects SET {field_name} = ? WHERE id = ?", (value, project_id))
+        cursor.execute(
+            f"UPDATE projects SET {field_name} = ? WHERE id = ?",
+            (_to_text(value), project_id)
+        )
         conn.commit()
         return True
+
     except Exception as e:
         print(f"Error updating {field_name}:", e)
         return False
+
     finally:
-        if conn:
-            conn.close()
+        _close(conn)
 
 
 def update_outline(project_id, outline):
@@ -224,6 +346,7 @@ def rename_project(project_id, new_topic):
 
 def delete_project(project_id):
     conn = None
+
     try:
         init_database()
         conn = get_connection()
@@ -231,9 +354,10 @@ def delete_project(project_id):
         cursor.execute("DELETE FROM projects WHERE id = ?", (project_id,))
         conn.commit()
         return True
+
     except Exception as e:
         print(f"Error deleting project {project_id}:", e)
         return False
+
     finally:
-        if conn:
-            conn.close()
+        _close(conn)

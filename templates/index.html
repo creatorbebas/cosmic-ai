@@ -271,7 +271,7 @@
         <nav class="nav-links">
             <a href="/" class="btn-nav">🏠 Home</a>
             {% if is_unlocked %}
-            <a href="/projects" class="nav-nav">🚀 Projects</a>
+            <a href="/projects" class="btn-nav">🚀 Projects</a>
             <a href="/logout-access" class="btn-nav" style="border-color: rgba(255,0,0,0.4); color: #ff7f7f;">🔒 Kunci</a>
             {% endif %}
         </nav>
@@ -300,7 +300,8 @@
                 <div class="mode-btn" id="tab-general" onclick="switchMode('general')">💡 Mode Konten Umum</div>
             </div>
 
-            <form action="/generate" method="POST" onsubmit="prepareSubmit(this); showLoadingState(this);">
+            <form action="/generate" method="POST" onsubmit="showLoadingState(this)">
+                <input type="hidden" name="mode" id="form-mode" value="dracin">
                 
                 <!-- MODE DRACIN -->
                 <div class="form-pane active" id="pane-dracin">
@@ -404,19 +405,16 @@
                     paneGeneral.classList.add('active');
                     paneDracin.classList.remove('active');
                 }
-            }
 
-            function prepareSubmit(form) {
-                const activePane = document.querySelector('.form-pane.active');
-                const inactivePaneId = activePane.id === 'pane-dracin' ? 'pane-general' : 'pane-dracin';
-                const inactivePane = document.getElementById(inactivePaneId);
-                
-                if (inactivePane) {
-                    const inputs = inactivePane.querySelectorAll('input, select, textarea');
-                    inputs.forEach(input => {
-                        input.disabled = true;
-                    });
-                }
+                // Field di tab yang tidak aktif dinonaktifkan supaya tidak ikut terkirim.
+                // Tanpa ini, server selalu membaca field Dracin (yang kosong) saat Mode Konten Umum dipakai.
+                paneDracin.querySelectorAll('input, select').forEach(function (el) {
+                    el.disabled = (mode !== 'dracin');
+                });
+                paneGeneral.querySelectorAll('input, select').forEach(function (el) {
+                    el.disabled = (mode !== 'general');
+                });
+                document.getElementById('form-mode').value = mode;
             }
 
             function showLoadingState(form) {
@@ -428,6 +426,8 @@
                     submitBtn.innerText = "✨ Sedang meracik keajaiban kosmik...";
                 }
             }
+
+            switchMode('dracin');
         </script>
 
         {% else %}

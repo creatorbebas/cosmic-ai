@@ -1,5 +1,5 @@
-flask
-openai
+flask>=3.0
+openai>=1.66.0
 python-dotenv
 gunicorn
 libsql-experimental
