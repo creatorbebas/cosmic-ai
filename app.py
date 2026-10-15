@@ -269,26 +269,6 @@ def logout_access():
 
 
 # ============================================================
-# CEK AKSES (SEMENTARA, hapus setelah akses normal)
-# ============================================================
-# Hanya menampilkan jumlah kunci yang terbaca dan apakah kunci di URL cocok.
-# Isi kunci tidak pernah ditampilkan. Contoh: /cek-akses?key=kunci_kamu
-
-@app.route("/cek-akses")
-def cek_akses():
-    lines = [
-        f"Kunci dari Vercel (ACCESS_KEYS / ACCESS_KEY): {len(ENV_ACCESS_KEYS)}",
-        f"Kunci bawaan lama di kode: {len(LEGACY_ACCESS_KEYS)}",
-        "FLASK_SECRET_KEY: " + ("terisi" if os.environ.get("FLASK_SECRET_KEY") else "KOSONG"),
-        "API key AI: " + ("terisi" if (os.environ.get("AI_API_KEY") or os.environ.get("OPENAI_API_KEY")) else "KOSONG"),
-        "Turso: " + ("terisi" if (os.environ.get("TURSO_DATABASE_URL") and os.environ.get("TURSO_AUTH_TOKEN")) else "KOSONG (data hanya sementara)"),
-        "Kunci di URL cocok: " + ("YA" if _is_valid_key(request.args.get("key")) else "TIDAK"),
-    ]
-
-    return "\n".join(lines), 200, {"Content-Type": "text/plain; charset=utf-8"}
-
-
-# ============================================================
 # SETTINGS PAGE
 # ============================================================
 
