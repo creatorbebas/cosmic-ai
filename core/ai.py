@@ -2,7 +2,7 @@
 Lapisan akses AI (OpenAI Responses API) + utilitas parsing JSON.
 
 Environment variable yang dipakai:
-- AI_API_KEY      : API key OpenAI (wajib)
+- AI_API_KEY      : API key OpenAI (wajib; OPENAI_API_KEY juga diterima)
 - AI_MODEL        : nama model (opsional, default gpt-5-mini)
 - AI_TIMEOUT      : batas waktu satu panggilan AI dalam detik (opsional, default 90)
 - AI_MAX_RETRIES  : jumlah retry otomatis jika koneksi gagal (opsional, default 1)
@@ -39,11 +39,12 @@ def _get_client():
     if _client is None:
         from openai import OpenAI
 
-        api_key = os.getenv("AI_API_KEY")
+        # Nama variabel yang diterima: AI_API_KEY atau OPENAI_API_KEY
+        api_key = os.getenv("AI_API_KEY") or os.getenv("OPENAI_API_KEY")
 
         if not api_key:
             raise RuntimeError(
-                "AI_API_KEY belum diatur di environment variable."
+                "API key belum diatur (AI_API_KEY atau OPENAI_API_KEY)."
             )
 
         _client = OpenAI(

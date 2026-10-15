@@ -83,7 +83,10 @@ def _load_access_keys():
     Spasi dan tanda kutip di sekitar tiap kunci diabaikan, jadi nilai seperti
     "studio_rahasia_2026" atau  studio_rahasia_2026  tetap terbaca benar.
     """
-    raw = os.environ.get("ACCESS_KEYS", "")
+    # Nama variabel yang diterima: ACCESS_KEYS (disarankan) atau ACCESS_KEY
+    raw = "\n".join(
+        os.environ.get(name, "") for name in ("ACCESS_KEYS", "ACCESS_KEY")
+    )
     keys = []
 
     for part in re.split(r"[,;\n]", raw):
@@ -264,6 +267,8 @@ def cek_akses():
     lines = [
         f"ACCESS_KEYS terbaca: {len(ACCESS_KEYS)} kunci",
         "FLASK_SECRET_KEY: " + ("terisi" if os.environ.get("FLASK_SECRET_KEY") else "KOSONG"),
+        "API key AI: " + ("terisi" if (os.environ.get("AI_API_KEY") or os.environ.get("OPENAI_API_KEY")) else "KOSONG"),
+        "Turso: " + ("terisi" if (os.environ.get("TURSO_DATABASE_URL") and os.environ.get("TURSO_AUTH_TOKEN")) else "KOSONG (data hanya sementara)"),
         "Kunci di URL cocok: " + ("YA" if _is_valid_key(request.args.get("key")) else "TIDAK"),
     ]
 
