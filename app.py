@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import os
+import re
 from datetime import timedelta
 from functools import wraps
 
@@ -77,8 +78,21 @@ from core.outline_script import (
 # - TURSO_DATABASE_URL, TURSO_AUTH_TOKEN : database Turso
 
 def _load_access_keys():
+    """
+    Membaca ACCESS_KEYS. Dipisah koma, titik koma, atau baris baru.
+    Spasi dan tanda kutip di sekitar tiap kunci diabaikan, jadi nilai seperti
+    "studio_rahasia_2026" atau  studio_rahasia_2026  tetap terbaca benar.
+    """
     raw = os.environ.get("ACCESS_KEYS", "")
-    return [key.strip() for key in raw.split(",") if key.strip()]
+    keys = []
+
+    for part in re.split(r"[,;\n]", raw):
+        key = part.strip().strip("\"'").strip()
+
+        if key:
+            keys.append(key)
+
+    return keys
 
 
 ACCESS_KEYS = _load_access_keys()
@@ -237,6 +251,23 @@ def home():
 def logout_access():
     session.pop("unlocked", None)
     return redirect(url_for("home"))
+
+
+# ============================================================
+# CEK AKSES (SEMENTARA, hapus setelah akses normal)
+# ============================================================
+# Hanya menampilkan jumlah kunci yang terbaca dan apakah kunci di URL cocok.
+# Isi kunci tidak pernah ditampilkan. Contoh: /cek-akses?key=kunci_kamu
+
+@app.route("/cek-akses")
+def cek_akses():
+    lines = [
+        f"ACCESS_KEYS terbaca: {len(ACCESS_KEYS)} kunci",
+        "FLASK_SECRET_KEY: " + ("terisi" if os.environ.get("FLASK_SECRET_KEY") else "KOSONG"),
+        "Kunci di URL cocok: " + ("YA" if _is_valid_key(request.args.get("key")) else "TIDAK"),
+    ]
+
+    return "\n".join(lines), 200, {"Content-Type": "text/plain; charset=utf-8"}
 
 
 # ============================================================
