@@ -302,7 +302,7 @@
             {% endif %}
         </div>
 
-        <!-- SECTION EDITOR FORM -->
+        <!-- SECTION EDITOR FORM (DIPISAH PER SECTION AGAR REWRITE & SAVE TEPAT SASARAN) -->
         <div class="content-panel">
             <div class="panel-header">
                 <div>
@@ -321,8 +321,8 @@
                     <textarea name="section_content" rows="4">{{ sec.content }}</textarea>
 
                     <div class="action-bar">
-                        <button type="submit" formaction="/projects/{{ project.id }}/editor/rewrite" name="section_name" value="{{ sec.name }}" class="regenerate-button" style="padding: 6px 14px; font-size: 0.85rem;" onclick="this.innerText='⚡ Sedang meracik ulang...';">
-                            ⚡ Rewrite with AI
+                        <button type="submit" formaction="/projects/{{ project.id }}/editor/rewrite" name="section_name" value="{{ sec.name }}" class="regenerate-button" style="padding: 6px 14px; font-size: 0.85rem;" onclick="this.innerText='✨ Sedang meracik ulang...';">
+                            ✨ Rewrite with AI
                         </button>
                         <select name="style" style="width: auto; padding: 6px 10px; margin-bottom: 0;">
                             <option value="More engaging">More engaging</option>
