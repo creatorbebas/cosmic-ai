@@ -118,6 +118,9 @@
             <button type="button" class="content-tab" onclick="showTab('description', this)">
                 Description
             </button>
+            <button type="button" class="content-tab" onclick="showTab('voice-over', this)">
+                Voice Over
+            </button>
         </div>
 
 
@@ -315,6 +318,37 @@
             </div>
         </section>
 
+
+        <!-- ====================================== -->
+        <!-- VOICE OVER (MODUL TAMBAHAN) -->
+        <!-- ====================================== -->
+
+        <section id="voice-over" class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Voice Over (Suara Anda)</h2>
+                    <p>Generate audio langsung dari naskah menggunakan endpoint voice cloning gratis/lokal Anda.</p>
+                </div>
+
+                <button type="button" id="btn-generate-vo" class="copy-button" onclick="generateVoiceOver()">
+                    Generate Voice Over
+                </button>
+            </div>
+
+            <textarea id="vo-source-text" rows="8" style="width: 100%; margin-top: 12px; padding: 12px; border-radius: 10px; background: rgba(4, 6, 14, 0.9); border: 1px solid rgba(0, 240, 255, 0.4); color: #f1f5f9;">{{ script }}</textarea>
+
+            <div id="vo-status" style="margin-top: 10px; font-size: 0.9rem;"></div>
+
+            <div id="vo-player-wrap" style="display: none; margin-top: 14px;">
+                <audio id="vo-audio-player" controls style="width: 100%;"></audio>
+                <div style="margin-top: 10px;">
+                    <a id="vo-download-link" href="#" download="cosmic_voice_over.wav" class="small-copy-button" style="text-decoration: none; display: inline-block;">
+                        Download Audio (.wav)
+                    </a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
 </div>
@@ -383,6 +417,65 @@ function fallbackCopy(text, button) {
         console.error("Copy failed:", error);
     }
     document.body.removeChild(textarea);
+}
+
+async function generateVoiceOver() {
+    const btn = document.getElementById("btn-generate-vo");
+    const textEl = document.getElementById("vo-source-text");
+    const statusEl = document.getElementById("vo-status");
+    const playerWrap = document.getElementById("vo-player-wrap");
+    const playerEl = document.getElementById("vo-audio-player");
+    const downloadEl = document.getElementById("vo-download-link");
+
+    const text = (textEl ? textEl.value : "").trim();
+    if (!text) {
+        statusEl.style.color = "#ff7f7f";
+        statusEl.innerText = "Teks narasi masih kosong.";
+        return;
+    }
+
+    const originalLabel = btn.innerText;
+    btn.disabled = true;
+    btn.innerText = "Generating...";
+    statusEl.style.color = "#cbd5e1";
+    statusEl.innerText = "Mengirim teks ke mesin voice cloning...";
+
+    try {
+        const res = await fetch("/voice-over/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                text: text,
+                language: "{{ language or 'Indonesian' }}"
+            })
+        });
+
+        const contentType = res.headers.get("content-type") || "";
+        if (!res.ok) {
+            let errMsg = "Gagal membuat voice over.";
+            if (contentType.includes("application/json")) {
+                const errJson = await res.json();
+                errMsg = errJson.error || errMsg;
+            }
+            statusEl.style.color = "#ff7f7f";
+            statusEl.innerText = errMsg;
+            return;
+        }
+
+        const blob = await res.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        playerEl.src = audioUrl;
+        downloadEl.href = audioUrl;
+        playerWrap.style.display = "block";
+        statusEl.style.color = "#34d399";
+        statusEl.innerText = "Voice over berhasil dibuat.";
+    } catch (err) {
+        statusEl.style.color = "#ff7f7f";
+        statusEl.innerText = "Terjadi kesalahan jaringan: " + err.message;
+    } finally {
+        btn.disabled = false;
+        btn.innerText = originalLabel;
+    }
 }
 </script>
 

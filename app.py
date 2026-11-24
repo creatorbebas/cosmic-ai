@@ -5,7 +5,7 @@ import re
 from datetime import timedelta
 from functools import wraps
 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, Response, jsonify
 
 try:
     from dotenv import load_dotenv
@@ -64,6 +64,10 @@ from core.research_outline import (
 from core.outline_script import (
     generate_script_from_outline,
     script_to_text
+)
+
+from core.voice_over import (
+    synthesize_voice_over
 )
 
 
@@ -719,8 +723,8 @@ def regenerate_metadata_route(project_id):
         script=project.get("script") or "",
         outline=project.get("outline"),
         language=project["language"],
-        duration=project.get("duration"),
-        audience=project.get("audience")
+        duration=project["duration"],
+        audience=project["audience"]
     )
 
     if new_metadata is None:
@@ -836,6 +840,30 @@ def generate():
         return "Gagal menyimpan proyek ke database.", 500
 
     return redirect(f"/projects/{project_id}")
+
+
+# ============================================================
+# VOICE OVER (MODUL TAMBAHAN - TIDAK MENGUBAH ROUTE LAMA)
+# ============================================================
+
+@app.route("/voice-over/generate", methods=["POST"])
+@require_access
+def generate_voice_over_route():
+    data = request.get_json(silent=True) or request.form
+    text = _clean_text(data.get("text", ""))
+    language = (data.get("language") or "Indonesian").strip()
+
+    audio_bytes, error_msg = synthesize_voice_over(text=text, language=language)
+    if error_msg:
+        return jsonify({"ok": False, "error": error_msg}), 400
+
+    return Response(
+        audio_bytes,
+        mimetype="audio/wav",
+        headers={
+            "Content-Disposition": 'inline; filename="cosmic_voice_over.wav"'
+        },
+    )
 
 
 # ============================================================
